@@ -1,0 +1,31 @@
+#ifndef PUB_H
+#define PUB_H
+
+#ifdef PUB_C
+#define EXT
+#else
+#define EXT extern
+#endif
+
+
+#define S_OFF(X,Y) ((INT16U)&((struct X *)0->Y))//定义一个结构体的偏移
+
+typedef struct
+{
+	INT8U Bit0:1;
+  INT8U Bit1:1;
+  INT8U Bit2:1;
+  INT8U Bit3:1;
+  INT8U Bit4:1;
+  INT8U Bit5:1;
+  INT8U Bit6:1;
+  INT8U Bit7:1;	
+}BIT;
+
+typedef union 
+{
+  BIT Bit;
+  INT8U Byte;
+}BYTE_BIT;
+
+#endif

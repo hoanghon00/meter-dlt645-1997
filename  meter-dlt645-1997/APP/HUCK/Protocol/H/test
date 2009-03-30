@@ -1,0 +1,19 @@
+    p=(S_One_Demand *)Pub_Buf0;
+
+    //数据的存储时间在当月冻结时间之后,应该将该数据作为当月数据存储,否则应该作为前月数据
+    mem_cpy(TempTime.Time,p->Time,sizeof(p->Time),&TempTime.Time,sizeof(TempTime.Time));
+    SET_STRUCT_SUM(TempTime);
+    //将当月冻结时间复制到TempTime1中
+    mem_cpy(&TempTime1,(void *)&Cur_Time0,sizeof(Cur_Time0),&TempTime1,sizeof(TempTime1));
+    TempTime1.Time[T_HOUR]=Data_Freeze_Time.DDHH[0];
+    TempTime1.Time[T_DATE]=Data_Freeze_Time.DDHH[1];
+    TempTime1.Time[T_MIN]=0;
+    SET_STRUCT_SUM(TempTime1);
+    Time_Inc(&TempTime,UNIT_MON,1,&TempTime);
+    if(Cmp_Time(&TempTime,&TempTime1))//需量数据时间增加1个月后，在当月冻结时间之后，说明需量数据是当月数据
+    {
+    }
+    if(p->Time[T_DATE]>Data_Freeze_Time.DDHH[1] ||\
+       (p->Time[T_DATE]==Data_Freeze_Time.DDHH[1] && p->Time[T_DATE]]>Data_Freeze_Time.DDHH[0]))
+    {
+    }

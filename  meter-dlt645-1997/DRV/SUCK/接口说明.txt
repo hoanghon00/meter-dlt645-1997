@@ -1,0 +1,208 @@
+//***********************************
+端口类，按照《硬件资源表》顺序排列
+//***********************************
+  ALARM_0  //LED测试灯输出引脚为低电平   （下同）      
+  ALARM_1  //LED测试灯输出引脚为高电平
+
+  ALARM_BEEP_0  //喇叭报警         
+  ALARM_BEEP_1  
+
+  ALARM_PORT_0  //端口报警         
+  ALARM_PORT_1   
+
+//-----------------------------------------------------------
+         
+  LCD_BACK_LIGHT_0  //液晶背光        
+  LCD_BACK_LIGHT_1   
+         
+  LCD_CS_0  //~CS         
+  LCD_CS_1   
+         
+  LCD_DATA_0         //DATA         
+  LCD_DATA_1          
+         
+  LCD_WR_0         //WR         
+  LCD_WR_1          
+
+  LCD_POW_0         //液晶电源      
+  LCD_POW_1          
+
+  B_PRG_KEY_STATUS  //编程开关输入
+
+  RELAY_PORT_0         //跳闸开关    
+  RELAY_PORT_1          
+
+//----------------------------------------------------
+//以下7022B端口模拟
+//----------------------------------------------------
+  B_7022_CS_0  //CS         
+  B_7022_CS_1   
+
+  B_7022_RST_0  //RST         
+  B_7022_RST_1   
+
+  B_7022_SDO_0  //SDO        
+  B_7022_SDO_1  
+
+  B_7022_SCK_0  //SCK       
+  B_7022_SCK_1   
+
+  B_7022_POWER_0  //POWER      
+  B_7022_POWER_1   
+
+  B_7022_SIG_STATUS  //SIG输入
+  B_7022_SDI_STATUS  //SDI输入
+//---------------------------------------------P2
+  B_ird_chose_0  //远红外选择  
+  B_ird_chose_1  
+
+  B_ird_pow_0  //红外电源选择  
+  B_ird_pow_1   
+
+//-------------------------------------------------485
+  B_2_485_0  //第二485方向选择  
+  B_2_485_1   
+
+  B_1_485_0  //第一485方向选择   
+  B_1_485_1   
+
+
+//----------------------------------------------------wtd
+  B_WTD_0  //外部watch——dog-OUT WTD  
+  B_WTD_1   
+//----------------------------------------------------杂项
+  B_second_enable_0  //秒脉冲使能  
+  B_second_enable_1   
+
+  B_dma_0  //需量周期  
+  B_dma_1   
+
+  B_time_priod_0  //时段输出  
+  B_time_priod_1   
+
+  B_4IN1_1_0  //4IN1-1  
+  B_4IN1_1_1  
+  B_4IN1_2_0  //4IN1-2   
+  B_4IN1_2_1  
+  B_4IN1_3_0  //4IN1-3    
+  B_4IN1_3_1  
+  B_4IN1_4_0  //4IN1-4   
+  B_4IN1_4_1  
+
+  B_HARD_TEST_STATUS  //硬件自检标志
+  B_RESTCAU_TEST_STATUS  /校表清零检测
+  B_REED_TEST_STATUS  //干簧管检测
+  B_BATLOWRTC_TEST_STATUS  //时钟电池低
+
+  B_POWERDIR1_0  //功率指示1  
+  B_POWERDIR1_1  
+
+  B_POWERDIR2_0  //功率指示2   
+  B_POWERDIR2_1  
+
+  B_BATLOW_TEST_STATUS  //低功耗电池检测
+  B_7022VOL_TEST_STATUS  //7022基准检测
+//--------------用于按键的状态指示,在按键采用中断进行的时候可以通过以下的宏来进行处理，在interrABS.c中举了一个例子
+Inter_Left_Key_STATUS  
+Inter_Down_Key_STATUS
+Inter_Right_Key_STATUS 
+Inter_Up_Key_STATUS 
+//*************************************************** 
+
+
+//***************************************************
+串口类
+//***************************************************
+已经口头交接，并给出了用例，不再赘述。
+//*************************************************** 
+
+
+
+//***************************************************
+中断类具体对应关系	与优先级别level2比level1级别低，函数填充位置在interrABS.c
+//***************************************************
+INTP0_vect          Inter_CF2();		 /* INTP0 priority level1 */
+
+INTP6_vect          Inter_CF1();		/* INTP6 priority level1 */
+	
+INTP8_vect		Inter_Down_Key();		/* INTP8 priority level2 */
+
+INTP9_vect		Inter_Right_Key();		/* INTP9 priority level2 */
+
+INTP10_vect		Inter_Right_Key();		/* INTP10 priority level2 */
+
+INTP7_vect		Inter_ALL_LOSE();		/* INTP7 priority high */
+
+INTP4_vect		POWER_DOWN();			/* INTP4 priority high */
+
+INTP11_vect		laser_up();			/* INTP11 priority low */
+
+INTP3_vect		ird_up();			/* INTP3 priority low */
+
+INTP1_vect		INT_1HZ();			/* INTP1 priority level1 */
+
+INTKR                                                   /* INTKR priority level2 */
+
+//以下三个使用了按键中断 函数填充位置在interrABS.c
+OPEN_1()//KR1
+OPEN_2()//KR2
+Inter_Down_Key()//KR3
+//***************************************************
+
+ 
+//***************************************************
+脉宽调制
+//***************************************************
+使用宏定义START_PMW就可以启动用于红外的脉宽调制输出。
+/*************************************************** 
+
+//***************************************************
+看门狗，在主函数中修改以下行，最好可以在函数的文件中用一个宏来进行选择编译
+//***************************************************
+#pragma location = "OPTBYTE"
+__root const unsigned char opbyte0=0x6E;//不用看门狗
+
+#pragma location = "OPTBYTE"
+__root const unsigned char opbyte0=0x7E;//用看门狗，3秒钟
+/*************************************************** 
+使用DOG_RESTART来喂狗
+
+
+
+//***************************************************
+定时器类
+//***************************************************
+在需要的地方写START_1MS就可以启动1ms中断，具体执行函数为count_1ms(void)
+该函数在interrABS.c中，由于使用的优先级别很低，所以可能会被打断。也就是说可能会有停顿的状态，
+在函数中要尽量少的处理问题
+//*************************************************** 
+
+
+
+//***************************************************
+外部flash类
+//***************************************************
+flash_read_abs(unsigned long addr_abs,unsigned char *buf,unsigned long size);
+flash_writ_abs(unsigned long addr_abs,unsigned char *buf,unsigned long size);
+其中写的部分带校验，写后会回读一次，进行校验比较。如果错误返回ERROR==1，注意，此时写缓冲的数据可能已经改变了。
+//*************************************************** 
+
+
+
+
+//***************************************************
+内部RTC类
+写内部的RTC,注意是BCD编码，和过去一样。
+void set_rtc_built_in(unsigned char sec,unsigned char min,unsigned char hour,
+                 unsigned char day,unsigned char week,unsigned char month,
+                 unsigned char year)
+
+读内部的RTC,数据将被放入全局变量rtc_built_in_struct中
+void get_rtc_built_in(void)
+
+应用注意：只有设置RTC完之后，内部rtc开始运行，读取不影响计时过程，自动万年历。
+//***************************************************
+
+
+
+	

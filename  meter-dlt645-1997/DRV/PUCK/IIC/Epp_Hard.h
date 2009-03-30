@@ -1,0 +1,4 @@
+
+
+INT8U  Write_Hard_EEPROM(INT8U SlvAdr,INT16U SubAddr,INT16U size,INT8U Type,INT8U *Src);
+INT8U  Read_Hard_EEPROM( INT8U SlvAdr,INT16U SubAddr,INT8U Type,INT16U size,INT8U *Dst);

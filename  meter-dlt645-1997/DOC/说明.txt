@@ -1,0 +1,53 @@
+ABS：底层抽象层
+APP：应用层
+DOC：重要说明文档
+DRV：硬件驱动层
+UOS：内核层
+
+
+
+
+
+
+
+
+
+080430:
+Pub.c
+pub.h
+增加了对全部变量读写同步的四个宏
+#define Wait_Get_STRUCT_Var(Type,Var)
+#define Wait_Set_STRUCT_Var(Type,Var)
+#define End_Get_STRUCT_Var(Type,Var)
+#define End_Set_STRUCT_Var(Type,Var)
+
+增加了位操作宏
+#define SET_BIT(x,y) do{(x)|=0x01<<(y);}while(0)
+#define CLR_BIT(x,y) do{(x)&=~(0x01<<(y))}
+#define GET_BIT(x,y) ((x)>>(y))&0x01
+
+增加了BCD转换函数
+INT32U Bcd2Hex(INT8U Src[],INT8U SrcLen)
+
+pub_Time.c
+Pub_Time.h
+增加了对时间增加和减少的几个函数
+其他文件增加了变量volatile的修饰
+
+
+080506:
+1增加了函数
+INT8U GetBufSum_Pub(INT8U Src[],INT16U Src_Len)
+2修改了各种校验算法，不采用简单的校验和，而是在校验和的基础上将某些位取反
+3增加了
+#define CHECK_STRUCT_SUM(Var)
+#define SET_STRUCT_SUM(Var)
+两个检查和设置检验和的简化宏
+4 增加了Set_Sum和Check_Sum两个通用设置和检查内存校验和的函数
+
+
+080507
+1 Pub.c中增加了DATA_PACKED_BEGIN和DATA_PACKED_END两个宏的定义
+  定义在两个宏之间的结构体都是字节对齐的
+2 Pub_Time.c中增加了ComTime函数，用来定义两个时间的秒差
+3 增加了秒计数器Sec_Timer_Pub;

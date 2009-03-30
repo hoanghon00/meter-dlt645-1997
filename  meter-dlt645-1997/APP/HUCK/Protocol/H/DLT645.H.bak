@@ -1,0 +1,240 @@
+#ifndef DLT645_H
+#define DLT645_H
+
+
+
+//定义源数据存储类型
+#define S_RAM 0x80
+#define S_ROM 8x00
+
+#define S_INTS 0x01//是否有符号INT类型
+#define S_INTU 0x02//是否无符号INT类型
+#define S_BCD  0x03//是否为BCD类型
+
+#define S_LEN8 0x08
+#define S_LEN7 0x07
+#define S_LEN6 0x06
+#define S_LEN5 0x05
+#define S_LEN4 0x04
+#define S_LEN3 0x03
+#define S_LEN2 0x02
+#define S_LEN1 0x01
+
+#define D_START4 0x04
+#define D_START3 0x03
+#define D_START2 0x02
+#define D_START1 0x01
+#define D_START0 0x00
+
+#define D_LEN19 0x04
+#define D_LEN18 0x03
+#define D_LEN17 0x02
+#define D_LEN16 0x01
+#define D_LEN15 0x00
+#define D_LEN14 0x04
+#define D_LEN13 0x03
+#define D_LEN12 0x02
+#define D_LEN11 0x01
+#define D_LEN10 0x00
+#define D_LEN9 0x04
+#define D_LEN8 0x03
+#define D_LEN7 0x02
+#define D_LEN6 0x01
+#define D_LEN5 0x00
+#define D_LEN4 0x04
+#define D_LEN3 0x03
+#define D_LEN2 0x02
+#define D_LEN1 0x01
+#define D_LEN0 0x00
+
+
+#define D_S_SAME 0x80
+
+typedef struct{
+	INT16U Protocol_ID; //645协议的ID
+	INT8U PSW;//修改的密码等级
+	
+	INT8U Storage;      //源存储属性,S_RAM或者S_RAM
+	INT16U Storage_ID;  //如果存储在Rom中，Storage_ID表示存储的编号
+	
+	void* pSrc;         //最终源数据的指针
+	INT16U Src_Off;     //从pSrc中取源数据的偏移
+	
+	INT8U Src_Len;      //源数据长度	
+	INT8U Src_Format;   //源数据的格式
+	
+	INT8U Dst_Start;    //目标数据在源数据的BCD缓冲中取数据的起始位置
+	INT8U Dst_Len;      //目标数据的提取长度
+
+	INT8U Num;          //与此数据类似的数据项个数
+}S_Protocol_Data_Info;
+
+//注意，读取CUR_ENERGY或者HIS_ENERGY为ID的数据后要根据当前的模式字计算当前的组合无功
+//HIS_ENERGY或HIS_DEMAND或HIS_DEMAND_TIME数据都需要特殊处理
+
+#ifdef DLT645_C
+const S_Protocol_Data_Info Protocol_Data[]
+{
+ {0x9010,PSW_1,S_RAM,CUR_ENERGY,&Cur_Energy,S_OFF(S_Energy,Pos_Active[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //当前正向有功总
+ {0x9020,PSW_1,S_RAM,CUR_ENERGY,&Cur_Energy,S_OFF(S_Energy,Neg_Active[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //当前反向有功总
+ {0x9110,PSW_1,S_RAM,CUR_ENERGY,&Cur_Energy,S_OFF(S_Energy,Pos_Reactive[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //当前组合无功1,需特殊处理
+ {0x9120,PSW_1,S_RAM,CUR_ENERGY,&Cur_Energy,S_OFF(S_Energy,Neg_Reactive[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+  //当前组合无功2,需特殊处理
+ {0x9130,PSW_1,S_RAM,CUR_ENERGY,&Cur_Energy,S_OFF(S_Energy,Quad_Reactive[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //当前一象限无功
+ {0x9140,PSW_1,S_RAM,CUR_ENERGY,&Cur_Energy,S_OFF(S_Energy,Quad_Reactive[3]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //当前四象限无功
+ {0x9150,PSW_1,S_RAM,CUR_ENERGY,&Cur_Energy,S_OFF(S_Energy,Quad_Reactive[1]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //当前二象限无功
+ {0x9160,PSW_1,S_RAM,CUR_ENERGY,&Cur_Energy,S_OFF(S_Energy,Quad_Reactive[2]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //当前三象限无功
+ 
+ {0x9410,PSW_1,S_ROM,HIS_ENERGY,0,S_OFF(S_Energy,Pos_Active[0]),S_LENS_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上月正向有功总
+ {0x9420,PSW_1,S_ROM,HIS_ENERGY,0,S_OFF(S_Energy,Neg_Active[0]),S_LENS_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上月发祥有功总	 
+ {0x9510,PSW_1,S_ROM,HIS_ENERGY,0,S_OFF(S_Energy,Neg_Reactive[0]),S_LEN4,S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上月组合无功1,需特殊处理                                      
+ {0x9520,PSW_1,S_ROM,HIS_ENERGY,0,S_OFF(S_Energy,Neg_Reactive[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上月组合无功2,需特殊处理
+ {0x9530,PSW_1,S_ROM,HIS_ENERGY,0,S_OFF(S_Energy,Quad_Reactive[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上月一象限无功
+ {0x9540,PSW_1,S_ROM,HIS_ENERGY,0,S_OFF(S_Energy,Quad_Reactive[3]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上月四象限无功
+ {0x9550,PSW_1,S_ROM,HIS_ENERGY,0,S_OFF(S_Energy,Quad_Reactive[1]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上月二象限无功
+ {0x9560,PSW_1,S_ROM,HIS_ENERGY,0,S_OFF(S_Energy,Quad_Reactive[2]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上月三象限无功
+ 
+ {0x9810,PSW_1,S_ROM,HIS_ENERGY,0,S_OFF(S_Energy,Pos_Active[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上上月正向有功总
+ {0x9820,PSW_1,S_ROM,HIS_ENERGY,0,S_OFF(S_Energy,Neg_Active[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上上月发祥有功总	 
+ {0x9910,PSW_1,S_ROM,HIS_ENERGY,0,S_OFF(S_Energy,Pos_Reactive[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上上月组合无功1,需特殊处理                                    
+ {0x9920,PSW_1,S_ROM,HIS_ENERGY,0,S_OFF(S_Energy,Neg_Reactive[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上上月组合无功2,需特殊处理
+ {0x9930,PSW_1,S_ROM,HIS_ENERGY,0,S_OFF(S_Energy,Quad_Reactive[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上上月一象限无功
+ {0x9940,PSW_1,S_ROM,HIS_ENERGY,0,S_OFF(S_Energy,Quad_Reactive[3]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上上月四象限无功
+ {0x9950,PSW_1,S_ROM,HIS_ENERGY,0,S_OFF(S_Energy,Quad_Reactive[1]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上上月二象限无功
+ {0x9960,PSW_1,S_ROM,HIS_ENERGY,0,S_OFF(S_Energy,Quad_Reactive[2]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上上月三象限无功
+
+
+ {0xA010,PSW_1,S_RAM,CUR_DEMAND,&Cur_Demand,S_OFF(S_Demand,Pos_Active[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //当前正向有功总最大需量
+ {0xA020,PSW_1,S_RAM,CUR_DEMAND,&Cur_Demand,S_OFF(S_Demand,Neg_Active[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //当前反向有功总最大需量
+ {0xA110,PSW_1,S_RAM,CUR_DEMAND,&Cur_Demand,S_OFF(S_Demand,Pos_Reactive[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //当前组合无功1最大需量
+ {0xA120,PSW_1,S_RAM,CUR_DEMAND,&Cur_Demand,S_OFF(S_Demand,Neg_Reactive[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //当前组合无功2最大需量
+ {0xA130,PSW_1,S_RAM,CUR_DEMAND,&Cur_Demand,S_OFF(S_Demand,Quad_Reactive[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //当前一象限无功最大需量
+ {0xA140,PSW_1,S_RAM,CUR_DEMAND,&Cur_Demand,S_OFF(S_Demand,Quad_Reactive[3]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //当前四象限无功最大需量
+ {0xA150,PSW_1,S_RAM,CUR_DEMAND,&Cur_Demand,S_OFF(S_Demand,Quad_Reactive[1]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //当前二象限无功最大需量
+ {0xA160,PSW_1,S_RAM,CUR_DEMAND,&Cur_Demand,S_OFF(S_Demand,Quad_Reactive[2]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //当前三象限无功最大需量
+
+
+ {0xA410,PSW_1,S_RAM,HIS_DEMAND,0,S_OFF(S_Demand,Pos_Active[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上月正向有功总最大需量
+ {0xA420,PSW_1,S_RAM,HIS_DEMAND,0,S_OFF(S_Demand,Neg_Active[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上月反向有功总最大需量
+ {0xA510,PSW_1,S_RAM,HIS_DEMAND,0,S_OFF(S_Demand,Pos_Reactive[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上月组合无功1最大需量
+ {0xA520,PSW_1,S_RAM,HIS_DEMAND,0,S_OFF(S_Demand,Neg_Reactive[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上月组合无功2最大需量
+ {0xA530,PSW_1,S_RAM,HIS_DEMAND,0,S_OFF(S_Demand,Quad_Reactive[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上月一象限无功最大需量
+ {0xA540,PSW_1,S_RAM,HIS_DEMAND,0,S_OFF(S_Demand,Quad_Reactive[3]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上月四象限无功最大需量
+ {0xA550,PSW_1,S_RAM,HIS_DEMAND,0,S_OFF(S_Demand,Quad_Reactive[1]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上月二象限无功最大需量
+ {0xA560,PSW_1,S_RAM,HIS_DEMAND,0,S_OFF(S_Demand,Quad_Reactive[2]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上月三象限无功最大需量
+ 
+ {0xA810,PSW_1,S_RAM,HIS_DEMAND,0,S_OFF(S_Demand,Pos_Active[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上上月正向有功总最大需量
+ {0xA820,PSW_1,S_RAM,HIS_DEMAND,0,S_OFF(S_Demand,Neg_Active[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上上月反向有功总最大需量
+ {0xA910,PSW_1,S_RAM,HIS_DEMAND,0,S_OFF(S_Demand,Pos_Reactive[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上上月组合无功1最大需量
+ {0xA920,PSW_1,S_RAM,HIS_DEMAND,0,S_OFF(S_Demand,Neg_Reactive[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上上月组合无功2最大需量
+ {0xA930,PSW_1,S_RAM,HIS_DEMAND,0,S_OFF(S_Demand,Quad_Reactive[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上上月一象限无功最大需量
+ {0xA940,PSW_1,S_RAM,HIS_DEMAND,0,S_OFF(S_Demand,Quad_Reactive[3]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上上月四象限无功最大需量
+ {0xA950,PSW_1,S_RAM,HIS_DEMAND,0,S_OFF(S_Demand,Quad_Reactive[1]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上上月二象限无功最大需量
+ {0xA960,PSW_1,S_RAM,HIS_DEMAND,0,S_OFF(S_Demand,Quad_Reactive[2]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上上月三象限无功最大需量
+ 
+ 
+
+ {0xB010,PSW_1,S_RAM,CUR_DEMAND_TIME,&Cur_Demand_Time,S_OFF(S_Demand_Time,Pos_Active[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //当前正向有功总最大需量发生时间
+ {0xB020,PSW_1,S_RAM,CUR_DEMAND_TIME,&Cur_Demand_Time,S_OFF(S_Demand_Time,Neg_Active[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //当前反向有功总最大需量发生时间
+ {0xB110,PSW_1,S_RAM,CUR_DEMAND_TIME,&Cur_Demand_Time,S_OFF(S_Demand_Time,Pos_Reactive[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //当前组合无功1最大需量发生时间
+ {0xB120,PSW_1,S_RAM,CUR_DEMAND_TIME,&Cur_Demand_Time,S_OFF(S_Demand_Time,Neg_Reactive[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //当前组合无功2最大需量发生时间
+ {0xB130,PSW_1,S_RAM,CUR_DEMAND_TIME,&Cur_Demand_Time,S_OFF(S_Demand_Time,Quad_Reactive[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //当前一象限无功最大需量发生时间
+ {0xB140,PSW_1,S_RAM,CUR_DEMAND_TIME,&Cur_Demand_Time,S_OFF(S_Demand_Time,Quad_Reactive[3]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //当前四象限无功最大需量发生时间
+ {0xB150,PSW_1,S_RAM,CUR_DEMAND_TIME,&Cur_Demand_Time,S_OFF(S_Demand_Time,Quad_Reactive[1]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //当前二象限无功最大需量发生时间
+ {0xB160,PSW_1,S_RAM,CUR_DEMAND_TIME,&Cur_Demand_Time,S_OFF(S_Demand_Time,Quad_Reactive[2]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //当前三象限无功最大需量发生时间
+
+
+ {0xB410,PSW_1,S_RAM,HIS_DEMAND_TIME,0,S_OFF(S_Demand_Time,Pos_Active[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上月正向有功总最大需量发生时间
+ {0xB420,PSW_1,S_RAM,HIS_DEMAND_TIME,0,S_OFF(S_Demand_Time,Neg_Active[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上月反向有功总最大需量发生时间
+ {0xB510,PSW_1,S_RAM,HIS_DEMAND_TIME,0,S_OFF(S_Demand_Time,Pos_Reactive[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上月组合无功1最大需量发生时间
+ {0xB520,PSW_1,S_RAM,HIS_DEMAND_TIME,0,S_OFF(S_Demand_Time,Neg_Reactive[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上月组合无功2最大需量发生时间
+ {0xB530,PSW_1,S_RAM,HIS_DEMAND_TIME,0,S_OFF(S_Demand_Time,Quad_Reactive[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上月一象限无功最大需量发生时间
+ {0xB540,PSW_1,S_RAM,HIS_DEMAND_TIME,0,S_OFF(S_Demand_Time,Quad_Reactive[3]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上月四象限无功最大需量发生时间
+ {0xB550,PSW_1,S_RAM,HIS_DEMAND_TIME,0,S_OFF(S_Demand_Time,Quad_Reactive[1]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上月二象限无功最大需量发生时间
+ {0xB560,PSW_1,S_RAM,HIS_DEMAND_TIME,0,S_OFF(S_Demand_Time,Quad_Reactive[2]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上月三象限无功最大需量发生时间
+ 
+ {0xB810,PSW_1,S_RAM,HIS_DEMAND_TIME,0,S_OFF(S_Demand_Time,Pos_Active[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上上月正向有功总最大需量发生时间
+ {0xB820,PSW_1,S_RAM,HIS_DEMAND_TIME,0,S_OFF(S_Demand_Time,Neg_Active[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上上月反向有功总最大需量发生时间
+ {0xB910,PSW_1,S_RAM,HIS_DEMAND_TIME,0,S_OFF(S_Demand_Time,Pos_Reactive[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上上月组合无功1最大需量发生时间
+ {0xB920,PSW_1,S_RAM,HIS_DEMAND_TIME,0,S_OFF(S_Demand_Time,Neg_Reactive[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上上月组合无功2最大需量发生时间
+ {0xB930,PSW_1,S_RAM,HIS_DEMAND_TIME,0,S_OFF(S_Demand_Time,Quad_Reactive[0]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上上月一象限无功最大需量发生时间
+ {0xB940,PSW_1,S_RAM,HIS_DEMAND_TIME,0,S_OFF(S_Demand_Time,Quad_Reactive[3]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上上月四象限无功最大需量发生时间
+ {0xB950,PSW_1,S_RAM,HIS_DEMAND_TIME,0,S_OFF(S_Demand_Time,Quad_Reactive[1]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上上月二象限无功最大需量发生时间
+ {0xB960,PSW_1,S_RAM,HIS_DEMAND_TIME,0,S_OFF(S_Demand_Time,Quad_Reactive[2]),S_LEN4,S_INTU,D_START1,D_LEN4,MAX_RATE+1},	
+ //上上月三象限无功最大需量发生时间
+ 
+ {0xC010,}
+}
+#endif
+
+#endif

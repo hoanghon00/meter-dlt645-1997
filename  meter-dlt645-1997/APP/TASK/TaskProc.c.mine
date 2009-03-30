@@ -1,0 +1,250 @@
+#define TASKPRG_CFG_C
+#include "TaskProc.h"
+#include "Includes.h"
+#include "pub.h"
+
+
+/**********************************************************************************
+函数功能：清除内狗和外狗
+入口：    
+出口：    
+**********************************************************************************/
+void Clr_Ext_Inter_Dog(void)
+{    
+  Clear_CPU_Dog();    //清CPU内部看门狗
+  Clear_Ext_Dog();    //清CPU外部看门狗
+}
+/**********************************************************************************
+函数功能：清除所有看门狗
+入口：    
+出口：    
+**********************************************************************************/
+void Clear_All_Dog(void)
+{    
+  Clear_Task_Dog();   //清任务看门狗
+  Clear_CPU_Dog();    //清CPU内部看门狗
+  Clear_Ext_Dog();    //清CPU外部看门狗
+}
+/**********************************************************************************
+函数功能：创建所有子任务
+入口：    
+出口：    
+**********************************************************************************/
+void Creat_AllSub_Tasks(void)
+{ 
+#ifdef TASK_ENERGE_HUCK_EN  
+  OS_Create_Task(&AppEnergeTask_HUCK,&AppEnergTaskStk_huck[TASK_ENERGE_SIZE_HUCK-1],sizeof(AppEnergTaskStk_huck),"AppEnergeTask_HUCK");
+#endif  
+  
+#ifdef TASK_LCD_LUCK_EN  
+  OS_Create_Task(&AppLCDTask_LUCK,&AppLCDTaskStk_LUCK[TASK_LCD_SIZE_LUCK-1],sizeof(AppLCDTaskStk_LUCK),"AppLCDTask_LUCK");
+#endif
+  
+#ifdef TASK_MEASU_PUCK_EN
+  OS_Create_Task(&AppMeasuTask_PUCK,&AppMeasuTaskStk_PUCK[TASK_MEASU_SIZE_PUCK-1],sizeof(AppMeasuTaskStk_PUCK),"AppMeasuTask_PUCK");
+#endif
+  
+  
+#ifdef TASK_CHANNEL_PUCK_EN
+  OS_Create_Task(&AppChannelTask_PUCK,&AppChannelTaskStk_PUCK[TASK_CHANNEL_SIZE_PUCK-1],sizeof(AppChannelTaskStk_PUCK),"AppChannelTask_PUCK");
+ #endif
+  
+  
+#ifdef TASK_EVENT_PUCK_EN 
+  OS_Create_Task(&AppEventTask_PUCK,&AppEventTaskStk_PUCK[TASK_EVENT_STK_SIZE_PUCK-1],sizeof(AppEventTaskStk_PUCK),"AppEventTask_PUCK");
+#endif
+  
+  
+#ifdef TASK_FREEZ_HUCK_EN  
+  OS_Create_Task(&AppFreezeTask_HUCK,&AppFreezTaskStk_HUCK[TASK_FREEZ_SIZE_HUCK-1],sizeof(AppFreezTaskStk_HUCK),"AppFreezeTask_HUCK");
+#endif
+  
+  
+#ifdef TEST_MODE  
+  OS_Create_Task(&AppTestTask_HUCK,&AppTestTaskStk_HUCK[TASK_TEST_SIZE_HUCK-1],sizeof(AppTestTaskStk_HUCK),"AppTestTask_HUCK");
+#endif
+  
+  DEBUG_PRINT(HUCK,DEBUG_0,"All Tasks Created Succeed!");
+}
+
+void Main_Init_Print()
+{
+  Assert_Info.Flag=0;//防止函数重入报错
+  INIT_STRUCT_VAR(Assert_Info);
+  
+  Init_DebugChanel_PUCK(0);//初始化调试串口，不需判定工厂状态
+  Debug_Out_Public_Puck("\r\n---------------SYSTEM START----------------",44);   //上电后强制打印复位信息
+  Debug_Out_Public_Puck("\r\n---------------SYSTEM START----------------",44);   //上电后强制打印复位信息
+  Debug_Out_Public_Puck("\r\n---------------SYSTEM START----------------",44);   //上电后强制打印复位信息
+  Print_Reset_Source(); 
+
+  ASSERT(A_WARNING,0);
+  OS_Assert_Ctrl(0xFF);//前8个任务全部打开断言  
+}
+/**********************************************************************************
+函数功能：主任务
+入口：    
+出口：    
+**********************************************************************************/
+void  Main_Task_PUB(void *p_arg)
+{
+  PROTO_DI DI;
+  
+  Clr_Screen_PUCK();  //上电后，强行清LCD显示
+  PD_DATA_PROC();//掉电存数处理  
+  Main_Init_Print();
+  Test_HardWare_PUCK();
+  
+  Energy_Task_Ram_Init();
+  Init_Measure_Ram();  //初始化相关sram
+  
+  Init_Low_Power_Proc();
+  Check_Boot_On_Flag();//在工厂状态下，检查是否是第一次上电
+  Read_Energy_Data_Para_For_Show();//此处读取电量以便让液晶显示
+  
+
+  Init_Measu_PUCK();  //初始化计量，供液晶数据显示，供事件判定  
+  LCD_Init_PUCK();   //LCD显示初始化，满足速度需要
+    
+  Monitor_Init();
+  Energy_Demand_Task_Init();   //读内卡参数
+  
+  PowerOn_Event_Proc();//上电后对前一次掉电前的事件处理
+  
+#ifdef TEST_MODE
+  Test_Unit();
+#endif
+  
+  Creat_AllSub_Tasks();
+ 
+  for(;;)
+  {
+    Low_Power_Proc();
+    Main_Chk_Data_Avail();
+    Task_Monitor_Proc();
+    //Clear_All_Dog();       //清所有的看门狗
+    Clear_Task_Dog();   //清任务看门狗
+    Clear_CPU_Dog();    //清CPU内部看门狗
+    Get_Para_Modify(&DI);  //读取参数，每个任务都需要从参数修改队列中读取出来
+    OS_TimeDly_Ms(100);   //400ms睡眠
+   }
+}
+/**********************************************************************************
+函数功能：计量任务
+入口：    
+出口：    
+**********************************************************************************/
+#ifdef TASK_MEASU_PUCK_EN
+void  AppMeasuTask_PUCK (void *p_arg)
+{
+       
+    (void)p_arg;
+     //Measu_Main_Puck(1);
+for(;;)	
+  {  
+      Measu_Main_Puck(0);
+      Clear_Task_Dog();   //清任务看门狗
+      OS_TimeDly_Ms(100);//100Ms睡眠
+  }
+}
+#endif
+
+
+/**********************************************************************************
+函数功能：通道维护任务
+入口：    
+出口：    
+**********************************************************************************/
+#ifdef TASK_EVENT_PUCK_EN
+void  AppEventTask_PUCK(void *p_arg)
+{
+
+    (void)p_arg;
+    Event_main_PUCK(1);
+    
+for(;;)	
+  { 
+      Event_main_PUCK(0);      
+      Clear_Task_Dog();   //清任务看门狗
+      OS_TimeDly_Ms(100);//100ms睡眠
+  }
+}
+#endif
+/**********************************************************************************
+函数功能：冻结任务
+入口：    
+出口：    
+**********************************************************************************/
+#ifdef TASK_FREEZ_HUCK_EN
+void  AppFreezeTask_HUCK (void *p_arg)
+{
+       
+    (void)p_arg;
+for(;;)	
+  {  
+      Clear_Task_Dog();   //清任务看门狗
+      OS_TimeDly_Sec(1);//1s睡眠
+  }
+}
+#endif
+
+/**********************************************************************************
+函数功能：电能处理任务:分时/费率,需量处理
+入口：    
+出口：    
+**********************************************************************************/
+#ifdef TASK_ENERGE_HUCK_EN
+void  AppEnergeTask_HUCK (void *p_arg)
+{
+       
+    (void)p_arg;
+    Energy_Demand_Task(1);
+for(;;)	
+  {  
+      Energy_Demand_Task(0);
+      Clear_Task_Dog();   //清任务看门狗
+      OS_TimeDly_Ms(200);//100ms睡眠
+  }
+}
+#endif
+
+/**********************************************************************************
+函数功能：电能处理任务:分时/费率,需量处理
+入口：    
+出口：    
+**********************************************************************************/
+#ifdef TASK_LCD_LUCK_EN
+void  AppLCDTask_LUCK (void *p_arg)
+{
+       
+    (void)p_arg;
+    Init_Event_DIS_PUCK();  //初始化事件，供液晶显示
+    Channel_Main_PUCK(1);
+    //LCD_main_LUCK(1);   
+for(;;)	
+  {
+      Channel_Main_PUCK(0);
+      LCD_main_LUCK(0);
+      Clear_Ext_Dog();    //清CPU外部看门狗
+      Clear_Task_Dog();   //清任务看门狗
+      OS_TimeDly_Ms(10);
+  }
+}
+#endif
+
+#ifdef TEST_MODE
+void  AppTestTask_HUCK (void *p_arg)
+{
+       
+    (void)p_arg;
+    
+    Test_Proc(1);
+
+  for(;;)	
+  {        
+      Test_Proc(0);
+      Clear_Task_Dog();
+      //OS_TimeDly_Min(5);//UPDATETIMEms睡眠
+  }
+}
+#endif

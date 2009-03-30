@@ -1,0 +1,392 @@
+#ifndef DATA_TRANS_H
+#define DATA_TRANS_H
+
+#include "Authority.h"
+
+#undef EXT
+#ifdef DATA_TRANS_C
+#define EXT
+#else
+#define EXT extern
+#endif
+
+#define MAX_SINGLE_DATA_LEN 10 //定义DLT645最大单项数据长度
+
+//调用获取协议数据的函数时入口Data_Flag值
+#define FOR_DISP 0//表示为显示
+#define FOR_COMM 1//表示为通信
+
+//定义设置数据时的返回值
+//#define SET_ERR 0           //设置时发生错误      
+//#define SET_OK  1           //设置成功
+//#define SET_NOT_SPEC_DATA 2 //特殊Set_DLT645_Spec_Data函数返回时表示该数据项不是特殊项
+//#define SET_NO_DATA 3
+//#define SET_AUTH_ERR 4
+
+//定义规约种类
+#define PROTOCOL_DLT645 0 
+
+typedef struct{
+  INT8U Energy_Digs;
+  INT8U Power_Digs;
+  INT8U CS[CS_BYTES];
+}S_Disp_Digs;//定义功率和电能的显示位数
+
+
+//定义源数据存储类型
+#define S_RAM 0x80
+#define S_ROM 0x00
+
+///定义源数据类型,通过645设数据时，可根据一下类型判断,S_BCD类型的数据要求一定是BCD类数据
+//必须进行BCD类型检查
+#define S_INTS 0x01//是否有符号INT类型
+#define S_INTU 0x02//是否无符号INT类型
+#define S_BCD  0x03//是否为BCD类型,这种情况下源数据->目标数据无需进行格式转换
+#define S_BIN  0x04//二进制状态字之类的
+
+//定义源数据长度 
+#define S_LEN8 0x08
+#define S_LEN7 0x07
+#define S_LEN6 0x06
+#define S_LEN5 0x05
+#define S_LEN4 0x04
+#define S_LEN3 0x03
+#define S_LEN2 0x02
+#define S_LEN1 0x01
+
+//定义目标数据在取数时的起始字节
+#define D_START4 0x04
+#define D_START3 0x03
+#define D_START2 0x02
+#define D_START1 0x01
+#define D_START0 0x00
+
+//定义目标数据的长度
+#define D_LEN19 0x04
+#define D_LEN18 0x03
+#define D_LEN17 0x02
+#define D_LEN16 0x01
+#define D_LEN15 0x00
+#define D_LEN14 0x04
+#define D_LEN13 0x03
+#define D_LEN12 0x02
+#define D_LEN11 0x01
+#define D_LEN10 0x00
+#define D_LEN9 0x04
+#define D_LEN8 0x03
+#define D_LEN7 0x02
+#define D_LEN6 0x01
+#define D_LEN5 0x00
+#define D_LEN4 0x04
+#define D_LEN3 0x03
+#define D_LEN2 0x02
+#define D_LEN1 0x01
+#define D_LEN0 0x00
+
+
+#define D_S_SAME 0x80
+
+
+
+typedef struct{
+	INT16U DI;   //645协议的ID,该ID也是存储ID
+	INT8U PSW_Flag;       //修改的密码等级
+	
+	INT8U Storage;        //源存储属性,S_RAM或者S_RAM
+	//INT16U Storage_DI;    //如果存储在Rom中，Storage_DI表示存储的编号
+	
+	volatile void * pSrc; //最终源数据的指针
+	INT16U Src_Off;       //从pSrc中取源数据的偏移
+	
+	INT8U Src_Len;        //源数据长度,当源数据为S_INTU或S_INTS时可根据该长度得知数据具体类型	
+	INT8U Src_Format;     //源数据的格式
+	
+	INT8U Dst_Start;      //目标数据在源数据的BCD缓冲中取数据的起始位置,如果源
+                              //数据是S_INTU数据类型,则目标数据的应该是源数据/Dst_Start后转化为BCD码
+	INT8U Dst_Len;        //目标数据的提取长度
+
+	INT8U Num;            //与此数据类似的数据项个数
+}S_Protocol_Data_Info;
+
+//注意，读取CUR_ENERGY或者HIS_ENERGY为ID的数据后要根据当前的模式字计算当前的组合无功
+//HIS_ENERGY或HIS_DEMAND或HIS_DEMAND_TIME数据都需要特殊处理
+//
+#ifdef DATA_TRANS_C
+const S_Protocol_Data_Info Protocol_Data[]=
+{
+						
+//标识编码	数据格式	数据长度	单位	  读	写	数据项名称
+  {0xB210,PSW_SET_PARA,S_ROM,(void *)0,0,4,S_BCD,0,2,4},      //B210	MMDDhhmm	4	月日时分	*		最近一次编程时间         
+  {0xB211,PSW_SET_PARA,S_ROM,(void *)0,0,4,S_BCD,0,3,4},      //B211	 MMDDhhmm	4	月日时分	*		最近一次最大需量清零时间               
+  {0xB212,PSW_SET_PARA,S_ROM,(void *)0,0,2,S_BCD,0,4,2},      //B212	NNNN	2		*		编程次数                             
+  {0xB213,PSW_SET_PARA,S_ROM,(void *)0,0,2,S_BCD,0,4,2},      //B213	NNNN	2		*		最大需量清零次数                     
+  {0xB214,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,4,3},      //B214	NNNNNN	3	分	*		低功耗电池工作时间               
+  
+  {0xB310,PSW_SET_PARA,S_ROM,(void *)0,0,2,S_BCD,0,2,4},      //总以及A\B\C三相失压次数       
+  {0xB320,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,9},      //总以及A\B\C三相失压失流累计时间              
+  {0xB330,PSW_SET_PARA,S_ROM,(void *)0,0,4,S_BCD,0,4,8},      //最近一次失压起始时刻  
+  {0xB340,PSW_SET_PARA,S_ROM,(void *)0,0,4,S_BCD,0,4,8},      //最近一次失压结束时刻
+             
+   
+//B347		4	月日时分	*		ABC相最近一次失压结束时刻
+  {0xB611,PSW_RD_ONLY,S_RAM,&Measu_InstantData_ToPub_PUCK.Volt.A,0,4,S_INTU,4,2,0},  //B611		2		*		A相电压
+  {0xB612,PSW_RD_ONLY,S_RAM,&Measu_InstantData_ToPub_PUCK.Volt.B,0,4,S_INTU,4,2,0},  //B612		2		*		B相电压
+  {0xB613,PSW_RD_ONLY,S_RAM,&Measu_InstantData_ToPub_PUCK.Volt.C,0,4,S_INTU,4,2,0},  //B613		2		*		C相电压
+//B61F		6		*		电压数据打包
+  {0xB621,PSW_RD_ONLY,S_RAM,&Measu_InstantData_ToPub_PUCK.Curr.A,0,4,S_INTU,2,2,0},//B621	XX.XX	2	A	*		A相电流
+  {0xB622,PSW_RD_ONLY,S_RAM,&Measu_InstantData_ToPub_PUCK.Curr.B,0,4,S_INTU,2,2,0},//B622		2		*		B相电流
+  {0xB623,PSW_RD_ONLY,S_RAM,&Measu_InstantData_ToPub_PUCK.Curr.C,0,4,S_INTU,2,2,0},//B623		2		*		C相电流
+//B62F		6		*		电流数据打包
+  {0xB630,PSW_RD_ONLY,S_RAM,&Measu_InstantData_ToPub_PUCK.AcPower.Sum,0,4,S_INTU,1,3,0},//B630	XX.XXXX	3	kW	*		瞬时有功功率
+  {0xB631,PSW_RD_ONLY,S_RAM,&Measu_InstantData_ToPub_PUCK.AcPower.A,0,4,S_INTU,1,3,0},//B631		3		*		A相有功功率
+  {0xB632,PSW_RD_ONLY,S_RAM,&Measu_InstantData_ToPub_PUCK.AcPower.B,0,4,S_INTU,1,3,0},//B632		3		*		B相有功功率
+  {0xB633,PSW_RD_ONLY,S_RAM,&Measu_InstantData_ToPub_PUCK.AcPower.C,0,4,S_INTU,1,3,0},//B633		3		*		C相有功功率
+//B63F		12		*		有功功率数据打包
+  {0xB640,PSW_RD_ONLY,S_RAM,&Measu_InstantData_ToPub_PUCK.ReacPower.Sum,0,4,S_INTU,3,2,0},//B640	XX.XX	2	kvar	*		瞬时无功功率
+  {0xB641,PSW_RD_ONLY,S_RAM,&Measu_InstantData_ToPub_PUCK.ReacPower.A,0,4,S_INTU,3,2,0},//B641		2		*		A相无功功率
+  {0xB642,PSW_RD_ONLY,S_RAM,&Measu_InstantData_ToPub_PUCK.ReacPower.B,0,4,S_INTU,3,2,0},//B642		2		*		B相无功功率
+  {0xB643,PSW_RD_ONLY,S_RAM,&Measu_InstantData_ToPub_PUCK.ReacPower.C,0,4,S_INTU,3,2,0},//B643		2		*		C相无功功率
+//B64F		8		*		无功功率数据打包
+  {0xB650,PSW_RD_ONLY,S_RAM,&Measu_InstantData_ToPub_PUCK.PFactor.Sum,0,4,S_INTU,3,2,0},//B650		2		*		总功率因数
+  {0xB651,PSW_RD_ONLY,S_RAM,&Measu_InstantData_ToPub_PUCK.PFactor.A,0,4,S_INTU,3,2,0},  //B651		2		*		A相功率因数
+  {0xB652,PSW_RD_ONLY,S_RAM,&Measu_InstantData_ToPub_PUCK.PFactor.B,0,4,S_INTU,3,2,0},  //B652	X.XXX	2		*		B相功率因数
+  {0xB653,PSW_RD_ONLY,S_RAM,&Measu_InstantData_ToPub_PUCK.PFactor.C,0,4,S_INTU,3,2,0},  //B653		2		*		C相功率因数
+//B65F		8		*		功率因数数据打包
+//B660	XX.XX	2	Hz	*		频率
+  {0xB670,PSW_RD_ONLY,S_RAM,&Measu_InstantData_ToPub_PUCK.Angle.Sum,0,4,S_INTU,1,2,0},//B670	XXX.X	2	度	*		相角
+  {0xB671,PSW_RD_ONLY,S_RAM,&Measu_InstantData_ToPub_PUCK.Angle.A,0,4,S_INTU,1,2,0},  //B671		2		*		A相相角
+  {0xB672,PSW_RD_ONLY,S_RAM,&Measu_InstantData_ToPub_PUCK.Angle.B,0,4,S_INTU,1,2,0},  //B672		2		*		B相相角
+  {0xB673,PSW_RD_ONLY,S_RAM,&Measu_InstantData_ToPub_PUCK.Angle.C,0,4,S_INTU,1,2,0},  //B673		2		*		C相相角
+//B67F		8		*		相角数据打包
+//B680		3		*		总视在功率
+//B681		3		*		A相视在功率
+//B682	XX.XXXX	3	kVA	*		B相视在功率
+//B683		3		*		C相视在功率
+//B68F		12		*		视在功率数据打包
+//B6FF		62		*		瞬时量数据打大包   
+//						上述（2~9）所有量（除小包外）的集合
+//	
+//	
+  {0xC010,PSW_SET_DATE,S_RAM,&Cur_Time1.Week,0,4,S_BCD,0,4,0},//C010	YYMMDDWW	4	年月日周	*	*	日期及周次                                                                                                                                                                                            
+  {0xC011,PSW_SET_DATE,S_RAM,&Cur_Time1.Sec,0,3,S_BCD,0,3,0}, //C011	hhmmss	3	时分秒	*	*	时间                                                                                       
+  //0xc020                                                      //C020	状态字	1		*		电表运行状态字                                                                                   
+  //0xc021                                                      //C021		1		*		电网状态字                                                                                             
+  //0xc022                                                      //C022		1		*	*	周休日状态字                                                                                           
+  //0xc025                                                      //C025		1		*	*	负荷曲线记录模式字              
+  //0xc026                                                      //C026		1		*	*	电表运行状态字2                 
+  //0xc027                                                      //C027		1		*	*	电表运行状态字3                 
+  //0xc028                                                      //C028		1		*	*	电表运行状态字4                 
+  {0xC111,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},      //C111	NN	1	分	*	*	最大需量周期                  
+  {0xC112,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},      //C112	NN	1	分	*	*	滑差时间                      
+  {0xC113,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},      //C113	NN	1	秒	*	*	循显时间                      
+  {0xC114,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},      //C114	NN	1		*	*	循显项目数                      
+  {0xC115,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},      //C115	NN	1		*	*	显示电能小数位数                
+  {0xC116,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},      //C116	NN	1		*	*	显示功率（最大需量）小数位数    
+  {0xC117,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},      //C117	DDhh	2	月日	*	*	自动抄表日期              
+                                                                       
+  {0xC030,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,0},      //C030	NNNNNN	3	imp/kWh	*	*	有功脉冲常数          
+  {0xC031,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,0},      //C031	NNNNNN	3	imp/kvarh	*	*	无功脉冲常数        HK_PARA_NUM];
+  {0xC032,PSW_SET_PARA,S_ROM,(void *)0,0,6,S_BCD,0,6,0},      //C032	NNNNNNNNNNNN	6		*	*	表号                  
+  {0xC033,PSW_SET_PARA,S_ROM,(void *)0,0,6,S_BCD,0,6,0},      //C033	NNNNNNNNNNNN 	6		*	*	用户号                
+  {0xC034,PSW_SET_PARA,S_ROM,(void *)0,0,6,S_BCD,0,6,0},      //C034	NNNNNNNNNNNN	6		*	*	设备码                
+//C040		1		*		电表运行状态字1        (见附录B1)                                                              
+//C041		1		*		电表运行状态字2        (见附录B2)                                                              E
+//C042		1		*		电表运行状态字3        (见附录B3)                                                              E
+//C043		1		*		电表运行状态字4        (见附录B4)                                                              E
+//C044		1		*		电网状态字             （见附录B5）                                                            E
+//C045		1		*		错误状态字             （见附录B6）                                                            
+//C046		1		*		波特率状态字           （见附录B7）                                                            #endif
+  {0xC047,PSW_JUMP_STATUS,S_ROM,(void *)0,0,1,S_BCD,0,1,0},      //C047		1		*	*	模式字1(安全)          （见附录B11）                                                           
+  {0xC048,PSW_JUMP_STATUS,S_ROM,(void *)0,0,1,S_BCD,0,1,0},      //C048		1		*	*	模式字2(功能)          （见附录B12）                                                           
+  {0xC049,PSW_JUMP_STATUS,S_ROM,(void *)0,0,1,S_BCD,0,1,0},      //C049		1		*	*	模式字3(功能)          （见附录B13）                                                           
+  {0xC04A,PSW_SET_MODE45,S_ROM,(void *)0,0,1,S_BCD,0,1,0},       //C04A		1		*	*	模式字4(用户)          （见附录B14）                                                           
+  {0xC04B,PSW_SET_MODE45,S_ROM,(void *)0,0,1,S_BCD,0,1,0},       //C04B		1		*	*	模式字5(用户)          （见附录B15）                                                           
+  {0xC04C,PSW_SET_MODE678,S_ROM,(void *)0,0,1,S_BCD,0,1,0},      //C04C		1		*	*	模式字6(无功组合1)    （见附录B16）                                                            
+  {0xC04D,PSW_SET_MODE678,S_ROM,(void *)0,0,1,S_BCD,0,1,0},      //C04D		1		*	*	模式字7(无功组合2)    （见附录B16）                                                            
+  {0xC04E,PSW_SET_MODE678,S_ROM,(void *)0,0,1,S_BCD,0,1,0},      //C04E		1		*	*	模式字8(负荷曲线)      （见附录B17）                                                           
+  
+  {0xC121,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},         //C121	XX	1	分	*	*	最大需量周期                                                                               
+  {0xC122,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},         //C122	…	1	分	*	*	滑差时间                                                                                   
+  {0xC123,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},         //C123	…	1	秒	*	*	循显时间                                                                                   
+  {0xC124,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},         //C124	XX	1		*	*	A屏显示项目数                                                                                
+  {0xC125,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},         //C125	NN	1		*	*	电能[协议和显示]小数位[范围 ：2或3]                                                          
+  {0xC126,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},         //C126	NN	1		*	*	功率&需量[显示]小数位                                                                        
+//						[显示小数位为2或3或4；协议固定为4]                                                                 
+  {0xC127,PSW_SET_PARA,S_ROM,(void *)0,0,2,S_BCD,0,2,0},         //C127	DDhh	2	日时	*	*	自动抄表日期                                                                           
+  {0xC128,PSW_SET_PARA,S_ROM,(void *)0,0,2,S_BCD,0,2,0},         //C128	NNNN	2		*	*	B屏显示项目数                                                                              
+  {0xC129,PSW_SET_PARA,S_ROM,(void *)0,0,2,S_BCD,0,2,0},         //C129	NNNN	2		*		电表自检状态信息字（附录19）                                                               
+  
+  {0xC211,PSW_SET_PARA,S_ROM,(void *)0,0,2,S_BCD,0,2,0},         //C211	NNNN	2	毫秒	*	 	输出脉冲宽度                                                                           
+  {0xC213,PSW_SET_PARA,S_ROM,(void *)0,0,12,S_BCD,0,12,0},       //C213	4组 XXXX.XX	12	V	*	*	电压合格率参数（注1）                                                              
+  {0xC214,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},         //C214	NN	1		*	*	用户级别，1或2或3（注2）                                                                     
+  {0xC215,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},         //C215	NN	1	分	*	*	跳闸延时                                                                                   
+  {0xC216,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},         //C216	NN	1	分	*	*	合闸延时                                                                                   
+  {0xC217,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},         //C217	XX	1				密码闭锁错误次数                                                                             
+  
+  {0xC310,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},         //C310	NN	1		*	*	第1套年时区数P≤12                                                                           
+  {0xC311,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},         //C311		1		*	*	第1套日时段表数q≤8                                                                            
+  {0xC312,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},         //C312	…	1		*	*	第1套日时段数m≤14                                                                           
+  {0xC313,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},         //C313		1		*	*	第1套费率数k≤8                                                                                
+  {0xC314,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},         //C314		1		*	*	第1套公共假日数≤90                                                                            
+  {0xC315,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},         //C315		1		*	*	第1套周休日采用的时段表号                                                                      
+  {0xC316,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},         //C316		1		*	*	第1套周休日状态字（见附录B8）                                                                  
+  
+  {0xC321,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,MAX_YEAR_PERIODS},         //C321	MMDDNN	3	月日时段表	*	*	第1时区               （第1套）                                                  
+  {0xC331,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,MAX_DATE_PERIODS},        //C331	hhmmNN	3	时分费率	*	*	第1时段表第1时段      （第1套）                                                  
+  {0xC341,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,MAX_DATE_PERIODS},        //C341	hhmmNN	3	时分费率	*	*	第2时段表第1时段      （第1套）                                                  
+  {0xC351,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,MAX_DATE_PERIODS},        //C351	hhmmNN	3	时分费率	*	*	第3时段表第1时段      （第1套）                                                  
+  {0xC361,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,MAX_DATE_PERIODS},        //C361	hhmmNN	3	时分费率	*	*	第4时段表第1时段      （第1套）                                                  
+  {0xC371,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,MAX_DATE_PERIODS},        //C37F	hhmmNN	3*14	时分费率	*	*	第5时段表块           （第1套）                                              
+  {0xC381,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,MAX_DATE_PERIODS},        //C38F						第6时段表块                                                                                    
+  {0xC391,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,MAX_DATE_PERIODS},        //C39F	…					第7时段表块                                                                                  
+  {0xC3A1,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,MAX_DATE_PERIODS},        //C3AF						第8时段表块                                                                                    
+  {0xC3B1,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,MAX_DATE_PERIODS},        //C3BF	
+  {0xC3C1,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,MAX_DATE_PERIODS},        //C3CF	
+  {0xC3D1,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,MAX_DATE_PERIODS},        //C3DF	
+  {0xC3E1,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,MAX_DATE_PERIODS},        //C3EF	
+         
+  {0xC411,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,13},         //C411	MMDDNN	3		*	*	第1套第1个公共假日                                                                       
+  {0xC41E,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},         //C411	MMDDNN	3		*	*	第1套第1个公共假日                                                                       
+  {0xC421,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,14},                                                                         
+  {0xC431,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,14},                                                                            
+  {0xC441,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,14},                                                                           
+  {0xC451,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,14},                                                                           
+  {0xC461,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,14},                                                                             
+  
+  {0xC510,PSW_SET_PARA,S_ROM,(void *)0,0,4,S_BCD,0,4,0},         //C510	MMDDhhmm	4	月日时分	*	*	负荷记录起始时间                                                                              
+  {0xC511,PSW_SET_PARA,S_ROM,(void *)0,0,2,S_BCD,0,2,0},         //C511	Mmmm	2	分	*	*	负荷曲线1类数据记录间隔                                                                  
+  {0xC512,PSW_SET_PARA,S_ROM,(void *)0,0,2,S_BCD,0,2,0},         //C512	…	…	分	*	*	负荷曲线2类数据记录间隔                                                                  
+  {0xC513,PSW_SET_PARA,S_ROM,(void *)0,0,2,S_BCD,0,2,0},         //C513	…	…	分	*	*	负荷曲线3类数据记录间隔                                                                                                                                        
+  {0xC514,PSW_SET_PARA,S_ROM,(void *)0,0,2,S_BCD,0,2,0},         //C514	…	…	分	*	*	负荷曲线4类数据记录间隔                                                                                                                                             
+  {0xC515,PSW_SET_PARA,S_ROM,(void *)0,0,2,S_BCD,0,2,0},         //C515	…	…	分	*	*	负荷曲线5类数据记录间隔                                                                                                                                    
+  {0xC516,PSW_SET_PARA,S_ROM,(void *)0,0,2,S_BCD,0,2,0},         //C516	…	…	分	*	*	负荷曲线6类数据记录间隔                                                                                                                                          
+  
+  {0xC51A,PSW_SET_PARA,S_ROM,(void *)0,0,2,S_BCD,0,2,0},         //C51A	NNNN	2	分	*	*	编程有效时间                                                                                                                                                        
+  {0xC51B,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},         //C51B	NN	1	秒	*	*	失压判断时间                                                                                                                                                 
+  {0xC51C,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},         //C51C	NN	1	秒	*	*	失流判断时间                                                                                 
+  {0xC51D,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},         //C51D	NN	1	秒	*	*	断相判断时间                                                                                                                                            
+                                                                             
+  {0xC610,PSW_SET_PARA,S_ROM,(void *)0,0,9,S_BCD,0,9,15},        //C610	 NNNNNNNN,NNNNNNNN,NN	9		*	*	第01项显示项目      （A屏）                                                
+  {0xC620,PSW_SET_PARA,S_ROM,(void *)0,0,9,S_BCD,0,9,15},
+  {0xC630,PSW_SET_PARA,S_ROM,(void *)0,0,9,S_BCD,0,9,15},
+  {0xC640,PSW_SET_PARA,S_ROM,(void *)0,0,9,S_BCD,0,9,15},
+  
+  {0xC650,PSW_SET_PARA,S_ROM,(void *)0,0,9,S_BCD,0,9,15},        //C650	 NNNNNNNN,NNNNNNNN,NN	9		*	*	第01项显示项目      （B屏）                                                                            
+  {0xC660,PSW_SET_PARA,S_ROM,(void *)0,0,9,S_BCD,0,9,15},                                               
+  {0xC670,PSW_SET_PARA,S_ROM,(void *)0,0,9,S_BCD,0,9,15},                                               
+  {0xC680,PSW_SET_PARA,S_ROM,(void *)0,0,9,S_BCD,0,9,15},                                               
+  {0xC690,PSW_SET_PARA,S_ROM,(void *)0,0,9,S_BCD,0,9,15},                                               
+  {0xC6A0,PSW_SET_PARA,S_ROM,(void *)0,0,9,S_BCD,0,9,15},                                               
+  {0xC6B0,PSW_SET_PARA,S_ROM,(void *)0,0,9,S_BCD,0,9,15},                                               
+  {0xC6C0,PSW_SET_PARA,S_ROM,(void *)0,0,9,S_BCD,0,9,15},
+  {0xC6D0,PSW_SET_PARA,S_ROM,(void *)0,0,9,S_BCD,0,9,15},
+  {0xC6E0,PSW_SET_PARA,S_ROM,(void *)0,0,9,S_BCD,0,9,15},
+
+  {0xC712,PSW_SET_PARA,S_ROM,(void *)0,0,45,S_BCD,0,45,0},       //通讯规约版本号(参见企标QG/OKRW013－2005,  QG/OKRW004.7-2004) 
+  {0xC713,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},         //读电表是否处于工厂状态，写退出工厂状态
+
+  {0xC910,PSW_SET_PARA,S_ROM,(void *)0,0,4,S_BCD,0,4,MAX_RATES+1},   //C91F	块中每个数据格式为：	4*9	kWh	*	*	正有功初始电量块  （总和8个分费率）                                                                             
+  {0xC920,PSW_SET_PARA,S_ROM,(void *)0,0,4,S_BCD,0,4,MAX_RATES+1},   //C92F	XXXXXX.XX或XXXXX.XXX			*	*	反有功初始电量块                                                           
+  {0xC930,PSW_SET_PARA,S_ROM,(void *)0,0,4,S_BCD,0,4,MAX_RATES+1},   //C93F		…		*	*	1象限无功初始电量块                                                                          
+  {0xC940,PSW_SET_PARA,S_ROM,(void *)0,0,4,S_BCD,0,4,MAX_RATES+1},   //C94F				*	*	2象限无功初始电量块                                                                            
+  {0xC950,PSW_SET_PARA,S_ROM,(void *)0,0,4,S_BCD,0,4,MAX_RATES+1},   //C95F		…		*	*	3象限无功初始电量块                                                                          
+  {0xC960,PSW_SET_PARA,S_ROM,(void *)0,0,4,S_BCD,0,4,MAX_RATES+1},   //C96F				*	*	"4象限无功初始电量块(沈阳、辽阳MB3无初始电量设置；                                             
+
+  {0xCA10,PSW_SET_PARA,S_ROM,(void *)0,0,4,S_BCD,0,4,0},         //CA10	NN, XX.XXXX	4	%,A	*	*	失压判定阈值（注4）                                             
+  {0xCA11,PSW_SET_PARA,S_ROM,(void *)0,0,4,S_BCD,0,4,0},         //CA11	NN, XX.XXXX	4	%,A	*	*	失流判定阈值（注5）                                                                
+  {0xCA12,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},         //CA12	NN	1		*	*	三合一信号输出控制字(见附录18)                                                               
+  {0xCA13,PSW_SET_PARA,S_ROM,(void *)0,0,5,S_BCD,0,5,0},         //CA13	YYMMDDhhmm	5	年月日时分	*	*	主副费率切换时刻                                                           
+  {0xCA14,PSW_SET_PARA,S_ROM,(void *)0,0,2,S_BCD,0,2,0},         //CA14	NN,NN	2		*		当前套费率,执行费率(见附录B9)                                                              
+  {0xCA15,PSW_SET_PARA,S_ROM,(void *)0,0,6,S_BCD,0,6,0},         //CA15	NN, … ,NN	6		*	*	用户权限控制字（见附录B10）                                                          
+  {0xCA16,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,0},         //CA16	XX.XXXX	3	kW	*	*	有功需量限额                                                                           
+  {0xCA17,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,0},         //CA17	XX.XXXX	3	kVA	*	*	视在功率限额（保留，暂时没用）                                                         
+  {0xCA18,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},         //CA18	NN	1		*	*	打包费率数（保留，暂时没用）                                                                 
+  {0xCA1A,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},         //CA1A	NN	1		*	*	模式字9（b0－1：秒脉冲、需量周期合时段切换3合1输出；b0－0秒脉冲、需量周期合时段切换单独输出）
+  //{0xCA1B,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},         //CA1B	NN	1		*		内卡状态1－有故障，0－正常（b0－内卡1，b1－内卡2，b2－－内卡3，b3－－内卡4）                 
+
+  {0xCB10,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},         //CB10	NN	1		*	*	第2套年时区数P≤12                                                                           
+  {0xCB11,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},         //CB11		1		*	*	第2套日时段表数q≤8                                                                            
+  {0xCB12,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},         //CB12	…	1		*	*	第2套日时段数m≤14                                                                           
+  {0xCB13,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},         //CB13		1		*	*	第2套费率数k≤8                                                                                
+  {0xCB14,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},         //CB14		1		*	*	第2套公共假日数≤90                                                                            
+  {0xCB15,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},         //CB15		1		*	*	第2套周休日采用的时段表号                                                                      
+  {0xCB16,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},         //CB16		1		*	*	第2套周休日状态字（见附录B8）                                                                  
+  
+  {0xCB21,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,MAX_YEAR_PERIODS},         //CB21	MMDDNN	3	月日时段表	*	*	第1时区               （第2套）                                                
+                                                                
+  {0xCB31,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,MAX_DATE_PERIODS},        //CB31	hhmmNN	3	时分费率	*	*	第1时段表第1时段      （第2套）                                                  
+  {0xCB41,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,MAX_DATE_PERIODS},        //CB41	hhmmNN	3	时分费率	*	*	第2时段表第1时段      （第2套）                                                  
+  {0xCB51,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,MAX_DATE_PERIODS},        //CB51	hhmmNN	3	时分费率	*	*	第3时段表第1时段      （第2套）                                                  
+  {0xCB61,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,MAX_DATE_PERIODS},        //CB61	hhmmNN	3	时分费率	*	*	第4时段表第1时段      （第2套）                                                  
+  {0xCB71,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,MAX_DATE_PERIODS},        //CB7F	hhmmNN	3*14	时分费率	*	*	第5时段表块           （第2套）                                              
+  {0xCB81,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,MAX_DATE_PERIODS},        //CB8F						第6时段表块                                                                                    
+  {0xCB91,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,MAX_DATE_PERIODS},        //CB9F	…					第7时段表块                                                                                  
+  {0xCBA1,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,MAX_DATE_PERIODS},        //CBAF						第8时段表块                                                                                    
+  {0xCBB1,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,MAX_DATE_PERIODS},        //CBBF	
+  {0xCBC1,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,MAX_DATE_PERIODS},        //CBCF	
+  {0xCBD1,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,MAX_DATE_PERIODS},        //CBDF	
+  {0xCBE1,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,MAX_DATE_PERIODS},        //CBEF                                                                 
+
+  {0xCC11,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,13},         //CC11	MMDDNN	3		*	*	第2套第1个公共假日                                                                       
+  {0xCC11,PSW_SET_PARA,S_ROM,(void *)0,0,1,S_BCD,0,1,0},         //CC11	MMDDNN	3		*	*	第2套第1个公共假日                                                                       
+  {0xCC21,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,14},                                                                         
+  {0xCC31,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,14},                                                                            
+  {0xCC41,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,14},                                                                           
+  {0xCC51,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,14},                                                                           
+  {0xCC61,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,14}, 
+					                                                                                                   
+//					
+//标识编码	数据格式	功能	单位	数据长度	数据项名称
+//B220		R	分	36	电压监测总累计数据 （注1）
+//B221		R	分	36	  本月电压监测数据（注1）
+//B222		R	分	36	上1月电压监测数据（注1）
+//B223		R	分	36	上2月电压监测数据（注1）
+//B224		R	分	36	上3月电压监测数据（注1）
+//E501		R	%	3	本月A相电压合格率（注7）
+//E502		R	%	3	本月B相电压合格率（注7）
+//E503		R	%	3	本月C相电压合格率（注7）
+//E511		R	%	3	上1月A相电压合格率（注7）
+//E512		R	%	3	上1月B相电压合格率（注7）
+//E513		R	%	3	上1月C相电压合格率（注7）
+//E521		R	%	3	上2月A相电压合格率（注7）
+//E522		R	%	3	上2月B相电压合格率（注7）
+//E523		R	%	3	上2月C相电压合格率（注7）
+//E531		R	%	3	上3月A相电压合格率（注7）
+//E532		R	%	3	上3月B相电压合格率（注7）
+//E533		R	%	3	上3月C相电压合格率（注7）
+};
+
+//主要是记录一些不参与块抄的扩充数据项
+
+const S_Protocol_Data_Info Protocol_Data_Ext[]=
+{
+  {0xCC61,PSW_SET_PARA,S_ROM,(void *)0,0,3,S_BCD,0,3,14}  
+  
+};
+#endif
+
+#define MAX_ENERGY_DEMAND_LEN (sizeof(S_Energy)>sizeof(S_Demand)?sizeof(S_Energy):sizeof(S_Demand))
+#define PROTOCOL_BUF_LEN ((sizeof(S_Demand_Time)>MAX_ENERGY_DEMAND_LEN?sizeof(S_Demand_Time):MAX_ENERGY_DEMAND_LEN)+50)
+EXT volatile INT8U Pub_Buf[PROTOCOL_BUF_LEN];
+
+#define CHK_PARA_NUM 10
+EXT volatile INT16U Para_Modify_Buf[OS_TASK_NUM][CHK_PARA_NUM];
+
+EXT volatile S_Disp_Digs Disp_Digs;//定义功率和电能的显示位数
+
+EXT void Set_Para_Modify(INT16U DI);
+EXT INT8U Check_Para_Modify(INT16U DI);
+
+EXT INT8U Get_Protocol_Data_PSW_Flag(INT16U DI);
+EXT INT16U Get_HIS_ENERGY_Data(INT16U DI,S_BCD_Time *pCurTime,INT8U *pDst,INT8U *pDst_Start,INT16U DstLen);
+EXT INT16U Get_HIS_DEMAND_Data(INT16U DI,S_BCD_Time *pCurTime,INT8U *pDst,INT8U *pDst_Start,INT16U DstLen);
+EXT INT16U Get_HIS_DEMAND_TIME_Data(INT16U DI,S_BCD_Time *pCurTime,INT8U *pDst,INT8U *pDst_Start,INT16U DstLen);
+
+
+EXT INT16U _Get_DLT645_Single_Data(INT16U DI,void *pPara,INT8U *pDst,INT8U *pDst_Start,INT16U DstLen,INT8U Data_Flag,INT8U *pErr);
+EXT INT16U Get_DLT645_Single_Data(INT16U DI,void *pPara,INT8U *pDst,INT8U *pDst_Start,INT16U DstLen,INT8U Data_Flag,INT8U *pErr);
+EXT INT16U Get_DLT645_Data_Ext(INT16U DI,void *pPara,INT8U *pDst,INT8U *pDst_Start,INT16U DstLen,INT8U Data_Flag,INT8U *pNextFlag,INT8U *pErr);
+EXT INT16U Get_DLT645_Data(INT16U DI,INT8U *pDst,INT8U *pDst_Start,INT16U DstLen,INT8U *pErr);
+
+EXT void Check_Protocol_Data_Storage();
+#endif

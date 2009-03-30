@@ -1,0 +1,226 @@
+///*
+//*****************************************************************************
+//*
+//*  This device driver was created by Applilet2 for 78K0R/Kx3
+//*  32-Bit Single-Chip Microcontrollers
+//*
+//*  Copyright(C) NEC Electronics Corporation 2002 - 2008
+//*  All rights reserved by NEC Electronics Corporation.
+//*
+//*  This program should be used on your own responsibility.
+//*  NEC Electronics Corporation assumes no responsibility for any losses
+//*  incurred by customers or third parties arising from the use of this file.
+//*
+//*  Filename :	 md_lnk78f1166_a0.xcl
+//*  Abstract :	This is the IAR link file.
+//*  APIlib :	Applilet2 for 78K0R/Kx3 V2.30 [18 Oct. 2007]
+//*
+//*  Device :	uPD78F1166_A0
+//*
+//*  Compiler :	IAR_C
+//*
+//*  Creation date:	2008-5-22
+//*  
+//*****************************************************************************
+//*/
+//-------------------------------------------------------------------------
+//      The following segments are defined in this template link file:
+//
+//      INTVEC      -- Interrupt vectors.
+//      CLTVEC      -- Calltable vectors.
+//      RCODE       -- Code used by C/C++ startup and run-time library.
+//      CODE        -- Code used by __non_banked, __interrupt and __callt functions.
+//      XCODE       -- Code used by __far_func functions.
+//      NEAR_CONST_ -- Constants used by __near const.
+//      FAR_CONST   -- Constants used by __far const.
+//      SADDR_x     -- Variables used by __saddr.
+//      NEAR_x      -- Variables used by __near.
+//      FAR_x       -- Variables used by __far.
+//      NEAR_HEAP   -- The heap used by near data model.
+//      FAR_HEAP    -- The heap used by far data model.
+//      SWITCH      -- Switch tables used by near code model.
+//      FSWITCH     -- Switch tables used by near far model.
+//      DIFUNCT     -- Dynamic initialization vector used by C++
+//
+//      Where _x could be one of:
+//
+//      _Z      -- Initialized data (initvalue = 0 or without init value).
+//      _I      -- Initialized data (initvalue != 0).
+//      _ID     -- The inial values of _I.
+//      _N      -- Uninitialized data, used by __no_init.
+//-------------------------------------------------------------------------
+
+//-------------------------------------------------------------------------
+//      Define CPU
+//-------------------------------------------------------------------------
+
+-c78000
+
+//-------------------------------------------------------------------------
+//      Size of the stack.
+//      Remove comment and modify number if used from command line.
+//-------------------------------------------------------------------------
+
+//-D_CSTACK_SIZE=80
+
+//-------------------------------------------------------------------------
+//      Near constant location.
+//      0 -> Mirrored in rom area 0x00000 - 0x0FFFF
+//      1 -> Mirrored in rom area 0x10000 - 0x1FFFF
+//      2 -> Writeable constants
+//      Remove comments and modify number if used from command line.
+//-------------------------------------------------------------------------
+
+//-D_NEAR_CONST_LOCATION=0
+//-D_NEAR_CONST_LOCATION_START=00800
+//-D_NEAR_CONST_LOCATION_END=00FFF
+
+//-------------------------------------------------------------------------
+//      Size of the heaps.
+//      Remove comment and modify number if used from command line.
+//-------------------------------------------------------------------------
+
+//-D_NEAR_HEAP_SIZE=400
+//-D_FAR_HEAP_SIZE=4000
+
+//-------------------------------------------------------------------------
+//      Used by DLIB only
+//      Define the format functions used by printf/scanf.
+//      Default is full formatting.
+//      Remove appropriate comment(s) to get reduced formatting
+//      if used from command line.
+//-------------------------------------------------------------------------
+
+//-e_PrintfTiny=_Printf
+//-e_PrintfSmall=_Printf
+//-e_PrintfLarge=_Printf
+
+//-e_ScanfSmall=_Scanf
+//-e_ScanfLarge=_Scanf
+
+//-------------------------------------------------------------------------
+//      Used by DLIB only
+//      Define if row buffering should be used by terminal output.
+//      Default is no buffering.
+//      Remove comment to get buffered terminal output if used from command line.
+//-------------------------------------------------------------------------
+
+//-e__write_buffered=__write
+
+//-------------------------------------------------------------------------
+//      Used by CLIB only
+//      Define the format functions used by printf/scanf.
+//      Default is full formatting.
+//      Remove appropriate comment(s) to get reduced formatting
+//      if used from command line.
+//-------------------------------------------------------------------------
+
+//-e_small_write=_formatted_write
+//-e_medium_write=_formatted_write
+
+//-e_medium_read=_formatted_read
+
+//-------------------------------------------------------------------------
+//      Allocate the read only segments that are mapped to ROM.
+//-------------------------------------------------------------------------
+//-------------------------------------------------------------------------
+//      Interrupt vector segment.
+//-------------------------------------------------------------------------
+-Z(CODE)INTVEC=00000-0007F
+
+//-------------------------------------------------------------------------
+//      CALLT vector segment.
+//-------------------------------------------------------------------------
+-Z(CODE)CLTVEC=00080-000BD
+
+//-------------------------------------------------------------------------
+//      OPTION BYTES segment.
+//-------------------------------------------------------------------------
+-Z(CODE)OPTBYTE=000C0-000C3
+
+//-------------------------------------------------------------------------
+//      SECURITY_ID segment.
+//-------------------------------------------------------------------------
+-Z(CODE)SECUID=000C4-000CD
+
+//-------------------------------------------------------------------------
+//      Reserved ROM areas for Minicube Firmware: 000CE-000D7
+//                                                3FFA8-3FFFF
+//-------------------------------------------------------------------------
+-Z(CODE)OCNIROM1=000CE-000D7
+-Z(CODE)OCNIROM2=3FFA8-3FFFF
+
+//-------------------------------------------------------------------------
+//      FAR far data segments.
+//      The FAR_I and FAR_ID segments must start at the same offset
+//      in a 64 Kb page.
+//-------------------------------------------------------------------------
+-Z(FARCONST)FAR_ID=0CF00-3FFFF
+-Z(FARDATA)FAR_I=FCF00-FFE1F
+
+//-------------------------------------------------------------------------
+//      Startup, Runtime-library, Near, Interrupt 
+//      and CALLT functions code segment.
+//-------------------------------------------------------------------------
+-Z(CODE)RCODE,CODE=00384-0FFFF
+
+//-------------------------------------------------------------------------
+//      Far functions code segment.
+//-------------------------------------------------------------------------
+-Z(CODE)XCODE=[00384-3FFFF]/10000
+
+//-------------------------------------------------------------------------
+//      Data initializer segments. 
+//-------------------------------------------------------------------------
+-Z(CONST)NEAR_ID=[00384-0FFFF]/10000
+-Z(CONST)SADDR_ID=[00384-0FFFF]/10000
+-Z(CONST)DIFUNCT=[00384-0FFFF]/10000
+
+//-------------------------------------------------------------------------
+//      Constant segments 
+//-------------------------------------------------------------------------
+-Z(CONST)NEAR_CONST=_NEAR_CONST_LOCATION_START-_NEAR_CONST_LOCATION_END
+-P(CONST)FAR_CONST=[00384-3FFFF]/10000
+-Z(CONST)SWITCH=00384-0FFFF
+-Z(CONST)FSWITCH=[00384-3FFFF]/10000
+
+//-------------------------------------------------------------------------
+//      Allocate the read/write segments that are mapped to RAM.
+//-------------------------------------------------------------------------
+//-------------------------------------------------------------------------
+//      Short address data and workseg segments.
+//-------------------------------------------------------------------------
+-Z(DATA)WRKSEG=FFE20-FFEDF
+-Z(DATA)SADDR_I,SADDR_Z,SADDR_N=FFE20-FFEDF
+
+//-------------------------------------------------------------------------
+//      Near data segments.
+//-------------------------------------------------------------------------
+-Z(DATA)NEAR_I,NEAR_Z,NEAR_N=FCF00-FFE1F
+
+//-------------------------------------------------------------------------
+//      Far data segments.
+//-------------------------------------------------------------------------
+-Z(FARDATA)FAR_Z=FCF00-FFE1F
+-P(DATA)FAR_N=[FCF00-FFE1F]/10000
+
+//-------------------------------------------------------------------------
+//      Heap segments.
+//-------------------------------------------------------------------------
+-Z(DATA)NEAR_HEAP+_NEAR_HEAP_SIZE=FCF00-FFE1F
+-Z(DATA)FAR_HEAP+_FAR_HEAP_SIZE=[FCF00-FFE1F]/10000
+
+//-------------------------------------------------------------------------
+//      Stack segment.
+//-------------------------------------------------------------------------
+-Z(DATA)CSTACK+_CSTACK_SIZE=FCF00-FFE1F
+
+//-------------------------------------------------------------------------
+//      Select the output file format if used from command line.
+//      Remove comment to select the file format if used from command line.
+//-------------------------------------------------------------------------
+//-Fdebug
+
+//-------------------------------------------------------------------------
+//      End of File
+//-------------------------------------------------------------------------

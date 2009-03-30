@@ -1,0 +1,18 @@
+#ifndef METER_CFG_H
+#define METER_CFG_H
+
+#ifdef METER_CFG_C
+#define EXT
+#else
+#define EXT extern
+#endif
+
+#define MAX_RATE 8         //最大费率数
+#define HIS_DATA_MONTHS 13 //保存历史数据的月份数
+
+#define MAX_YEAR_PERIOD  10//最大年时区数,年时区表示将一年分为几个时间段
+#define MAX_DATE_TABLE    8//最大日时段表数,日时段表示将一天分成几个时间段
+#define MAX_DATE_PERIOD  14//每个时段表最大时段数
+#define MAX_YEAR_HOLIDAY 90//每个年时区表对应的最多节假日数,应该为15的倍数
+
+#endif

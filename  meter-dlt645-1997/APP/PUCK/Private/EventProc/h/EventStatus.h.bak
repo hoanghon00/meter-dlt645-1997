@@ -1,0 +1,457 @@
+#ifndef EVENTSTATUS_VAR
+#define EVENTSTATUS_VAR
+
+
+#ifndef EVENTSTATUS_C
+#define EVENTSTATUS_C_EXT  extern
+#else
+#define EVENTSTATUS_C_EXT 
+#endif
+
+
+const INT16U Const_End_Time[]=
+{
+  14400,
+  600,
+  0
+};
+#define MAX_END_TIME_NUM (sizeof(Const_End_Time)/sizeof(INT16U))
+
+typedef struct{
+  INT8U  OutEnable:1;         //报警输出使能，宏表示，0---无需输出报警，1---------根据OutMode状态输出报警
+  INT8U  PortMode;            //报警输出方式，是电平还是脉冲
+  
+  INT8U  PortID[3];           //对应报警输出的端子排ID,辅助端子，LED，声音
+  INT16U  PulseWidth;         //脉冲宽度
+  
+  INT8U  ModeBit;             //对应事件对应的报警输出使能的bit偏移
+  const INT8U *ModeEnable;    //报警输出使能
+  
+  INT8U  PortBit[3];          //报警使能的话，对应报警输出的端子排ID的参数偏移,辅助端子，LED，声音  
+  const INT8U *PortEnable;    //报警使能的话，报警类型输出使能参数，bit0---辅助端子报警；bit1----LED和液晶显示报警;bit2------声音报警
+}AlarmOutProperty;           //事件属性结构体
+        
+
+
+typedef struct{
+  INT8U  DoubleFlag:1;      //事件清除属性，0-------不成对事件,由外部访问清除或者定时强制清除;1-------成对出现的事件(事件成对出现,可能会统计该时间段的相关量)
+  INT8U  StartSave:1;       //事件起始存储使能
+  INT8U  EndSave:1;         //事件起始存储使能
+  INT8U  StartUnit:1;       //事件发生计数器，单位：0-----秒；1---------分
+  INT8U  EndUnit:1;         //事件结束计数器，单位：0-----秒；1---------分
+  INT8U  ForbitEnd:1;       //对于成对事件，事件发生后，按照EndCount的值，隔一段时间强行清除。
+  INT8U  EndIndex:1;        //强行结束事件时间索引
+  INT8U  Reserved:1;
+  INT8U StartCount;         //事件发生计数器，单位：秒
+  INT8U EndCount;           //对成事件，0表示事件一旦发生后就马上结束，表示事件结束计数器；对于非成对事件，定时强制清除计数器，单位：秒
+  void (* const GetInstStatus)(void);
+  INT8U const *EventName;
+  AlarmOutProperty AlarmStuc;
+}EventProperty;           //事件和报警属性结构体
+
+
+
+EVENTSTATUS_C_EXT const EventProperty EventPropertyVar[MAX_EVENT_NUM]={
+  {.DoubleFlag=0,.StartSave=0,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=0,.EndCount=0,.GetInstStatus=0,.EventName="NONE",\
+   .AlarmStuc={0}},
+   
+#ifdef ID_EVENT_A_LOSS_VOLT                               //A相失压------------------1
+  {.DoubleFlag=1,.StartSave=1,.EndSave=1,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=&Check_Loss_Volt,.EventName="A Parse Loss Volt",\
+   .AlarmStuc={.OutEnable=1,LEVEL_MODE,{EXT_ID_ALARM,INTER_ID_ALARM_DIS,INTER_ID_ALARM_BEEP},.PulseWidth=1000,.ModeBit=3,(INT8U *)(&(Mode_Word.Mode[4])),{0,1,2},(INT8U *)(&(Mode_Word.Mode[3]))}}, 
+#endif
+
+#ifdef ID_EVENT_B_LOSS_VOLT                               //B相失压------------------2
+  {.DoubleFlag=1,.StartSave=1,.EndSave=1,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=&Check_Loss_Volt,.EventName="B Parse Loss Volt",\
+  .AlarmStuc={.OutEnable=1,LEVEL_MODE,{EXT_ID_ALARM,INTER_ID_ALARM_DIS,INTER_ID_ALARM_BEEP},.PulseWidth=1000,.ModeBit=3,(INT8U *)(&(Mode_Word.Mode[4])),{0,1,2},(INT8U *)(&(Mode_Word.Mode[3]))}}, 
+#endif  
+
+#ifdef ID_EVENT_C_LOSS_VOLT                             //C相失压------------------3
+  {.DoubleFlag=1,.StartSave=1,.EndSave=1,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=&Check_Loss_Volt,.EventName="C Parse Loss Volt",\
+    .AlarmStuc={.OutEnable=1,LEVEL_MODE,{EXT_ID_ALARM,INTER_ID_ALARM_DIS,INTER_ID_ALARM_BEEP},.PulseWidth=1000,.ModeBit=3,(INT8U *)(&(Mode_Word.Mode[4])),{0,1,2},(INT8U *)(&(Mode_Word.Mode[3]))}}, 
+#endif
+#ifdef ID_EVENT_A_LOSS_CURR                                //A相失流--------------4
+  {.DoubleFlag=1,.StartSave=1,.EndSave=1,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=&Check_Loss_Curr,.EventName="A Parse Loss Curr",\
+    .AlarmStuc={.OutEnable=1,LEVEL_MODE,{EXT_ID_ALARM,INTER_ID_ALARM_DIS,INTER_ID_ALARM_BEEP},.PulseWidth=1000,.ModeBit=4,(INT8U *)(&(Mode_Word.Mode[4])),{0,1,2},(INT8U *)(&(Mode_Word.Mode[3]))}}, 
+  #endif  
+  
+#ifdef ID_EVENT_B_LOSS_CURR                               //B相失流--------------5
+  {.DoubleFlag=1,.StartSave=1,.EndSave=1,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=&Check_Loss_Curr,.EventName="B Parse Loss Curr",\
+  .AlarmStuc={.OutEnable=1,LEVEL_MODE,{EXT_ID_ALARM,INTER_ID_ALARM_DIS,INTER_ID_ALARM_BEEP},.PulseWidth=1000,.ModeBit=4,(INT8U *)(&(Mode_Word.Mode[4])),{0,1,2},(INT8U *)(&(Mode_Word.Mode[3]))}}, 
+  #endif
+  
+#ifdef ID_EVENT_C_LOSS_CURR                               //C相失流--------------6
+  {.DoubleFlag=1,.StartSave=1,.EndSave=1,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=&Check_Loss_Curr,.EventName="C Parse Loss Curr",\
+  .AlarmStuc={.OutEnable=1,LEVEL_MODE,{EXT_ID_ALARM,INTER_ID_ALARM_DIS,INTER_ID_ALARM_BEEP},.PulseWidth=1000,.ModeBit=4,(INT8U *)(&(Mode_Word.Mode[4])),{0,1,2},(INT8U *)(&(Mode_Word.Mode[3]))}}, 
+  #endif
+  
+#ifdef ID_EVENT_CUR_NEG_SEQ                               //电流逆相序-----------7
+  {.DoubleFlag=1,.StartSave=1,.EndSave=1,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=&Check_Volt_Curr_Seq,.EventName="Curr Neg Sequence",\
+  .AlarmStuc={.OutEnable=1,LEVEL_MODE,{EXT_ID_ALARM,INTER_ID_ALARM_DIS,INTER_ID_ALARM_BEEP},.PulseWidth=1000,.ModeBit=5,(INT8U *)(&(Mode_Word.Mode[4])),{0,1,2},(INT8U *)(&(Mode_Word.Mode[3]))}},  
+  #endif  
+  
+#ifdef ID_EVENT_VOLT_NEG_SEQ                              //电压逆相序-----------8
+  {.DoubleFlag=1,.StartSave=1,.EndSave=1,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=&Check_Volt_Curr_Seq,.EventName="Volt Neg Sequence",\
+  .AlarmStuc={.OutEnable=1,LEVEL_MODE,{EXT_ID_ALARM,INTER_ID_ALARM_DIS,INTER_ID_ALARM_BEEP},.PulseWidth=1000,.ModeBit=5,(INT8U *)(&(Mode_Word.Mode[4])),{0,1,2},(INT8U *)(&(Mode_Word.Mode[3]))}},  
+  #endif  
+  
+#ifdef ID_EVENT_A_VOLT_MAX
+  {.DoubleFlag=1,.StartSave=1,.EndSave=1,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=0,.EventName="A Parse Volt OverLimted",\
+   .AlarmStuc={0}},    //A相电压超上压--------9----HUCK Will do
+  #endif  
+  
+#ifdef ID_EVENT_B_VOLT_MAX
+  {.DoubleFlag=1,.StartSave=1,.EndSave=1,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=0,.EventName="B Parse Volt OverLimted",\
+   .AlarmStuc={0}},    //B相电压超上压--------10----HUCK Will do
+  #endif  
+  
+#ifdef ID_EVENT_C_VOLT_MAX
+  {.DoubleFlag=1,.StartSave=1,.EndSave=1,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=0,.EventName="C Parse Volt OverLimted",\
+    .AlarmStuc={0}},    //C相电压超上压--------11----HUCK Will do
+  #endif  
+  
+#ifdef ID_EVENT_A_VOLT_MIN
+  {.DoubleFlag=1,.StartSave=1,.EndSave=1,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=0,.EventName="A Parse Volt LowerLimted",\
+   .AlarmStuc={0}},    //A相电压超下压--------12----HUCK Will do
+  #endif  
+  
+#ifdef ID_EVENT_B_VOLT_MIN
+  {.DoubleFlag=1,.StartSave=1,.EndSave=1,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=0,.EventName="B Parse Volt LowerLimted",\
+   .AlarmStuc={0}},    //B相电压超下压-------13----HUCK Will do
+  #endif  
+  
+#ifdef ID_EVENT_C_VOLT_MIN
+  {.DoubleFlag=1,.StartSave=1,.EndSave=1,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=0,.EventName="C Parse Volt LowerLimted",\
+   .AlarmStuc={0}},    //C相电压超下压--------14----HUCK Will do
+  #endif  
+  
+#ifdef ID_EVENT_DEMAND_ALARM
+  {.DoubleFlag=0,.StartSave=1,.EndSave=1,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=0,.EventName="OverLimted Demand Alarm",\
+   .AlarmStuc={0}},    //超需量报警-----------15----HUCK  done
+  #endif  
+  
+#ifdef ID_EVENT_DEMAND_SWITCH
+  {.DoubleFlag=0,.StartSave=1,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=0,.EventName="OverLimted Demand Switch Toggle",\
+   .AlarmStuc={0}},    //超需量跳闸-----------16----HUCK  done
+  #endif
+  
+#ifdef ID_EVENT_POWER_OFF
+  {.DoubleFlag=0,.StartSave=1,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=0,.EventName="Meter Power Off",\
+   .AlarmStuc={0}},       //掉电-----------------17-------需要增加函数----PUCK
+  #endif
+  
+#ifdef ID_EVENT_RESET
+  {.DoubleFlag=1,.StartSave=0,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=0,.EventName="Meter Reset Event",\
+   .AlarmStuc={0}},      //复位-----------------18----需要增加函数----PUCK
+  #endif 
+  
+#ifdef ID_EVENT_CLR_DEMAND_COM
+  {.DoubleFlag=0,.StartSave=1,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=1,.EndCount=0,.GetInstStatus=0,.EventName="Clr Demand With COM",\
+   .AlarmStuc={0}},    //通信清需量-----------19----HUCK Will do
+  #endif  
+#ifdef ID_EVENT_CLR_DEMAND_MAN
+  {.DoubleFlag=0,.StartSave=1,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=1,.EndCount=0,.GetInstStatus=0,.EventName="Clr Demand With Manul",\
+   .AlarmStuc={0}},    //手动清需量-----------20----HUCK Will do
+  #endif  
+  
+#ifdef ID_EVENT_CLR_PROCESS
+  {.DoubleFlag=0,.StartSave=1,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=1,.EndCount=0,.GetInstStatus=0,.EventName="Clr Process",\
+    .AlarmStuc={0}},    //清过程---------------21----HUCK Will do
+  #endif  
+  
+#ifdef ID_EVENT_CLR_VOLT_PASS
+  {.DoubleFlag=0,.StartSave=1,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=1,.EndCount=0,.GetInstStatus=0,.EventName="Clr Volt Rate",\
+   .AlarmStuc={0}},    //清电压合格率---------22----HUCK Will do
+  #endif  
+  
+#ifdef ID_EVENT_SET_ENERG
+  {.DoubleFlag=0,.StartSave=1,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=1,.EndCount=0,.GetInstStatus=0,.EventName="Set Init Energ",\
+   .AlarmStuc={0}},    //设置初始电量---------23----HUCK not do
+  #endif  
+  
+#ifdef ID_EVENT_UP_COVER_OPEN
+  {.DoubleFlag=1,.StartSave=1,.EndSave=1,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=&Check_UpCover,.EventName="Up Cover Opened",\
+   .AlarmStuc={0}},    //开大盖--------24
+  #endif  
+  
+#ifdef ID_EVENT_LEAD_COVER_OPEN
+  {.DoubleFlag=1,.StartSave=1,.EndSave=1,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=&Check_LeadCover,.EventName="Lead Door Opened",\
+   .AlarmStuc={0}},    //开铅封门-------------25  
+  #endif  
+  
+#ifdef ID_EVENT_RTC_BAT_LOW                   //时钟电池欠压---------26
+  {.DoubleFlag=1,.StartSave=1,.EndSave=1,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=&Check_RTCBat_Low,.EventName="RTC Bat Low",\
+  .AlarmStuc={.OutEnable=1,LEVEL_MODE,{EXT_ID_ALARM,INTER_ID_ALARM_DIS,INTER_ID_ALARM_BEEP},.PulseWidth=1000,.ModeBit=0,(INT8U *)(&(Mode_Word.Mode[4])),{0,1,2},(INT8U *)(&(Mode_Word.Mode[3]))}}, 
+  #endif  
+  
+#ifdef ID_EVENT_LOWPWR_BAT_LOW                    //低功耗电池欠压-------27
+  {.DoubleFlag=1,.StartSave=1,.EndSave=1,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=&Check_LPWBat_Low,.EventName="Low_Power Bat Low",\
+  .AlarmStuc={.OutEnable=1,LEVEL_MODE,{EXT_ID_ALARM,INTER_ID_ALARM_DIS,INTER_ID_ALARM_BEEP},.PulseWidth=1000,.ModeBit=0,(INT8U *)(&(Mode_Word.Mode[4])),{0,1,2},(INT8U *)(&(Mode_Word.Mode[3]))}}, 
+  #endif  
+  
+#ifdef ID_EVENT_ADJUST_TIME
+  {.DoubleFlag=0,.StartSave=1,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=0,.EventName="Adjust RTC",\
+   .AlarmStuc={0}},    //校时-----------------28----HUCK Will do
+  #endif  
+  
+#ifdef ID_EVENT_RTCERR_RUN                          //运行时钟乱-----------29----HUCK Will do
+  {.DoubleFlag=0,.StartSave=1,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=0,.EventName="RTC Error During Running",\
+   .AlarmStuc={.OutEnable=1,LEVEL_MODE,{EXT_ID_ALARM,INTER_ID_ALARM_DIS,INTER_ID_ALARM_BEEP},.PulseWidth=1000,.ModeBit=2,(INT8U *)(&(Mode_Word.Mode[4])),{0,1,2},(INT8U *)(&(Mode_Word.Mode[3]))}}, 
+#endif  
+  
+#ifdef ID_EVENT_RTCERR_PWRON                        //上电时钟乱-----------30----HUCK Will do
+  {.DoubleFlag=0,.StartSave=1,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=0,.EventName="RTC Error With Power On",\
+  .AlarmStuc={.OutEnable=1,LEVEL_MODE,{EXT_ID_ALARM,INTER_ID_ALARM_DIS,INTER_ID_ALARM_BEEP},.PulseWidth=1000,.ModeBit=2,(INT8U *)(&(Mode_Word.Mode[4])),{0,1,2},(INT8U *)(&(Mode_Word.Mode[3]))}}, 
+#endif
+
+#ifdef ID_EVENT_EPPROM_FAULT                //EEPROM坏-------------31----HUCK Will do(只是上电时候查)
+  {.DoubleFlag=0,.StartSave=1,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=0,.EventName="Inter Memory Error",\
+   .AlarmStuc={.OutEnable=1,LEVEL_MODE,{EXT_ID_ALARM,INTER_ID_ALARM_DIS,INTER_ID_ALARM_BEEP},.PulseWidth=1000,.ModeBit=1,(INT8U *)(&(Mode_Word.Mode[4])),{0,1,2},(INT8U *)(&(Mode_Word.Mode[3]))}}, 
+#endif 
+
+#ifdef ID_EVENT_ADJUST_MEASU
+  {.DoubleFlag=0,.StartSave=0,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=0,.EventName="Adjust Measure",\
+   .AlarmStuc={0}},          //校表-----------------32----PUCK Will do
+#endif
+
+#ifdef ID_EVENT_MODI_ENERG  
+  {.DoubleFlag=0,.StartSave=1,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=0,.EventName="Remedy Energ Error",\
+   .AlarmStuc={0}},           //电量纠错-------------33----HUCK Will do
+#endif
+
+#ifdef ID_EVENT_A_VOLT_OVERLOAD                     //A相电压过压----------34
+  {.DoubleFlag=1,.StartSave=1,.EndSave=1,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=&Check_Overload_Volt,.EventName="A Parse Overload",\
+  .AlarmStuc={.OutEnable=1,LEVEL_MODE,{EXT_ID_ALARM,INTER_ID_ALARM_DIS,INTER_ID_ALARM_BEEP},.PulseWidth=1000,.ModeBit=3,(INT8U *)(&(Mode_Word.Mode[4])),{0,1,2},(INT8U *)(&(Mode_Word.Mode[3]))}}, 
+#endif
+
+#ifdef ID_EVENT_B_VOLT_OVERLOAD                     //B相电压过压----------35
+  {.DoubleFlag=1,.StartSave=1,.EndSave=1,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=&Check_Overload_Volt,.EventName="B Parse Overload",\
+  .AlarmStuc={.OutEnable=1,LEVEL_MODE,{EXT_ID_ALARM,INTER_ID_ALARM_DIS,INTER_ID_ALARM_BEEP},.PulseWidth=1000,.ModeBit=3,(INT8U *)(&(Mode_Word.Mode[4])),{0,1,2},(INT8U *)(&(Mode_Word.Mode[3]))}}, 
+#endif
+
+#ifdef ID_EVENT_C_VOLT_OVERLOAD                     //C相电压过压----------36
+  {.DoubleFlag=1,.StartSave=1,.EndSave=1,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=&Check_Overload_Volt,.EventName="C Parse Overload",\
+   .AlarmStuc={.OutEnable=1,LEVEL_MODE,{EXT_ID_ALARM,INTER_ID_ALARM_DIS,INTER_ID_ALARM_BEEP},.PulseWidth=1000,.ModeBit=3,(INT8U *)(&(Mode_Word.Mode[4])),{0,1,2},(INT8U *)(&(Mode_Word.Mode[3]))}}, 
+#endif
+
+#ifdef ID_EVENT_ENERG_FREEZ  
+  {.DoubleFlag=0,.StartSave=1,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=1,.EndCount=0,.GetInstStatus=0,.EventName="Energ Freez",\
+   .AlarmStuc={0}},    //电量冻结-------------37----HUCK Will do
+#endif
+
+#ifdef ID_EVENT_POWER_ALARM  
+  {.DoubleFlag=1,.StartSave=1,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=0,.EventName="Overlimted Power Alarm",\
+   .AlarmStuc={0}},    //超功率报警-----------38
+#endif
+
+#ifdef ID_EVENT_POWER_SWITCH  
+  {.DoubleFlag=1,.StartSave=1,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=0,.EventName="Overlimted Power Switch Toggle",\
+   .AlarmStuc={0}},    //超功率跳闸-----------39  
+#endif
+
+#ifdef ID_EVENT_A_LOSS_PARSE                               //A相断相--------------40  
+  {.DoubleFlag=1,.StartSave=1,.EndSave=1,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=&Check_Loss_Parse,.EventName="A Parse Loss Parse",\
+  .AlarmStuc={.OutEnable=1,LEVEL_MODE,{EXT_ID_ALARM,INTER_ID_ALARM_DIS,INTER_ID_ALARM_BEEP},.PulseWidth=1000,.ModeBit=3,(INT8U *)(&(Mode_Word.Mode[4])),{0,1,2},(INT8U *)(&(Mode_Word.Mode[3]))}}, 
+#endif
+
+#ifdef ID_EVENT_B_LOSS_PARSE                                //B相断相--------------41  
+  {.DoubleFlag=1,.StartSave=1,.EndSave=1,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=&Check_Loss_Parse,.EventName="B Parse Loss Parse",\
+  .AlarmStuc={.OutEnable=1,LEVEL_MODE,{EXT_ID_ALARM,INTER_ID_ALARM_DIS,INTER_ID_ALARM_BEEP},.PulseWidth=1000,.ModeBit=3,(INT8U *)(&(Mode_Word.Mode[4])),{0,1,2},(INT8U *)(&(Mode_Word.Mode[3]))}}, 
+#endif
+
+#ifdef ID_EVENT_C_LOSS_PARSE                           //C相断相--------------42  
+  {.DoubleFlag=1,.StartSave=1,.EndSave=1,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=&Check_Loss_Parse,.EventName="C Parse Loss Parse",\
+  .AlarmStuc={.OutEnable=1,LEVEL_MODE,{EXT_ID_ALARM,INTER_ID_ALARM_DIS,INTER_ID_ALARM_BEEP},.PulseWidth=1000,.ModeBit=3,(INT8U *)(&(Mode_Word.Mode[4])),{0,1,2},(INT8U *)(&(Mode_Word.Mode[3]))}}, 
+#endif
+
+#ifdef ID_EVENT_A_NEG_CURR                        //A相电流反向----------43 
+  {.DoubleFlag=1,.StartSave=1,.EndSave=1,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=&Check_Neg_Curr,.EventName="A Curr Neg Direction",\
+  .AlarmStuc={.OutEnable=1,LEVEL_MODE,{EXT_ID_ALARM,INTER_ID_ALARM_DIS,INTER_ID_ALARM_BEEP},.PulseWidth=1000,.ModeBit=6,(INT8U *)(&(Mode_Word.Mode[4])),{0,1,2},(INT8U *)(&(Mode_Word.Mode[3]))}},   
+#endif
+
+#ifdef ID_EVENT_B_NEG_CURR               //B相电流反向----------44  
+  {.DoubleFlag=1,.StartSave=1,.EndSave=1,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=&Check_Neg_Curr,.EventName="B Curr Neg Direction",\
+  .AlarmStuc={.OutEnable=1,LEVEL_MODE,{EXT_ID_ALARM,INTER_ID_ALARM_DIS,INTER_ID_ALARM_BEEP},.PulseWidth=1000,.ModeBit=6,(INT8U *)(&(Mode_Word.Mode[4])),{0,1,2},(INT8U *)(&(Mode_Word.Mode[3]))}},  
+#endif
+
+#ifdef ID_EVENT_C_NEG_CURR                  //C相电流反向----------45 
+  {.DoubleFlag=1,.StartSave=1,.EndSave=1,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=&Check_Neg_Curr,.EventName="C Curr Neg Direction",\
+  .AlarmStuc={.OutEnable=1,LEVEL_MODE,{EXT_ID_ALARM,INTER_ID_ALARM_DIS,INTER_ID_ALARM_BEEP},.PulseWidth=1000,.ModeBit=6,(INT8U *)(&(Mode_Word.Mode[4])),{0,1,2},(INT8U *)(&(Mode_Word.Mode[3]))}},  
+#endif 
+
+#ifdef ID_EVENT_ERR_DATA
+  {.DoubleFlag=1,.StartSave=0,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=0,.EventName="Illegal Data",\
+   .AlarmStuc={0}},    //非法数据-------------46----HUCK Will do 
+#endif 
+
+#ifdef ID_EVENT_ERR_DI  
+  {.DoubleFlag=1,.StartSave=0,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=0,.EventName="Illegal Data Identification",\
+   .AlarmStuc={0}},    //数据标识错-----------47----HUCK Will do
+#endif  
+#ifdef ID_EVENT_ERR_PASSWD
+  {.DoubleFlag=0,.StartSave=1,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=0,.EventName="Password Error",\
+   .AlarmStuc={0}},    //密码错---------------48----HUCK Will do
+#endif  
+
+#ifdef ID_EVENT_YEAR_FLOW
+  {.DoubleFlag=0,.StartSave=1,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=0,.EventName="Time Zone Overflow",\
+   .AlarmStuc={0}},    //年时区数超-----------49----HUCK Will do 
+#endif
+
+#ifdef ID_EVENT_DATE_FLOW  
+  {.DoubleFlag=0,.StartSave=1,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=0,.EventName="Date Zone Overflow",\
+   .AlarmStuc={0}},    //日时段数超---------------50----HUCK Will do
+#endif  
+
+#ifdef ID_EVENT_TRRI_FLOW
+  {.DoubleFlag=0,.StartSave=1,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=0,.EventName="Trri Num Error",\
+   .AlarmStuc={0}},    //费率数超-----------------51----HUCK Will do  
+#endif  
+
+#ifdef ID_EVENT_PRGKEY_ON
+  {.DoubleFlag=1,.StartSave=0,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=1,.EndIndex=0,.Reserved=0,.StartCount=1,.EndCount=1,.GetInstStatus=&Check_Prg_Key,.EventName="Prog Key Pressed",\
+   .AlarmStuc={0}},    //编程键打开-----------52--此按钮需要中断支持
+#endif  
+
+#ifdef ID_EVENT_SWITCH_ON
+  {.DoubleFlag=1,.StartSave=1,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=1,.EndIndex=0,.Reserved=0,.StartCount=2,.EndCount=2,.GetInstStatus=&Check_Key_Switch,.EventName="Switch Key Shutcircuit",\
+   .AlarmStuc={0}},  //跳线短接(工厂模式)-----------53 
+#endif 
+
+#ifdef ID_EVENT_METER_LOCK
+  {.DoubleFlag=1,.StartSave=1,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=2,.EndCount=2,.GetInstStatus=0,.EventName="Prg Meter Event",\
+   .AlarmStuc={0}},     //对电表编程(设置重要参数)时，若密码连续出错次数大于等于5次后--------54
+#endif  
+ 
+#ifdef ID_EVENT_AB_FUNC_KEY
+  {.DoubleFlag=1,.StartSave=0,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=3,.EndCount=1,.GetInstStatus=&Check_AB_Func_Key,.EventName="Func AB Mode Switch Key",\
+   .AlarmStuc={0}},    //功能键识别，AB模式切换按钮--------55
+#endif    
+
+#ifdef ID_DEMAND_PERIOD                                    //需量周期到--------56----HUCK Will do 
+  {.DoubleFlag=1,.StartSave=0,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=1,.EndCount=1,.GetInstStatus=0,.EventName="Demand Period Expired!",\
+   .AlarmStuc={0}},
+#endif    
+
+#ifdef ID_DEMAND_SLIP                                    //需量滑差到--------57----HUCK Will do 
+  {.DoubleFlag=1,.StartSave=0,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=1,.EndCount=1,.GetInstStatus=0,.EventName="Demand Slipe Expired!",\
+   .AlarmStuc={0}},
+#endif  
+  
+#ifdef ID_OVER_LOAD                                    //负荷控制报警--------58-同超需量、超功率（HUCK)
+  {.DoubleFlag=1,.StartSave=0,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=0,.EventName="OverLoad Ctrol Alarm",\
+   .AlarmStuc={0}},
+#endif  
+  
+#ifdef ID_NOT_CHARGE                                   //欠费报警--------59----HUCK Will do 
+  {.DoubleFlag=1,.StartSave=0,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=0,.EventName="Fees Not Enough",\
+   .AlarmStuc={0}},
+#endif
+
+#ifdef ID_PARSE_SWITCH                                 //时段切换--------60----HUCK Will do 
+  {.DoubleFlag=1,.StartSave=0,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=0,.EventName="Time Prase Switch",\
+   .AlarmStuc={0}},
+#endif
+
+#ifdef ID_MEASURE_ERROR                               //计量错误(瞬态字)--------61
+  {.DoubleFlag=1,.StartSave=0,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=0,.EventName="Measure Error Event",\
+   .AlarmStuc={0}},
+#endif
+
+#ifdef ID_METER_ADDR_EN  
+  {.DoubleFlag=1,.StartSave=0,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=&Check_MeterAddr_Key,.EventName="Set Meter Addr Key",\
+   .AlarmStuc={0}},    //设置表地址按钮----------62
+#endif
+
+#ifdef ID_EVENT_ALL_LOSS_VOLT                           //全失压--------63
+  {.DoubleFlag=1,.StartSave=0,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=0,.EventName="A Parse Loss Volt",\
+  .AlarmStuc={0}},
+#endif  
+
+#ifdef ID_EVENT_ALL_LOSS_CURR                                //全失流--------64
+ {.DoubleFlag=1,.StartSave=1,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=&Check_Neg_Curr,.EventName="Loss All Cur",\
+ {1,LEVEL_MODE,{EXT_ID_ALARM,INTER_ID_ALARM_DIS,INTER_ID_ALARM_BEEP},.PulseWidth=1000,.ModeBit=7,(INT8U *)(&(Mode_Word.Mode[4])),{0,1,2},(INT8U *)(&(Mode_Word.Mode[3]))}},   
+#endif  
+
+#ifdef ID_EVENT_AB_LOSS_VOLT                               //AB失压------------------65
+  {.DoubleFlag=1,.StartSave=1,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=&Check_Loss_Volt,.EventName="A_B Parse Loss Volt",\
+  .AlarmStuc={.OutEnable=1,LEVEL_MODE,{EXT_ID_ALARM,INTER_ID_ALARM_DIS,INTER_ID_ALARM_BEEP},.PulseWidth=1000,.ModeBit=3,(INT8U *)(&(Mode_Word.Mode[4])),{0,1,2},(INT8U *)(&(Mode_Word.Mode[3]))}}, 
+#endif
+
+#ifdef ID_EVENT_AC_LOSS_VOLT                               //AC失压------------------66
+  {.DoubleFlag=1,.StartSave=1,.EndSave=1,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=&Check_Loss_Volt,.EventName="A_C Parse Loss Volt",\
+  .AlarmStuc={.OutEnable=1,LEVEL_MODE,{EXT_ID_ALARM,INTER_ID_ALARM_DIS,INTER_ID_ALARM_BEEP},.PulseWidth=1000,.ModeBit=3,(INT8U *)(&(Mode_Word.Mode[4])),{0,1,2},(INT8U *)(&(Mode_Word.Mode[3]))}}, 
+#endif
+
+#ifdef ID_EVENT_BC_LOSS_VOLT                               //BC失压------------------67
+  {.DoubleFlag=1,.StartSave=1,.EndSave=1,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=&Check_Loss_Volt,.EventName="B_C Parse Loss Volt",\
+  .AlarmStuc={.OutEnable=1,LEVEL_MODE,{EXT_ID_ALARM,INTER_ID_ALARM_DIS,INTER_ID_ALARM_BEEP},.PulseWidth=1000,.ModeBit=3,(INT8U *)(&(Mode_Word.Mode[4])),{0,1,2},(INT8U *)(&(Mode_Word.Mode[3]))}}, 
+#endif
+
+#ifdef ID_EVENT_ABC_LOSS_VOLT                               //ABC失压------------------68
+  {.DoubleFlag=1,.StartSave=1,.EndSave=1,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=&Check_Loss_Volt,.EventName="A_B_C Parse Loss Volt",\
+  .AlarmStuc={.OutEnable=1,LEVEL_MODE,{EXT_ID_ALARM,INTER_ID_ALARM_DIS,INTER_ID_ALARM_BEEP},.PulseWidth=1000,.ModeBit=3,(INT8U *)(&(Mode_Word.Mode[4])),{0,1,2},(INT8U *)(&(Mode_Word.Mode[3]))}},
+#endif
+
+#ifdef ID_EVENT_PROG                                      //编程事件：设置参数-----------69
+  {.DoubleFlag=1,.StartSave=0,.EndSave=1,.StartUnit=0,.EndUnit=1,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=1,.EndCount=10,.GetInstStatus=0,.EventName="Prog Data Event",\
+  .AlarmStuc={0}},
+#endif
+
+
+#ifdef ID_EVENT_CLR_ALL_DATA                                   //数据总清-----------70
+  {.DoubleFlag=1,.StartSave=0,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=0,.EventName="All Data Clear Event",\
+  .AlarmStuc={0}},
+#endif
+
+
+#ifdef ID_EVENT_UP_COVER_CLOSE                                   //关大盖--------71(HUCK需求) 
+  {.DoubleFlag=1,.StartSave=1,.EndSave=1,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=&Check_UpCover,.EventName="Up Cover Closed",\
+  .AlarmStuc={0}},
+#endif
+
+#ifdef ID_EVENT_LEAD_COVER_CLOSE
+  {.DoubleFlag=1,.StartSave=1,.EndSave=1,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=&Check_LeadCover,.EventName="Lead Door Closed",\
+   .AlarmStuc={0}},    //关铅封门------------72(HUCK需求)  
+#endif 
+
+#ifdef ID_EVENT_AB_LOSS_CURR                                //AB相失流--------------73
+  {.DoubleFlag=1,.StartSave=1,.EndSave=1,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=&Check_Loss_Curr,.EventName="A_B Parse Loss Curr",\
+  .AlarmStuc={.OutEnable=1,LEVEL_MODE,{EXT_ID_ALARM,INTER_ID_ALARM_DIS,INTER_ID_ALARM_BEEP},.PulseWidth=1000,.ModeBit=4,(INT8U *)(&(Mode_Word.Mode[4])),{0,1,2},(INT8U *)(&(Mode_Word.Mode[3]))}}, 
+#endif  
+  
+#ifdef ID_EVENT_AC_LOSS_CURR                                //AC相失流--------------74
+  {.DoubleFlag=1,.StartSave=1,.EndSave=1,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=&Check_Loss_Curr,.EventName="A_C Parse Loss Curr",\
+  .AlarmStuc={.OutEnable=1,LEVEL_MODE,{EXT_ID_ALARM,INTER_ID_ALARM_DIS,INTER_ID_ALARM_BEEP},.PulseWidth=1000,.ModeBit=4,(INT8U *)(&(Mode_Word.Mode[4])),{0,1,2},(INT8U *)(&(Mode_Word.Mode[3]))}}, 
+#endif  
+  
+#ifdef ID_EVENT_BC_LOSS_CURR                                //BC相失流--------------75
+  {.DoubleFlag=1,.StartSave=1,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=&Check_Loss_Curr,.EventName="B_C Parse Loss Curr",\
+  .AlarmStuc={.OutEnable=1,LEVEL_MODE,{EXT_ID_ALARM,INTER_ID_ALARM_DIS,INTER_ID_ALARM_BEEP},.PulseWidth=1000,.ModeBit=4,(INT8U *)(&(Mode_Word.Mode[4])),{0,1,2},(INT8U *)(&(Mode_Word.Mode[3]))}},
+#endif  
+  
+
+#ifdef ID_EVENT_DOWN_COVER_OPEN                           //开端盖--------76
+  {.DoubleFlag=1,.StartSave=1,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=0,.EventName="Down Cover Opened",\
+  .AlarmStuc={0}},
+#endif
+
+#ifdef ID_EVENT_DOWN_COVER_CLOSE                         //关端盖--------77(HUCK需求)
+  {.DoubleFlag=1,.StartSave=1,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=0,.EventName="Down Cover Closed",\
+  .AlarmStuc={0}},
+#endif
+
+
+#ifdef ID_EVENT_DOOR_OPEN                                  //开计量装置门--------78
+  {.DoubleFlag=1,.StartSave=1,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=0,.EventName="Door Opened",\
+  .AlarmStuc={0}},
+#endif
+
+#ifdef ID_EVENT_DOOR_CLOSE                                //关计量装置门--------79(HUCK需求)
+  {.DoubleFlag=1,.StartSave=1,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.Reserved=0,.StartCount=20,.EndCount=30,.GetInstStatus=0,.EventName="Door Closed",\
+  .AlarmStuc={0}}
+#endif
+};
+
+
+
+#endif

@@ -1,0 +1,292 @@
+#ifndef DATA_PARA_H
+#define DATA_PARA_H
+
+#undef EXT
+#ifdef DATA_PARA_C
+#define EXT
+#else
+#define EXT extern
+#endif
+
+#define ENERGY_SAVE_SIZE S_OFF(S_Energy,CS[0])
+
+//
+#define NULL_2BYTES_OFF 0xFFFF
+#define NULL_4BYTES_OFF 0xFFFFFFFF
+
+#define CUR_ENERGY      0x9FFF
+#define CUR_DEMAND      0xAFFF
+#define CUR_DEMAND_TIME 0xBFFF
+#define HIS_ENERGY      0x6FFF
+#define HIS_DEMAND      0x7FFF
+#define HIS_DEMAND_TIME 0x8FFF
+#define LOAD_DATA       0xD1FF
+
+#define NULL_IMP 0xFF //一个不存在的IMP标志
+#define IMP0 0x00  //重要数据,校表参数和模式字
+#define IMP1 0x01  //当前电量需量数据,参数等
+#define IMP2 0x02  //电量需量数据的历史数据
+#define IMP3 0x03  //事件记录
+#define IMP4 0x04  //需要掉电存储的数据
+#define IMP5 0x05  //负荷曲线
+
+#define HIS_HEAD sizeof(S_BCD_Time) //存储历史电量需量数据时的头长度
+
+#define IMP_LOG_MEM 4
+/*
+#define IMP_ADJ     0x00 //重要数据,校表参数和模式字
+#define IMP_ENERGY   0x01
+#define IMP_HIS      0x02
+#define IMP_EVENT    0x03
+#define IMP_LOAD     0x04
+#define IMP_POWD     0x05
+*/
+
+typedef struct
+{
+  INT8U Imp_Flag;//数据标志
+  INT8U LOG_Mem[IMP_LOG_MEM];//其存储的逻辑存储器，第一个是原始数据，后三个是备份，NULL_MEM表示没有
+}S_Data_Mem_Map;
+
+//#define RD_WR 0//可读可写
+#define WR 1   //只可写
+#define RD 2   //可读
+typedef struct
+{
+  INT8U Imp_Flag;
+  INT32U Offset;
+}S_Data_Para_Info;
+
+typedef struct{
+     INT16U DI; 
+//参数标识,与DLT645兼容，同时可扩充。//校表参数的扩充要参照目前的文档，如校电压：208C
+     INT8U RW_Flag;
+//参数读写标志，宏READ表示可读，宏WRITE 表示可写,READ|WRITE表示可读可写
+     //INT8U PSW_Flag;
+//参数密码等级标志,PSW_N表示在N级密码以上才可修改该参数(N=0,1,2)
+     INT8U Imp_Flag;
+//重要等级标志 宏IMP0表示最重要 IMP1->IMP3重要性依次递减
+  INT16U Len; //数据或参数长度
+//可否考虑加读写错误次数？这样可加强IMP不同的参数的容错能力。
+  INT8U Num;
+  //类似于此项的个数
+}S_Data_Para_Storage_Info;
+
+#ifdef DATA_PARA_C
+//定义各种数据的存储分布
+const S_Data_Mem_Map Data_Mem_Map[]=
+{
+  {IMP0,{LOG_MEM0,LOG_MEM1,LOG_MEM2,LOG_MEM5}},//重要参数
+  {IMP1,{LOG_MEM3,LOG_MEM6,LOG_MEM12,LOG_MEM13}},//当前电量需量和普通参数
+  {IMP2,{LOG_MEM4,LOG_MEM7,LOG_MEM14,NULL_LOG_MEM}},//历史电量需量
+  {IMP3,{LOG_MEM8,LOG_MEM9,LOG_MEM10,NULL_LOG_MEM}},//事件记录
+  {IMP4,{LOG_MEM11,NULL_LOG_MEM,NULL_LOG_MEM,NULL_LOG_MEM}},//掉电存储数据
+  {IMP5,{LOG_MEM15,NULL_LOG_MEM,NULL_LOG_MEM,NULL_LOG_MEM}}//负荷曲线
+};
+
+const S_Data_Para_Storage_Info Data_Para_Storage[]=
+{
+ {CUR_ENERGY,RD|WR,IMP1,sizeof(S_Energy),0},//当前电量
+ {CUR_DEMAND,RD|WR,IMP1,sizeof(S_Demand),0},//当月最大需量
+ {CUR_DEMAND_TIME,RD|WR,IMP1,sizeof(S_Demand_Time),0},//当月最大需量发生时间
+
+ {0xB210,RD|WR,IMP1,4,0},//最近一次编程时间
+ {0xB211,RD|WR,IMP1,4,0},//最近一次最大需量清零时间
+ {0xB212,RD|WR,IMP1,2,0},//编程次数
+ {0xB213,RD|WR,IMP1,2,0},//最大需量清零次数
+ {0xB214,RD|WR,IMP1,3,0},//时钟电池工作时间
+
+ {0xB310,RD|WR,IMP1,2,0},//总失压次数
+ {0xB311,RD|WR,IMP1,2,0},//A相失压次数
+ {0xB312,RD|WR,IMP1,2,0},//B相失压次数
+ {0xB313,RD|WR,IMP1,2,0},//C相失压次数
+
+ {0xB320,RD|WR,IMP1,3,0},//总失压累计时间    
+ {0xB321,RD|WR,IMP1,3,0},//A相失压累计时间
+ {0xB322,RD|WR,IMP1,3,0},//B相失压累计时间
+ {0xB323,RD|WR,IMP1,3,0},//C相失压累计时间
+ {0xB324,RD|WR,IMP1,3,0},//总全失压累计时间间
+ {0xB328,RD|WR,IMP1,3,0},//总失流累计时间                            
+ {0xB329,RD|WR,IMP1,3,0},//A相失流累计时间 
+ {0xB32A,RD|WR,IMP1,3,0},//B相失流累计时间 
+ {0xB32B,RD|WR,IMP1,3,0},//C相失流累计时间 
+
+ {0xB330,RD|WR,IMP1,4,0},//最近一次失压起始时刻     
+ {0xB331,RD|WR,IMP1,4,0},//A相最近一次失压起始时刻  
+ {0xB332,RD|WR,IMP1,4,0},//B相最近一次失压起始时刻  
+ {0xB333,RD|WR,IMP1,4,0},//C相最近一次失压起始时刻  
+ {0xB334,RD|WR,IMP1,4,0},//AB相最近一次失压起始时刻 
+ {0xB335,RD|WR,IMP1,4,0},//AC相最近一次失压起始时刻 
+ {0xB336,RD|WR,IMP1,4,0},//BC相最近一次失压起始时刻 
+ {0xB337,RD|WR,IMP1,4,0},//ABC相最近一次失压起始时刻
+
+ {0xB340,RD|WR,IMP1,4,0},//最近一次失压结束时刻     
+ {0xB341,RD|WR,IMP1,4,0},//A相最近一次失压结束时刻  
+ {0xB342,RD|WR,IMP1,4,0},//B相最近一次失压结束时刻  
+ {0xB343,RD|WR,IMP1,4,0},//C相最近一次失压结束时刻  
+ {0xB344,RD|WR,IMP1,4,0},//AB相最近一次失压结束时刻 
+ {0xB345,RD|WR,IMP1,4,0},//AC相最近一次失压结束时刻 
+ {0xB346,RD|WR,IMP1,4,0},//BC相最近一次失压结束时刻 
+ {0xB347,RD|WR,IMP1,4,0},//ABC相最近一次失压结束时刻
+
+ {0xC023,RD|WR,IMP1,7,0},//计量方式字1
+ {0xC024,RD|WR,IMP1,7,0},//计量方式字2
+
+       
+ {0xC030,RD|WR,IMP1,3,0},//有功常数
+ {0xC031,RD|WR,IMP1,3,0},//无功常数
+ {0xC032,RD|WR,IMP1,6,0},//表号
+ {0xC033,RD|WR,IMP1,6,0},//用户号
+ {0XC034,RD|WR,IMP1,6,0},//设备码
+
+ {0xC047,RD|WR,IMP0,1,0},//模式字1
+ {0xC048,RD|WR,IMP0,1,0},//模式字2
+ {0xC049,RD|WR,IMP0,1,0},//模式字3
+ {0xC04A,RD|WR,IMP0,1,0},//模式字4
+ {0XC04B,RD|WR,IMP0,7,0},//模式字5
+ {0xC04C,RD|WR,IMP0,1,0},//模式字7
+ {0xC04D,RD|WR,IMP0,1,0},//模式字8
+ {0xC04E,RD|WR,IMP0,1,0},//模式字9
+
+ {0xC121,RD|WR,IMP1,1,0},//最大需量周期                                               
+ {0xC122,RD|WR,IMP1,1,0},//滑差时间                                                     
+ {0xC123,RD|WR,IMP1,1,0},//循显时间                                                     
+ {0xC124,RD|WR,IMP1,1,0},//A屏显示项目数                                                
+ {0XC125,RD|WR,IMP1,1,0},//电能[协议和显示]小数位[范围 ：2或3]                          
+ {0xC126,RD|WR,IMP1,1,0},//功率&需量[显示]小数位 [显示小数位为2或3或4；协议固定为4] 
+ {0xC127,RD|WR,IMP1,2,0},//自动抄表日期                                                 
+ {0xC128,RD|WR,IMP1,2,0},//B屏显示项目数                                                
+ {0xC129,RD|WR,IMP1,2,0},//电表自检状态信息字        
+                          
+ {0xC211,RD|WR,IMP1,2,0}, //输出脉冲宽度                                         
+ {0xC213,RD|WR,IMP1,12,0},//电压合格率参数                                         
+ {0xC214,RD|WR,IMP1,1,0}, //用户级别，1或2或3                                      
+ {0xC215,RD|WR,IMP1,1,0}, //跳闸延时                                               
+ {0XC216,RD|WR,IMP1,1,0}, //合闸延时                                               
+         
+ {0xC310,RD|WR,IMP1,1,0}, //第1套年时区数P≤12                                
+ {0xC311,RD|WR,IMP1,1,0}, //第1套日时段表数q≤8                               
+ {0xC312,RD|WR,IMP1,1,0}, //第1套日时段数m≤14                                
+ {0xC313,RD|WR,IMP1,1,0}, //第1套费率数k≤8                                   
+ {0XC314,RD|WR,IMP1,1,0}, //第1套公共假日数≤90          
+ {0xC315,RD|WR,IMP1,1,0}, //第1套周休日采用的时段表号    
+ {0xC316,RD|WR,IMP1,1,0}, //第1套周休日状态字（见附录B8）                    
+ 
+ {0xC320,RD|WR,IMP1,3,MAX_YEAR_PERIODS}, //第1套年时区                                                  
+
+ {0xC330,RD|WR,IMP1,3,MAX_DATE_PERIODS}, //第1套第1时段表                                     
+ {0xC340,RD|WR,IMP1,3,MAX_DATE_PERIODS}, //第1套第2时段表                                    
+ {0xC350,RD|WR,IMP1,3,MAX_DATE_PERIODS}, //第1套第3时段表                                     
+ {0xC360,RD|WR,IMP1,3,MAX_DATE_PERIODS}, //第1套第4时段表
+ {0xC370,RD|WR,IMP1,3,MAX_DATE_PERIODS}, //第1套第5时段表                                                                           
+ {0xC380,RD|WR,IMP1,3,MAX_DATE_PERIODS}, //第1套第6时段表                                     
+ {0xC390,RD|WR,IMP1,3,MAX_DATE_PERIODS}, //第1套第7时段表                                     
+ {0xC3A0,RD|WR,IMP1,3,MAX_DATE_PERIODS}, //第1套第8时段表
+ {0xC3B0,RD|WR,IMP1,3,MAX_DATE_PERIODS}, //第1套第9时段表
+ {0xC3C0,RD|WR,IMP1,3,MAX_DATE_PERIODS}, //第1套第10时段表
+ {0xC3D0,RD|WR,IMP1,3,MAX_DATE_PERIODS}, //第1套第11时段表
+ {0xC3E0,RD|WR,IMP1,3,MAX_DATE_PERIODS}, //第1套第12时段表
+
+ 
+ {0xC410,RD|WR,IMP1,3,15}, //第1套第1-15个公共假日                                
+ {0xC420,RD|WR,IMP1,3,15}, //第1套第16-30个公共假日 
+ {0xC430,RD|WR,IMP1,3,15}, //第1套第31-45个公共假日 
+ {0xC440,RD|WR,IMP1,3,15}, //第1套第46-60个公共假日 
+ {0xC450,RD|WR,IMP1,3,15}, //第1套第61-75个公共假日 
+ {0xC460,RD|WR,IMP1,3,15}, //第1套第76-90个公共假日
+ 
+ {0xC510,RD|WR,IMP1,4,0},//负荷记录起始时间       
+ {0xC511,RD|WR,IMP1,2,0},//负荷曲线1类数据记录间隔
+ {0xC512,RD|WR,IMP1,2,0},//负荷曲线2类数据记录间隔
+ {0xC513,RD|WR,IMP1,2,0},//负荷曲线3类数据记录间隔
+ {0xC514,RD|WR,IMP1,2,0},//负荷曲线4类数据记录间隔
+ {0xC515,RD|WR,IMP1,2,0},//负荷曲线5类数据记录间隔
+ {0xC516,RD|WR,IMP1,2,0},//负荷曲线6类数据记录间隔
+ 
+ {0xC610,RD|WR,IMP1,9,15},//A屏第0-15项显示
+ {0xC620,RD|WR,IMP1,9,15},//A屏第16-30项显示
+ {0xC630,RD|WR,IMP1,9,15},//A屏第31-45项显示
+ {0xC640,RD|WR,IMP1,9,15},//A屏第46-60项显示
+
+ {0xC650,RD|WR,IMP1,9,15},//B屏第0-15项显示
+ {0xC660,RD|WR,IMP1,9,15},//B屏第16-30项显示
+ {0xC670,RD|WR,IMP1,9,15},//B屏第31-45项显示
+ {0xC680,RD|WR,IMP1,9,15},//B屏第46-60项显示
+ {0xC690,RD|WR,IMP1,9,15},//B屏第61-75项显示
+ {0xC6A0,RD|WR,IMP1,9,15},//B屏第76-90项显示
+ {0xC6B0,RD|WR,IMP1,9,15},//B屏第91-105项显示
+ {0xC6C0,RD|WR,IMP1,9,15},//B屏第106-120项显示
+ {0xC6D0,RD|WR,IMP1,9,15},//B屏第121-135项显示
+ {0xC6E0,RD|WR,IMP1,9,15},//B屏第136-150项显示
+
+ {0xC910,RD|WR,IMP1,4,9},//正有功初始电量块  （总和8个分费率）
+ {0xC920,RD|WR,IMP1,4,9},//反有功初始电量块                   
+ {0xC930,RD|WR,IMP1,4,9},//1象限无功初始电量块                
+ {0xC940,RD|WR,IMP1,4,9},//2象限无功初始电量块                
+ {0xC950,RD|WR,IMP1,4,9},//3象限无功初始电量块                
+ {0xC960,RD|WR,IMP1,4,9},//4象限无功初始电量块                
+                                                                                                          
+ {0xCA10,RD|WR,IMP1,4,0},//失压判定阀值                
+ {0xCA11,RD|WR,IMP1,4,0},//失流判定阀值                
+ {0xCA12,RD|WR,IMP1,1,0},//脉冲输出切换  (见附录9)                                                          
+ {0xCA13,RD|WR,IMP1,5,0},//主副费率切换时刻                                                                 
+ {0xCA14,RD|WR,IMP1,2,0},//当前套费率,执行费率(见附录9)                                                     
+ {0xCA15,RD|WR,IMP1,6,0},//用户权限控制字（见附录10）  
+ {0xCA16,RD|WR,IMP1,3,0},//有功功率限额                                                                      
+ {0xCA17,RD|WR,IMP1,3,0},//视在功率限额                 
+ {0xCA18,RD|WR,IMP1,1,0},//打包费率数 
+ 
+ {0xCB10,RD|WR,IMP1,1,0},//第2套年时区数P≤12           
+ {0xCB11,RD|WR,IMP1,1,0},//第2套日时段表数q≤8          
+ {0xCB12,RD|WR,IMP1,1,0},//第2套日时段数m≤14                                                              
+ {0xCB13,RD|WR,IMP1,1,0},//第2套费率数k≤8                                                                 
+ {0xCB14,RD|WR,IMP1,1,0},//第2套公共假日数≤90                                                             
+ {0xCB15,RD|WR,IMP1,1,0},//第2套周休日采用的时段表号    
+ {0xCB16,RD|WR,IMP1,1,0},//第2套周休日状态字（见附录B8）
+ 
+ {0xCB20,RD|WR,IMP1,3,MAX_YEAR_PERIODS}, //第2套年时区                                                    
+
+ {0xCB30,RD|WR,IMP1,3,MAX_DATE_PERIODS}, //第2套第1时段表                                     
+ {0xCB40,RD|WR,IMP1,3,MAX_DATE_PERIODS}, //第2套第2时段表                                    
+ {0xCB50,RD|WR,IMP1,3,MAX_DATE_PERIODS}, //第2套第3时段表                                     
+ {0xCB60,RD|WR,IMP1,3,MAX_DATE_PERIODS}, //第2套第4时段表
+ {0xCB70,RD|WR,IMP1,3,MAX_DATE_PERIODS}, //第2套第5时段表                                                                           
+ {0xCB80,RD|WR,IMP1,3,MAX_DATE_PERIODS}, //第2套第6时段表                                     
+ {0xCB90,RD|WR,IMP1,3,MAX_DATE_PERIODS}, //第2套第7时段表                                     
+ {0xCBA0,RD|WR,IMP1,3,MAX_DATE_PERIODS}, //第2套第8时段表
+ {0xC3B0,RD|WR,IMP1,3,MAX_DATE_PERIODS}, //第2套第9时段表
+ {0xC3C0,RD|WR,IMP1,3,MAX_DATE_PERIODS}, //第2套第10时段表
+ {0xC3D0,RD|WR,IMP1,3,MAX_DATE_PERIODS}, //第2套第11时段表
+ {0xC3E0,RD|WR,IMP1,3,MAX_DATE_PERIODS}, //第2套第12时段表 
+ 
+ {0xCC10,RD|WR,IMP1,3,15}, //第2套第1-15个公共假日                                
+ {0xCC20,RD|WR,IMP1,3,15}, //第2套第16-30个公共假日 
+ {0xCC30,RD|WR,IMP1,3,15}, //第2套第31-45个公共假日 
+ {0xCC40,RD|WR,IMP1,3,15}, //第2套第46-60个公共假日 
+ {0xCC50,RD|WR,IMP1,3,15}, //第2套第61-75个公共假日 
+ {0xCC60,RD|WR,IMP1,3,15}, //第2套第76-90个公共假日 
+ 
+ {HIS_ENERGY,RD|WR,IMP1,(sizeof(S_Energy)+HIS_HEAD+CS_BYTES)*HIS_DATA_MONTHS,0},//上13月电量
+ {HIS_DEMAND,RD|WR,IMP1,(sizeof(S_Demand)+HIS_HEAD+CS_BYTES)*HIS_DATA_MONTHS,0},//上13月最大需量
+ {HIS_DEMAND_TIME,RD|WR,IMP1,(sizeof(S_Demand_Time)+HIS_HEAD+CS_BYTES)*HIS_DATA_MONTHS,0}//上13月最大需量发生时间 
+ 
+ {LOAD_DATA,RD|WR,IMP4,sizeof()*,0}//负荷曲线 
+};
+
+#endif
+
+EXT INT8U Check_SuperPSW_Jump();
+EXT INT8U Check_Imp_Flag(INT8U Imp_Flag);
+EXT INT8U Get_Storage_Data_ImpFlag(INT16U DI);
+EXT INT32U Get_Storage_Data_Off(INT16U DI);
+EXT INT16U Get_Sotrage_Data_Len(INT16U DI);
+EXT INT32U Get_Imp_Data_Size(INT8U Imp_Flag);
+EXT INT32U Get_Imp_Mem_Size(INT8U Imp_Flag);
+EXT INT16U Read_Imp_Data(INT8U Imp_Flag,INT32U Offset,void *pDst,INT32U RD_Len,void *pDst_Start,INT16U DstLen);
+EXT INT8U Write_Imp_Data(INT8U Imp_Flag,INT32U Offset,void *pSrc,INT32U SrcLen);
+EXT INT16U Read_HIS_Data(INT16U DI,S_BCD_Time *pTime,void *pDst,void *pDst_Start,INT16U DstLen);
+EXT INT8U Write_HIS_Data(INT16U DI,S_BCD_Time *pTime,void *pSrc,INT16U SrcLen);
+
+EXT INT16U Read_Storage_Data(INT16U DI,void *pPara,void *pDst,void *pDst_Start,INT16U DstLen);
+EXT INT8U Write_Storage_Data(INT16U DI,void *pPara,void *pSrc,INT16U SrcLen);
+#endif
