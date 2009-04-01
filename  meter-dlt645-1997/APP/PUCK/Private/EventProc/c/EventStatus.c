@@ -1108,7 +1108,7 @@ void Save_Event_Data(void)
   }
   else
     Power_Status.Power=POWER_ON;       //上电事件置位，为判定做准备
-  SET_STRUCT_SUM(Power_Status);    
+  
       
   
   for(i=MIN_ID_EVENT;i<=MAX_ID_EVENT;i++)  //根据上次掉电的瞬态字，强行设置事件的发生
@@ -1123,13 +1123,15 @@ void Save_Event_Data(void)
          {
            Set_Event_End_Status(i);     
            Power_Status.Power=POWER_OFF;    //以内卡的掉电为准
+           
          }
       }
     }
     else
         Clr_Event_Real_Status(i);
-  }  
-
+  }
+  
+  SET_STRUCT_SUM(Power_Status);    
   Event_Judge_Save_Alarm(0,1);    //根据强行设置的瞬态字，模拟一次结束    
   Clr_All_Event_Sram();     //清除报警相关字
   

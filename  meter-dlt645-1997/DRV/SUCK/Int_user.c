@@ -201,7 +201,7 @@ __interrupt void MD_INTP10(void)
            Inter_Up_Key();
 #endif
         
-#if METER_HARD_TYPE==HARD_TYPE_20090224
+#if METER_HARD_TYPE>=HARD_TYPE_20090224
            Inter_Prg_Key();
 #endif
 	/* End user code. Do not edit comment generated here */
@@ -252,7 +252,7 @@ __interrupt void MD_INTKR(void)
        }
 #endif
        
-#if METER_HARD_TYPE==HARD_TYPE_20090224        
+#if METER_HARD_TYPE>=HARD_TYPE_20090224        
        if((key_flag&0x02)==0)//KR1
        {
          Inter_Right_Key();         

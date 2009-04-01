@@ -11,8 +11,15 @@ INT8U  Switch_Main_Osc(INT8U  Mode)
   switch(Mode)
   {
     case RUN_MODE:
-    case FX1_RUN_MODE:
       if(CG_ChangeClockMode(SYSX1CLK)==MD_OK)
+      {/*
+        HIOSTOP=1;      //关闭fih
+        XTSTOP=0;       //开启fxt*/
+        return 1;
+      }
+      break;
+    case FX1_RUN_MODE:
+      if(CG_ChangeClockMode(HIOCLK)==MD_OK)
       {/*
         HIOSTOP=1;      //关闭fih
         XTSTOP=0;       //开启fxt*/
@@ -30,12 +37,14 @@ INT8U  Switch_Main_Osc(INT8U  Mode)
         */
        return 1;        
       }
+      break;
     case FXT_RUN_MODE:
      if(CG_ChangeClockMode(SUBCLK)==MD_OK)
      {
        MSTOP=1;           //关闭fx
        return 1;
      }
+     break;
   }
   return 0;
 }

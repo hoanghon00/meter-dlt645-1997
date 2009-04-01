@@ -10,7 +10,7 @@
   #define DATA_SDA              P0_bit.no3
 #endif
 
-#if METER_HARD_TYPE==HARD_TYPE_20090224
+#if METER_HARD_TYPE>=HARD_TYPE_20090224
   #define DIR_SCLK              PM2_bit.no7
   #define DIR_SDA               PM2_bit.no6
   #define DATA_SCLK             P2_bit.no7

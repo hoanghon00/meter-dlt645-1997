@@ -6,7 +6,7 @@
 
 #include   "includes.h"
 
-#include   "App_Cfg_PUCK.h"
+#include   "App_Cfg_PUCK.h"   //配置宏，需放在最前面
 #include   "Include_PUCK.h"
 #include   "InterrAbs.h"
 #include   "UartAbs.h"
@@ -35,5 +35,6 @@
 #include   "DrvPub.h"
 #include   "Drv_Test.h"
 #include   "Remoter.h"
+#include   "ICcardApp.h"
 
 #endif

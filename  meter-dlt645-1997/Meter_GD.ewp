@@ -332,6 +332,7 @@
           <state>$PROJ_DIR$\APP\HUCK\Storage\H</state>
           <state>$PROJ_DIR$\APP\PUCK\Private\MeasuProc\h</state>
           <state>$PROJ_DIR$\APP\PUCK\Private\Alarm</state>
+          <state>$PROJ_DIR$\APP\PUCK\Private\ICcard</state>
           <state>$PROJ_DIR$\APP\PUCK\Private\EventProc\h</state>
           <state>$PROJ_DIR$\APP\PUCK\Private\Channel\h</state>
           <state>$PROJ_DIR$\APP\PUCK\Private\Remoter</state>
@@ -342,6 +343,7 @@
           <state>$PROJ_DIR$\DRV\PUB\</state>
           <state>$PROJ_DIR$\DRV\SUCK\</state>
           <state>$PROJ_DIR$\DRV\PUCK\LCD</state>
+          <state>$PROJ_DIR$\DRV\PUCK\ICCARD</state>
           <state>$PROJ_DIR$\DRV\PUCK\IIC</state>
           <state>$PROJ_DIR$\DRV\PUCK\LVI</state>
           <state>$PROJ_DIR$\DRV\PUCK\WDT</state>
@@ -2202,6 +2204,12 @@
         </group>
         <group>
           <name>IC_CARD</name>
+          <file>
+            <name>$PROJ_DIR$\APP\PUCK\Private\ICcard\ICcardApp.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\APP\PUCK\Private\ICcard\ICcardApp.h</name>
+          </file>
         </group>
         <group>
           <name>MEASURE</name>
@@ -2300,6 +2308,15 @@
     </group>
     <group>
       <name>PUCK</name>
+      <group>
+        <name>ICcard</name>
+        <file>
+          <name>$PROJ_DIR$\DRV\PUCK\ICCARD\ICcardDrv.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\DRV\PUCK\ICCARD\ICcardDrv.h</name>
+        </file>
+      </group>
       <group>
         <name>IIC</name>
         <group>

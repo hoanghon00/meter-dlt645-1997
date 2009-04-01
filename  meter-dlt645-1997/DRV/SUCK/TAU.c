@@ -49,7 +49,10 @@ void Set_Fast_Timer(INT8U  Mode)
    //FX1,10us中断一次，实际9.94647
     TMR06 = TAU_TMR0_INITIALVALUE | TAU_CLOCK_SELECT_CK00 | TAU_CLOCK_MODE_CKS | TAU_MODE_INTERVAL_TIMER | TAU_START_INT_USED;
     TIS0 &= ~TAU_CH6_INPUT_FXT;
-    TDR06 = 0x6d;	
+    if(Get_Main_Clock_Div()==0)
+      TDR06 = 0x6d;	
+    else
+      TDR06 = 0x36;	
     TOM0 &= ~TAU_CH6_OUTPUT_COMBIN;
     TOL0 &= ~TAU_CH6_OUTPUT_LEVEL_L;
     TOE0 &= ~TAU_CH6_OUTPUT_ENABLE;	
@@ -91,7 +94,7 @@ TIO_05：全失压外部计数器；
 TIO_06：TI06/TO06共用，做100us/10us定时器；
 TIO_07：系统1ms时隙输出，优先级最高。
 **********************************************************************/
-void TAU_Init( void )
+void TAU_Init(void)
 {
 	TAU0EN = 1;			/* supplies input clock */
 	TPS0 = TAU_CK00_FCLK_0 | TAU_CK01_FCLK_15;
@@ -148,7 +151,10 @@ void TAU_Init( void )
         
 	/* Channel 2 used as square output function */
 	TMR02 = TAU_TMR0_INITIALVALUE | TAU_CLOCK_SELECT_CK00 | TAU_CLOCK_MODE_CKS | TAU_MODE_INTERVAL_TIMER | TAU_START_INT_UNUSED;
-	TDR02 = TAU_TDR02_VALUE;	
+        if(Get_Main_Clock_Div()==0)
+	  TDR02 = TAU_TDR02_VALUE;	
+        else
+          TDR02 = TAU_TDR02_VALUE/2;
 	TOM0 &= ~TAU_CH2_OUTPUT_COMBIN;
 	TOL0 &= ~TAU_CH2_OUTPUT_LEVEL_L;	
 	TO0 &= ~TAU_CH2_OUTPUT_VALUE_1;
@@ -165,7 +171,11 @@ void TAU_Init( void )
         
 	/* Channel 7 used as interval timer */
 	TMR07 = TAU_TMR0_INITIALVALUE | TAU_CLOCK_SELECT_CK00 | TAU_CLOCK_MODE_CKS | TAU_MODE_INTERVAL_TIMER | TAU_START_INT_USED;
-	TDR07 = TAU_TDR07_VALUE;	
+	if(Get_Main_Clock_Div()==0)
+          TDR07 = TAU_TDR07_VALUE;
+        else
+          TDR07 = TAU_TDR07_VALUE/2;
+            
 	TOM0 &= ~TAU_CH7_OUTPUT_COMBIN;
 	TOL0 &= ~TAU_CH7_OUTPUT_LEVEL_L;
 	TOE0 &= ~TAU_CH7_OUTPUT_ENABLE;	

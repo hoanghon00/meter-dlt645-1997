@@ -85,7 +85,7 @@ void PORT_Init(INT32U Mode )
         PM12|=PM12_DEFAULT; 
 	PM13|=PM13_DEFAULT;        
         PM14_bit.no2=0; PM14_bit.no5=0; PM14|=PM14_DEFAULT;        
-        PM15_bit.no2=0; PM15_bit.no3=0; PM15_bit.no4=0; PM15_bit.no5=0; PM15_bit.no6=0;        
+        PM15_bit.no2=0; PM15_bit.no3=0; PM15_bit.no4=0; PM15_bit.no5=0; PM15_bit.no6=0; PM15_bit.no7=0;   
 	ADPC = PORT_ADPC_16DIO;
      break;
   case SYS_RESUME:  //唤醒模式下的IO口初始化

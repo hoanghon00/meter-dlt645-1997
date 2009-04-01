@@ -244,12 +244,15 @@ enum PSLevel { PSSTOP, PSHALT };
 enum StabTime { STLEVEL0, STLEVEL1, STLEVEL2, STLEVEL3,
 				STLEVEL4, STLEVEL5, STLEVEL6, STLEVEL7 };
 
+
+#define Get_Main_Clock_Div() ((CSC==0x01 && CKC==0x38)?0:1)
+
 /*
 *******************************************************************************
 **  Function define
 *******************************************************************************
 */
-void Clock_Init( void );
+void Clock_Init( INT32U Mode );
 void CG_ReadResetSource( void );
 /* Start user code for definition. Do not edit comment generated here */
 MD_STATUS CG_SelectPowerSaveMode( enum PSLevel level );

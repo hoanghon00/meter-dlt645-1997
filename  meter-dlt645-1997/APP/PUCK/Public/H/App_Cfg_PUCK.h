@@ -55,10 +55,10 @@
 #define DEFAULT_REAC_PULSE      2000
 
 //硬件版本配置
-#define HARD_TYPE_20081005     1   //第一版驱动
-#define HARD_TYPE_20090224     2   //第二版驱动：针对解码，唤醒等脚做了修改
+#define HARD_TYPE_20081005     1   //第一版驱动：
+#define HARD_TYPE_20090224     2   //第二版驱动：最终版，中间的乱七八糟版本废除！！！
 
-#define METER_HARD_TYPE   HARD_TYPE_20081005  //(HARD_TYPE_20081227|HARD_TYPE_20090224)
+#define METER_HARD_TYPE   HARD_TYPE_20090224
 
 //硬件协议版本配置
 #define PROC_645_1997     0
@@ -74,5 +74,12 @@
 
 
 //串口属性
-#define UART1_EN        0//1                 //1----串口1使能；0-------串口1禁止
+#ifdef NETMETER_METER
+  #define UART1_EN                         //串口1使能
+#else
+  #undef UART1_EN                          //串口1禁止
+#endif
+
+
+
 #endif

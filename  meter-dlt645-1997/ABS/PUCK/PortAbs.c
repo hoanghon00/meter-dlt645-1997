@@ -73,7 +73,7 @@ CONST_PORT_STATUS  Const_Port_Status[MAX_PORT_NUM]={
 #if METER_HARD_TYPE==HARD_TYPE_20081005
   {1,0,0,1,0,PULSE_MODE,0,&PORT_ChangeP54Output,0},    //报警指示灯------------------------------------------------14
 #endif
-#if METER_HARD_TYPE==HARD_TYPE_20090224
+#if METER_HARD_TYPE>=HARD_TYPE_20090224
   {1,0,0,1,0,PULSE_MODE,0,&PORT_ChangeP157Output,0},    //报警指示灯-----------------------------------------------14
 #endif
   {1,0,0,1,0,PULSE_MODE,0,&PORT_ChangeP142Output_PUCK,0}  //喇叭报警 ----------------------------------------------15

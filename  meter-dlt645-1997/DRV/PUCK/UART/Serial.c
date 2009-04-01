@@ -718,7 +718,9 @@ PUCK:
 ********************************************************************************/
 void UART0_Init_suck(ULONG baud_rate,INT16U CheckBit)
 {
-  INT8U Pos;  
+  INT8U Pos; 
+  INT8U temp;
+  
   Pos=Get_Baud_Pos(baud_rate);
   if(0==Pos)
     return ;  
@@ -726,7 +728,12 @@ void UART0_Init_suck(ULONG baud_rate,INT16U CheckBit)
   UART0_Stop( );
   SAU0EN = 1;
   WAITFOR_DRV_CYCLE_TIMEOUT(4);
-  SPS0 = (SPS0&0x0f)|(Const_Uart_PUCK[Pos].FclkDiv<<4); //CK01提供给UART0
+  if(Get_Main_Clock_Div()==0)
+    temp=Const_Uart_PUCK[Pos].FclkDiv;
+  else
+    temp=Const_Uart_PUCK[Pos].FclkDiv-1;
+  
+  SPS0 = (SPS0&0x0f)|(temp<<4); //CK01提供给UART0
   UART0_Init_sub_suck(Const_Uart_PUCK[Pos].Divisor,CheckBit);  
 }
 /********************************************************************************

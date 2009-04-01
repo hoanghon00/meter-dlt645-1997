@@ -449,7 +449,7 @@
 **  Function define
 *******************************************************************************
 */
-void TAU_Init( void );
+void TAU_Init(void);
 
 void Set_Fast_Timer(INT8U  Mode);
 void TAU_Channel0_Start( void );

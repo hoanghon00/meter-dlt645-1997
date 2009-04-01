@@ -40,9 +40,22 @@ volatile static INT32U Sec_One_Timer;
 #define MAX_ID_TEST_NUM (MAX_ID_TEST+1)
 
 #define MAX_MEM_NUM (MAX_EPPROM_NUM+1)  //多了个flash
-INT16U const TEST_ADDR[MAX_EPPROM_NUM]={U10_SIZE-10,U12_SIZE-10,U12_SIZE-10,U14_SIZE-10,U15_SIZE-10,UCAL_SIZE-10};  
 
-#define TEST_FLASH_ADDR  (PAGE_SIZE*PAGE_NUMBER-10)
+
+#define   EPPROM_TEST_NUM 10
+
+INT16U const TEST_ADDR[MAX_EPPROM_NUM]={
+  U10_SIZE-EPPROM_TEST_NUM,
+  U12_SIZE-EPPROM_TEST_NUM,
+  U12_SIZE-EPPROM_TEST_NUM,
+  U14_SIZE-EPPROM_TEST_NUM,
+  U15_SIZE-EPPROM_TEST_NUM
+#ifdef ID_MEM_IIC_CAL
+ ,UCAL_SIZE-EPPROM_TEST_NUM
+#endif
+};
+
+#define TEST_FLASH_ADDR  (INT32U)((INT32U)PAGE_SIZE*PAGE_NUMBER-EPPROM_TEST_NUM)
 
 INT8U const  *Const_Drv_Test[MAX_ID_TEST_NUM]=
 {
@@ -50,7 +63,7 @@ INT8U const  *Const_Drv_Test[MAX_ID_TEST_NUM]=
   #if METER_HARD_TYPE==HARD_TYPE_20081005
     "U10",
   #endif
-  #if METER_HARD_TYPE==HARD_TYPE_20090224
+  #if METER_HARD_TYPE>=HARD_TYPE_20090224
     "U11",
   #endif
 #endif
@@ -58,7 +71,7 @@ INT8U const  *Const_Drv_Test[MAX_ID_TEST_NUM]=
   #if METER_HARD_TYPE==HARD_TYPE_20081005
     "U11",
   #endif
-  #if METER_HARD_TYPE==HARD_TYPE_20090224
+  #if METER_HARD_TYPE>=HARD_TYPE_20090224
     "U12",
   #endif
 #endif
@@ -66,7 +79,7 @@ INT8U const  *Const_Drv_Test[MAX_ID_TEST_NUM]=
   #if METER_HARD_TYPE==HARD_TYPE_20081005
     "U12",
   #endif
-  #if METER_HARD_TYPE==HARD_TYPE_20090224
+  #if METER_HARD_TYPE>=HARD_TYPE_20090224
     "U14",
   #endif
 #endif
@@ -74,7 +87,7 @@ INT8U const  *Const_Drv_Test[MAX_ID_TEST_NUM]=
   #if METER_HARD_TYPE==HARD_TYPE_20081005
     "U14",
   #endif
-  #if METER_HARD_TYPE==HARD_TYPE_20090224
+  #if METER_HARD_TYPE>=HARD_TYPE_20090224
     "U17",
   #endif
 #endif
@@ -90,7 +103,7 @@ INT8U const  *Const_Drv_Test[MAX_ID_TEST_NUM]=
   #if METER_HARD_TYPE==HARD_TYPE_20081005
     "U 8",
   #endif
-  #if METER_HARD_TYPE==HARD_TYPE_20090224
+  #if METER_HARD_TYPE>=HARD_TYPE_20090224
     "U 5",
   #endif
 #endif
@@ -332,6 +345,7 @@ void Test_CPU_Input_IO(void)
 {
  
    DEBUG_PRINT(PUCK,1,"GUMB IO=%d",GUMB_STATUS);
+   // UP_COVER_STATUS  DOWN_COVER_STATUS  B_PRG_KEY_STATUS
    DEBUG_PRINT(PUCK,1,"Power_Down IO=%d",POWER_OFF_STATUS); 
 }
 
@@ -492,7 +506,7 @@ void Test_All_RTC(INT8U RtcFlag)
 /**********************************************************************************
 测试EPPROM
 **********************************************************************************/
-#define   EPPROM_TEST_NUM 10
+
 void Test_Memory(void)
 {
   INT8U j,Flag,RandBuf[TEST_MEM_BUF_LEN];
@@ -626,7 +640,18 @@ void Dis_Per_Item(INT8U Item)
       Temp_Buf_PUCK[2-i]=(temp%10)+'0';
       temp=(temp-(temp%10))/10;
     }
-  }
+  }  
+   // GUMB_STATUS  UP_COVER_STATUS  DOWN_COVER_STATUS  B_PRG_KEY_STATUS
+  if(GUMB_STATUS)
+    SetOnDevice_PUCK(S_BUTTON);
+  if(UP_COVER_STATUS)
+    SetOnDevice_PUCK(S_HOUSE);
+  if(DOWN_COVER_STATUS==0)
+    SetOnDevice_PUCK(S_SHOT);
+  if(B_PRG_KEY_STATUS)
+    SetOnDevice_PUCK(S_KEY);
+
+  
   
   for(i=14;i<=21;i++)
     SetOnLED8Device_PUCK(N_LED(i),Temp_Buf_PUCK[i-14]);
@@ -737,6 +762,7 @@ void Enable_Key(void)
   START_IR_DECODE  //检测遥控解码，实际也是检测红外的收
 }
 
+#ifdef ID_MEM_IIC_CAL
 void Test_Sumi_I2c_Epprom(void)
 {
   INT16U i; 
@@ -782,6 +808,7 @@ void Test_Sumi_I2c_Epprom(void)
     */
   }  
 }
+#endif
 /**********************************************************************************
 测试EPPROM
 **********************************************************************************/
@@ -789,10 +816,14 @@ void Test_HardWare_PUCK(void)
 {  
 #ifdef DRV_TEST_EN
 
- /*
-  START_MIN_ALARM;
+ 
+  //START_MIN_ALARM;
+  /*Init_CPU_PUCK(SYS_RESUME);
+  Init_ExtDevice_PUCK(SYS_RESUME);
   while(1)
+  {
     Clr_Ext_Inter_Dog(); 
+  }
   */
   if(Get_Meter_Hard_Mode()!=MODE_TEST)
     return ;  

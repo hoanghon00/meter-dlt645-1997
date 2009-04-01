@@ -130,7 +130,6 @@ void  Main_Task_PUB(void *p_arg)
     Low_Power_Proc();
     Main_Chk_Data_Avail();
     Task_Monitor_Proc();
-    //Clear_All_Dog();       //清所有的看门狗
     Clear_Task_Dog();   //清任务看门狗
     Clear_CPU_Dog();    //清CPU内部看门狗
     Get_Para_Modify(&DI);  //读取参数，每个任务都需要从参数修改队列中读取出来
@@ -234,7 +233,7 @@ for(;;)
   {
       Channel_Main_PUCK(0);
       LCD_main_LUCK(0);
-      Clear_Ext_Dog();    //清CPU外部看门狗
+      Clear_Ext_Dog();    //最快的任务：清CPU外部看门狗
       Clear_Task_Dog();   //清任务看门狗
       
 #ifdef CHANNEL_FAST_EN

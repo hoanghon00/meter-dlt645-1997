@@ -72,19 +72,24 @@ void Init_All_IO_Resume(void)
 {
     P0=0;
     PU0=0;
+    
+    PM0_bit.no2=0;     //预留----------------------
+#if METER_HARD_TYPE==HARD_TYPE_20081005
     PM0_bit.no0=1;     //红外唤醒(P00)-------------IRDA_WKP,TO0实际未用，做悬空处理
     PM0_bit.no1=0;     //预留----------------------
-    PM0_bit.no2=0;     //预留----------------------
-#if METER_HARD_TYPE==HARD_TYPE_20081005    
     PM0_bit.no3=1;     //RTC(VBB供电)--------------RTC1_SDA
     PM0_bit.no4=1;     //RTC(VBB供电)--------------RTC1_SCL
+    PM0_bit.no6=0;     //外部总线扩展 WAIT---------预留不用
 #endif
-#if METER_HARD_TYPE==HARD_TYPE_20090224
-    PM0_bit.no3=0;     //RTC(VBB供电)--------------RTC1_SDA------新板子(2009-02-18):RXD_GPRS(VCC供电,CPU收)
-    PM0_bit.no4=0;     //RTC(VBB供电)--------------RTC1_SCL------新板子(2009-02-18):事件指示脚：EVENT_GPRS(VCC供电)
+#if METER_HARD_TYPE>=HARD_TYPE_20090224
+    PM0_bit.no0=1;     //KEY6---------------------开端盖(后端盖)铅封
+    PM0_bit.no1=1;     //KEY5---------------------开大盖(上端盖)
+    PM0_bit.no3=0;     //------新板子(2009-02-18):RXD_GPRS(VCC供电,CPU收)
+    PM0_bit.no4=0;     //------新板子(2009-02-18):事件指示脚：EVENT_GPRS(VCC供电)
+    PM0_bit.no6=0;     //------新板子(2009-02-18):门节点输入检测
 #endif   
     PM0_bit.no5=0;     //内卡电源控制--------------MEN_PWR
-    PM0_bit.no6=0;     //外部总线扩展 WAIT---------预留不用
+    
     PM0|=PM0_DEFAULT;
     
     P1=0;
@@ -93,7 +98,7 @@ void Init_All_IO_Resume(void)
     PM1_bit.no1=0;   //串口1----------------RXD1
     PM1_bit.no2=0;   //串口1----------------TXD1
     PM1_bit.no3=0;   //串口2----------------TXD2
-    PM1_bit.no4=0;   //串口3----------------RXD2
+    PM1_bit.no4=0;   //串口2----------------RXD2
     PM1_bit.no5=0;   //485控制口------------RE/DE2
     PM1_bit.no6=0;   //遥控器解码-----------RXD1
     PM1_bit.no7=1;   //PWM------------------PWM
@@ -109,14 +114,14 @@ void Init_All_IO_Resume(void)
     PM2_bit.no6=0;    //----------------NC
     PM2_bit.no7=0;    //----------------NC
 #endif    
-#if METER_HARD_TYPE==HARD_TYPE_20090224
-    PM2_bit.no6=1;    //----------------NC------新板子(2009-02-18):RTC(VBB供电)--------------RTC1_SDA
-    PM2_bit.no7=1;    //----------------NC------新板子(2009-02-18):RTC(VBB供电)--------------RTC1_SCL
+#if METER_HARD_TYPE>=HARD_TYPE_20090224
+    PM2_bit.no6=1;    //-----新板子(2009-02-18):RTC(VBB供电)--------------RTC1_SDA，先设为输入，在I2CSoft中会重新初始化
+    PM2_bit.no7=1;    //-----新板子(2009-02-18):RTC(VBB供电)--------------RTC1_SCL，先设为输入，在I2CSoft中会重新初始化
 #endif 
     
     P3=0;
     PU3=0; 
-    PM3_bit.no0=1; //红外唤醒,外部中断计数-------Laser_WKP
+    PM3_bit.no0=1; //红外唤醒,外部中断计数-------Laser_WKP------新板子(2009-02-18):IC_FAIL
     PM3_bit.no1=1; //掉电检测-----------------------V_D1
     PM3|=PM3_DEFAULT;
     
@@ -128,183 +133,25 @@ void Init_All_IO_Resume(void)
     PM4_bit.no3=0; //DataFlash时钟----------------45DB161_SCK
     PM4_bit.no4=0; //DataFlash输出----------------45DB161_SO
     PM4_bit.no5=0; //DataFlash输入----------------45DB161_SI
-    PM4_bit.no6=0; //时钟秒脉冲-------------------SECOND_PULSE
-    PM4_bit.no7=0; //DataFlash--------------------45DB161_RDY  
-        
-    P5=0;
-    PU5=0;
-    PM5_bit.no0=0;   //总线扩展(EX8)------------NC
-    PM5_bit.no1=0;   //总线扩展(EX9)------------NC
-    PM5_bit.no2=0;   //采样计量REFOUT-----------ALL_V_LOSS_EN,NC
-    PM5_bit.no3=1;   //喂狗信号-----------------WDI
-    PM5_bit.no4=0;   //P54----------------------LED报警指示
-    PM5_bit.no5=1;   //自检(VBB上拉)------------K2
-    PM5_bit.no6=1;   //干皇管-------------------K1,输入：用于红外模式判定-------09-02-01
-    PM5_bit.no7=1;   //工厂模式(VBB上拉)--------
-    
-    P6=0;
-    PU6=0;
-    PM6_bit.no0=1;   //内卡硬件I2C SCLK-------MEM_SCL
-    PM6_bit.no1=1;   //内卡硬件I2C SDA--------MEM_SDA
-    PM6_bit.no2=1;   //内卡硬件I2C写保护------MEM_WP
-    PM6_bit.no3=0;   //内卡电源控制-----------MEN_PWR
-    PM6_bit.no4=0;   //无功方向---------------A_DIR
-    PM6_bit.no5=0;   //无功方向---------------R_DIR
-    PM6_bit.no6=0;   //有功输出---------------A_EOUT
-    PM6_bit.no7=0;   //无功输出---------------R_EOUT
-    
-    P7=0;
-    PU7=0;
-    PM7_bit.no0=0;   //UPKEY------------------KEY7
-    PM7_bit.no1=0;   //UPKEY------------------KEY6
-    PM7_bit.no2=0;   //UPKEY------------------KEY5
-    PM7_bit.no3=1;   //UPKEY(VBB上拉)---------KEY1
-    PM7_bit.no4=1;   //UPKEY(VBB上拉)---------KEY2
-    PM7_bit.no5=1;   //UPKEY(VBB上拉)---------KEY3
-    PM7_bit.no6=1;   //UPKEY(VBB上拉)---------KEY4
-    PM7_bit.no7=1;   //激光点亮(VBB上拉)------LASER_WAKEUP
-    
-    
-    P8=0;
-    PU8=0;
-    PM8_bit.no0=0;   //跳闸输出-------------------SWITCH_TOGGLE
-    PM8_bit.no1=0;   //报警端子排-----------------ALARM
-    PM8_bit.no2=1;   //秒脉冲使能(和3231连接)-----SECOND_/EN
-    PM8_bit.no3=0;   //需量周期-------------------DEMAND
-    PM8_bit.no4=0;   //时段输出-------------------TIME_SW
-    PM8_bit.no5=0;   //低功耗电池检测-------------VB3_OK1
-    PM8_bit.no6=0;   //远红外电源控制-------------IR_FAR_PWR
-    PM8_bit.no7=0;   //总线扩展(EX7)--------------NC
-    
-    P11=0;
-    PM11_bit.no0=0;   //远红外/吸附红外切换----------IR_FAR_/SELECT
-    PM11_bit.no1=0;   //时钟电池检测-----------VB1_OK
-    PM11|=PM11_DEFAULT;
-    
-    P12=0;
-    PU12=0;
-    PM12_bit.no0=0;   //CF2输入-----------7022_CF2
-    PM12_bit.no1=1;   //X1-----------------
-    PM12_bit.no2=1;   //X2-----------------
-    PM12_bit.no3=1;   //XT1----------------
-    PM12_bit.no4=1;   //XT2----------------
-    PM12|=PM12_DEFAULT;
-    
-    P13=0;
-    PU13=0;    
-    PM13_bit.no0=0;   //7022_CS
-    PM13_bit.no1=0;   //预留-------------NC
-    PM13|=PM13_DEFAULT;
-    
-    P14=0;
-    PU14=0;
-    PM14_bit.no0=0;   //CF1输入----------7022_CF1
-    PM14_bit.no1=1;   //全失压----------ALL_V_LOSS
-    PM14_bit.no2=0;   //蜂鸣器----------ALARM_SND
-    PM14_bit.no3=0;   //串口0----------RXD0
-    PM14_bit.no4=0;   //串口0----------TXD0
-    PM14_bit.no5=0;   //485控制口--------RE/DE0
-    PM14|=PM14_DEFAULT;
-    
-    P15=0;            //-------09-02-02:P15=0x10改为 P15=0；因为 Init_All_IO_Resume的调用，HUCK会处理
-    PM15_bit.no0=0;   //有功脉冲指示灯-------------A-EOU1    
-    PM15_bit.no1=0;   //无功脉冲指示灯-------------R-EOU1
-    PM15_bit.no2=0;   //LCD背光--------------------Back_Light_On   
-    PM15_bit.no3=0;   //LCD CS--------------------1623-/CS
-    PM15_bit.no4=0;   //LCD POWER-----------------LCD_POWER
-    PM15_bit.no5=0;   //LCD DATA------------------1623-DATA
-    PM15_bit.no6=0;   //LCD WRITE-----------------1623-/WR
-    PM15_bit.no7=0;   //预留----------------------NC
- }
-/********************************************************************************
-函数功能：进入睡眠前，对CPU IO口输出为0
-入口：
-返回：
-1：原有输入脚还是输入脚，不变；
-2：未用的输入脚，已用的输出脚，强制输出为0；
-3：双向IO，
-********************************************************************************/
-void Init_All_IO_Sleep(void)
-{    
-
-    P0=0;
-    PU0=0;
-    PM0_bit.no0=1;     //红外唤醒(P00)-------------IRDA_WKP,TO0实际未用，做悬空处理
-    PM0_bit.no1=0;     //预留----------------------    
-    PM0_bit.no2=0;     //预留----------------------------新板子(2009-02-18):TXD_GPRS(VCC供电,CPU收)
-#if METER_HARD_TYPE==HARD_TYPE_20081005    
-    PM0_bit.no3=1;     //RTC(VBB供电)--------------RTC1_SDA
-    PM0_bit.no4=1;     //RTC(VBB供电)--------------RTC1_SCL
-#endif
-#if METER_HARD_TYPE==HARD_TYPE_20090224
-    PM0_bit.no3=0;     //RTC(VBB供电)--------------RTC1_SDA------新板子(2009-02-18):RXD_GPRS(VCC供电,CPU收)
-    PM0_bit.no4=0;     //RTC(VBB供电)--------------RTC1_SCL------新板子(2009-02-18):事件指示脚：EVENT_GPRS(VCC供电)
-#endif    
-    PM0_bit.no5=0;     //内卡电源控制--------------MEN_PWR
-    PM0_bit.no6=0;     //外部总线扩展 WAIT---------预留不用------新板子(2009-02-18):做遥信
-    PM0|=PM0_DEFAULT;
-    
-    P1=0;
-    PU1=0;
-    PM1_bit.no0=0;   //远红外发送使能-------IR_FAR_EN
-    PM1_bit.no1=0;   //串口1----------------RXD1
-    PM1_bit.no2=0;   //串口1----------------TXD1
-    PM1_bit.no3=0;   //串口2----------------TXD2
-    PM1_bit.no4=0;   //串口3----------------RXD2
-    PM1_bit.no5=0;   //485控制口------------RE/DE2
-    PM1_bit.no6=0;   //遥控器解码-----------RXD1
-    PM1_bit.no7=1;   //PWM------------------PWM
-    
-    P2=0;
-    PM2_bit.no0=0;    //计量RST---------7022_RST
-    PM2_bit.no1=0;    //计量SIG---------7022_SIG
-    PM2_bit.no2=0;    //计量SDO---------7022_SDO
-    PM2_bit.no3=0;    //计量SDI ---------7022_SDI    
-    PM2_bit.no4=0;    //计量SCK---------7022_SCK
-    PM2_bit.no5=0;    //计量POWER-------PULSE_PWR
-#if METER_HARD_TYPE==HARD_TYPE_20081005
-    PM2_bit.no6=0;    //----------------NC
-    PM2_bit.no7=0;    //----------------NC
-#endif    
-#if METER_HARD_TYPE==HARD_TYPE_20090224
-    PM2_bit.no6=1;    //----------------NC------新板子(2009-02-18):RTC(VBB供电)--------------RTC1_SDA
-    PM2_bit.no7=1;    //----------------NC------新板子(2009-02-18):RTC(VBB供电)--------------RTC1_SCL
-#endif 
-    
-    
-    P3=0;
-    PU3=0; 
-    PM3_bit.no0=1; //红外唤醒,外部中断计数-------Laser_WKP------新板子(2009-02-18):IC_RST
-    PM3_bit.no1=1; //掉电检测-----------------------V_D1
-    PM3|=PM3_DEFAULT;
-    
-    P4=0;
-    PU4=0;
-    PM4_bit.no0=1; //仿真调试口(VBB上拉)----------TOOL0
-    PM4_bit.no1=0; //仿真调试口-------------------TOOL1
-    PM4_bit.no2=0; //DataFlash片选----------------45DB161_/CS
-    PM4_bit.no3=0; //DataFlash时钟----------------45DB161_SCK
-    PM4_bit.no4=0; //DataFlash输出----------------45DB161_SO
-    PM4_bit.no5=0; //DataFlash输入----------------45DB161_SI
-    PM4_bit.no6=0; //时钟秒脉冲-------------------SECOND_PULSE
+    PM4_bit.no6=0; //全失压----------ALL_V_LOSS
     PM4_bit.no7=0; //DataFlash--------------------45DB161_RDY  
         
     P5=0;
     PU5=0;
     PM5_bit.no0=0;   //总线扩展(EX8)------------NC------新板子(2009-02-18):IC_IN
     PM5_bit.no1=0;   //总线扩展(EX9)------------NC------新板子(2009-02-18):IC_OUT
-    PM5_bit.no2=0;   //采样计量REFOUT-----------ALL_V_LOSS_EN,NC------新板子(2009-02-18):IC_FAIL
+    PM5_bit.no2=0;   //采样计量REFOUT-----------ALL_V_LOSS_EN,NC------新板子(2009-02-18):IC_RST
     PM5_bit.no3=0;   //喂狗信号-----------------WDI------新板子(2009-02-18):IC_SW
-    PM5_bit.no4=0;   //P54----------------------LED报警指示------新板子(2009-02-18):喂狗信号
-    PM5_bit.no5=1;   //自检(VBB上拉)------------K2------新板子(2009-02-18):干皇管---K1
-    PM5_bit.no6=0;   //干皇管-------------------K1------新板子(2009-02-18):自检---K2
-    PM5_bit.no7=1;   //工厂模式(VBB上拉)----------
+    PM5_bit.no4=1;   //P54----------------------LED报警指示------新板子(2009-02-18):喂狗信号，设为输入，喂狗无效
+    PM5_bit.no5=1;   //自检(VBB上拉)------------K2
+    PM5_bit.no6=1;   //干皇管-------------------K1,输入：用于红外模式判定-------09-02-01
+    PM5_bit.no7=1;   //工厂模式(VBB上拉)--------
     
     P6=0;
     PU6=0;
-    PM6_bit.no0=0;   //内卡硬件I2C SCLK-------MEM_SCL
-    PM6_bit.no1=0;   //内卡硬件I2C SDA--------MEM_SDA
-    PM6_bit.no2=0;   //内卡硬件I2C写保护------MEM_WP
+    PM6_bit.no0=1;   //内卡硬件I2C SCLK-------MEM_SCL，先设为输入，在I2C中会重新初始化
+    PM6_bit.no1=1;   //内卡硬件I2C SDA--------MEM_SDA，先设为输入，在I2C中会重新初始化
+    PM6_bit.no2=1;   //内卡硬件I2C写保护------MEM_WP，先设为输入，在I2C中会重新初始化
     PM6_bit.no3=0;   //内卡电源控制-----------MEN_PWR
     PM6_bit.no4=0;   //无功方向---------------A_DIR
     PM6_bit.no5=0;   //无功方向---------------R_DIR
@@ -313,21 +160,30 @@ void Init_All_IO_Sleep(void)
     
     P7=0;
     PU7=0;
+    
+#if METER_HARD_TYPE==HARD_TYPE_20081005
     PM7_bit.no0=0;   //UPKEY------------------KEY7
     PM7_bit.no1=0;   //UPKEY------------------KEY6
     PM7_bit.no2=0;   //UPKEY------------------KEY5
+    PM7_bit.no5=1;   //UPKEY(VBB上拉)---------KEY3
+#endif 
+#if METER_HARD_TYPE>=HARD_TYPE_20090224
+    PM7_bit.no0=0;   //NC-------------------必须为输出
+    PM7_bit.no1=1;   //UPKEY------------------KEY6
+    PM7_bit.no2=1;   //UPKEY------------------KEY5
+    PM7_bit.no5=0;   //NC--------------------必须为输出
+#endif
     PM7_bit.no3=1;   //UPKEY(VBB上拉)---------KEY1
     PM7_bit.no4=1;   //UPKEY(VBB上拉)---------KEY2
-    PM7_bit.no5=1;   //UPKEY(VBB上拉)---------KEY3
     PM7_bit.no6=1;   //UPKEY(VBB上拉)---------KEY4
-    PM7_bit.no7=1;   //激光点亮(VBB上拉)------LASER_WAKEUP
+    PM7_bit.no7=1;   //红外唤醒(VBB上拉)------LASER_WAKEUP
     
-    
+   
     P8=0;
     PU8=0;
     PM8_bit.no0=0;   //跳闸输出-------------------SWITCH_TOGGLE
     PM8_bit.no1=0;   //报警端子排-----------------ALARM
-    PM8_bit.no2=0;   //秒脉冲使能(和3231连接)-----SECOND_/EN
+    PM8_bit.no2=1;   //秒脉冲使能(和逻辑门连接，但和3231连接作为逻辑门)-----SECOND_/EN
     PM8_bit.no3=0;   //需量周期-------------------DEMAND
     PM8_bit.no4=0;   //时段输出-------------------TIME_SW
     PM8_bit.no5=0;   //低功耗电池检测-------------VB3_OK1
@@ -351,7 +207,176 @@ void Init_All_IO_Sleep(void)
     P13=0;
     PU13=0;    
     PM13_bit.no0=0;   //7022_CS
-    PM13_bit.no1=0;   //预留-------------NC
+    PM13_bit.no1=0;   //预留-------------7022_341_331
+    PM13|=PM13_DEFAULT;
+    
+    P14=0;
+    PU14=0;
+    PM14_bit.no0=0;   //CF1输入---------7022_CF1
+    PM14_bit.no1=1;   //时钟秒脉冲(VCC上拉,与3231相连ECOND_PULSE
+    PM14_bit.no2=0;   //蜂鸣器----------ALARM_SND
+    PM14_bit.no3=0;   //串口0----------RXD0
+    PM14_bit.no4=0;   //串口0----------TXD0
+    PM14_bit.no5=0;   //485控制口--------RE/DE0
+    PM14|=PM14_DEFAULT;
+    
+    P15=0;            //-------09-02-02:P15=0x10改为 P15=0；因为 Init_All_IO_Resume的调用，HUCK会处理
+    PM15_bit.no0=0;   //有功脉冲指示灯-------------A-EOU1    
+    PM15_bit.no1=0;   //无功脉冲指示灯-------------R-EOU1
+    PM15_bit.no2=1;   //LCD背光改为输入，背光无效------Back_Light_On   
+    PM15_bit.no3=0;   //LCD CS--------------------1623-/CS
+    PM15_bit.no4=0;   //LCD POWER-----------------LCD_POWER
+    PM15_bit.no5=0;   //LCD DATA------------------1623-DATA
+    PM15_bit.no6=0;   //LCD WRITE-----------------1623-/WR
+    PM15_bit.no7=0;   //预留----------------------NC
+ }
+/********************************************************************************
+函数功能：进入睡眠前，对CPU IO口输出为0
+入口：
+返回：
+1：原有输入脚还是输入脚，不变；
+2：未用的输入脚，已用的输出脚，强制输出为0；
+3：双向IO，
+********************************************************************************/
+void Init_All_IO_Sleep(void)
+{    
+
+    P0=0;
+    PU0=0;
+    PM0_bit.no1=0;     //预留----------------------    
+    PM0_bit.no2=0;     //预留----------------------------新板子(2009-02-18):TXD_GPRS(VCC供电,CPU收)
+#if METER_HARD_TYPE==HARD_TYPE_20081005
+    PM0_bit.no0=1;     //红外唤醒(P00)-------------IRDA_WKP,TO0实际未用，做悬空处理
+    PM0_bit.no3=1;     //RTC(VBB供电)--------------RTC1_SDA
+    PM0_bit.no4=1;     //RTC(VBB供电)--------------RTC1_SCL
+    PM0_bit.no6=0;     //外部总线扩展 WAIT---------预留不用
+#endif
+#if METER_HARD_TYPE>=HARD_TYPE_20090224
+    PM0_bit.no0=1;     //开盖检测-------------
+    PM0_bit.no3=0;     //RTC(VBB供电)--------------RTC1_SDA------新板子(2009-02-18):RXD_GPRS(VCC供电,CPU收)
+    PM0_bit.no4=0;     //RTC(VBB供电)--------------RTC1_SCL------新板子(2009-02-18):事件指示脚：EVENT_GPRS(VCC供电)
+    PM0_bit.no6=0;     //------新板子(2009-02-18):门节点输入检测
+#endif    
+    PM0_bit.no5=0;     //内卡电源控制--------------MEN_PWR
+    PM0|=PM0_DEFAULT;
+    
+    P1=0;
+    PU1=0;
+    PM1_bit.no0=0;   //远红外发送使能-------IR_FAR_EN
+    PM1_bit.no1=0;   //串口1----------------RXD1
+    PM1_bit.no2=0;   //串口1----------------TXD1
+    PM1_bit.no3=0;   //串口2----------------TXD2
+    PM1_bit.no4=0;   //串口3----------------RXD2
+    PM1_bit.no5=0;   //485控制口------------RE/DE2
+    PM1_bit.no6=0;   //遥控器解码-----------RXD1
+    PM1_bit.no7=1;   //PWM------------------PWM
+    
+    P2=0;
+    PM2_bit.no0=0;    //计量RST---------7022_RST
+    PM2_bit.no1=0;    //计量SIG---------7022_SIG
+    PM2_bit.no2=0;    //计量SDO---------7022_SDO
+    PM2_bit.no3=0;    //计量SDI ---------7022_SDI    
+    PM2_bit.no4=0;    //计量SCK---------7022_SCK
+    PM2_bit.no5=0;    //计量POWER-------PULSE_PWR
+#if METER_HARD_TYPE==HARD_TYPE_20081005
+    PM2_bit.no6=0;    //----------------NC
+    PM2_bit.no7=0;    //----------------NC
+#endif    
+#if METER_HARD_TYPE>=HARD_TYPE_20090224
+    PM2_bit.no6=1;    //----------------NC------新板子(2009-02-18):RTC(VBB供电)--------------RTC1_SDA
+    PM2_bit.no7=1;    //----------------NC------新板子(2009-02-18):RTC(VBB供电)--------------RTC1_SCL
+#endif 
+    
+    
+    P3=0;
+    PU3=0; 
+    PM3_bit.no0=1; //红外唤醒,外部中断计数-------Laser_WKP------新板子(2009-02-18):IC_FAIL
+    PM3_bit.no1=1; //掉电检测-----------------------V_D1
+    PM3|=PM3_DEFAULT;
+    
+    P4=0;
+    PU4=0;
+    PM4_bit.no0=1; //仿真调试口(VBB上拉)----------TOOL0
+    PM4_bit.no1=0; //仿真调试口-------------------TOOL1
+    PM4_bit.no2=0; //DataFlash片选----------------45DB161_/CS
+    PM4_bit.no3=0; //DataFlash时钟----------------45DB161_SCK
+    PM4_bit.no4=0; //DataFlash输出----------------45DB161_SO
+    PM4_bit.no5=0; //DataFlash输入----------------45DB161_SI
+    PM4_bit.no6=0; //全失压-----------------------ALL_V_LOSS
+    PM4_bit.no7=0; //DataFlash--------------------45DB161_RDY  
+        
+    P5=0;
+    PU5=0;
+    PM5_bit.no0=0;   //总线扩展(EX8)------------NC------新板子(2009-02-18):IC_IN
+    PM5_bit.no1=0;   //总线扩展(EX9)------------NC------新板子(2009-02-18):IC_OUT
+    PM5_bit.no2=0;   //采样计量REFOUT-----------ALL_V_LOSS_EN,NC------新板子(2009-02-18):IC_RST
+    PM5_bit.no3=0;   //喂狗信号-----------------WDI------新板子(2009-02-18):IC_SW
+    PM5_bit.no4=0;   //P54----------------------LED报警指示------新板子(2009-02-18):喂狗信号
+    PM5_bit.no5=0;   //自检(VBB上拉)------------K2------新板子(2009-02-18):干皇管---K1
+    PM5_bit.no6=1;   //干皇管-------------------K1------新板子(2009-02-18):自检---K2
+    PM5_bit.no7=1;   //工厂模式(VBB上拉)----------
+    
+    P6=0;
+    PU6=0;
+    PM6_bit.no0=0;   //内卡硬件I2C SCLK-------MEM_SCL
+    PM6_bit.no1=0;   //内卡硬件I2C SDA--------MEM_SDA
+    PM6_bit.no2=0;   //内卡硬件I2C写保护------MEM_WP
+    PM6_bit.no3=0;   //内卡电源控制-----------MEN_PWR
+    PM6_bit.no4=0;   //无功方向---------------A_DIR
+    PM6_bit.no5=0;   //无功方向---------------R_DIR
+    PM6_bit.no6=0;   //有功输出---------------A_EOUT
+    PM6_bit.no7=0;   //无功输出---------------R_EOUT
+    
+    P7=0;
+    PU7=0;
+
+#if METER_HARD_TYPE==HARD_TYPE_20081005
+    PM7_bit.no0=0;   //UPKEY------------------KEY7
+    PM7_bit.no1=0;   //UPKEY------------------KEY6
+    PM7_bit.no2=0;   //UPKEY------------------KEY5
+    PM7_bit.no5=1;   //UPKEY(VBB上拉)---------KEY3
+#endif 
+#if METER_HARD_TYPE>=HARD_TYPE_20090224
+    PM7_bit.no0=0;   //NC----------------------
+    PM7_bit.no1=1;   //UPKEY------------------KEY6
+    PM7_bit.no2=1;   //UPKEY------------------KEY5
+    PM7_bit.no5=0;   //NC------------------------    
+#endif
+    PM7_bit.no3=1;   //UPKEY(VBB上拉)---------KEY1
+    PM7_bit.no4=1;   //UPKEY(VBB上拉)---------KEY2
+    PM7_bit.no6=1;   //UPKEY(VBB上拉)---------KEY4
+    PM7_bit.no7=1;   //激光点亮(VBB上拉)------LASER_WAKEUP
+    
+    
+    P8=0;
+    PU8=0;
+    PM8_bit.no0=0;   //跳闸输出-------------------SWITCH_TOGGLE
+    PM8_bit.no1=0;   //报警端子排-----------------ALARM
+    PM8_bit.no2=1;   //时钟秒脉冲-------------------SECOND_PULSE
+    PM8_bit.no3=0;   //需量周期-------------------DEMAND
+    PM8_bit.no4=0;   //时段输出-------------------TIME_SW
+    PM8_bit.no5=0;   //低功耗电池检测-------------VB3_OK1
+    PM8_bit.no6=0;   //远红外电源控制-------------IR_FAR_PWR
+    PM8_bit.no7=0;   //总线扩展(EX7)--------------NC------新板子(2009-02-18):IC_SW
+    
+    P11=0;
+    PM11_bit.no0=0;   //远红外/吸附红外切换----------IR_FAR_/SELECT
+    PM11_bit.no1=0;   //时钟电池检测-----------VB1_OK
+    PM11|=PM11_DEFAULT;
+    
+    P12=0;
+    PU12=0;
+    PM12_bit.no0=0;   //CF2输入-----------7022_CF2
+    PM12_bit.no1=1;   //X1-----------------
+    PM12_bit.no2=1;   //X2-----------------
+    PM12_bit.no3=1;   //XT1----------------
+    PM12_bit.no4=1;   //XT2----------------
+    PM12|=PM12_DEFAULT;
+    
+    P13=0;
+    PU13=0;    
+    PM13_bit.no0=0;   //7022_CS
+    PM13_bit.no1=0;   //预留-------------7022_341_331
     PM13|=PM13_DEFAULT;
     
     P14=0;
@@ -418,6 +443,7 @@ void Goto_Sleep_PUCK(void)
      while(1)   //对RTC闹铃和全失压的处理------PUCK
      {
        //CG_SelectPowerSaveMode(PSHALT);
+       //STOP();
        HALT();
        //..........................................
        Clear_CPU_Dog();
@@ -426,7 +452,7 @@ void Goto_Sleep_PUCK(void)
      } 
    }
      //醒来了，根据唤醒源马上切换高速晶振-----------PUCK 
-    Switch_Main_Osc(FX1_RUN_MODE);
+    Switch_Main_Osc(RUN_MODE);
     Clear_CPU_Dog(); 
 }  
 /********************************************************************************
@@ -497,16 +523,24 @@ void Init_Inter_Abs(INT32U Mode)
         STOP_LASER_UP;
         STOP_PRG_KEY;
         
-        if(Resume_Src.Src_Flag&IRAD_RESUME)  //是红外唤醒，停止唤醒
-        {  STOP_IRDA_WAKE; }
+        if(Resume_Src.Src_Flag&IRAD_RESUME)  //是在sleep模式下的红外唤醒，停止唤醒
+        {  
+          STOP_IRDA_WAKE;        //与 START_IR_DECODE 互斥
+#if RSUME_REMOTER_EN==1         
+          START_IR_DECODE;       //唤醒下，可以使用红外遥控器
+#endif
+        }
         else
-        { START_IRDA_WAKE; }
+        { 
+          START_IRDA_WAKE; 
+          STOP_IR_DECODE;       //与 START_IR_DECODE 互斥
+        }
         
         START_1MS;          //启动1ms中断-----PUCK
         START_UP_KEY;
         START_DOWN_KEY;
         
-        START_IR_DECODE;
+        
         START_RTC_COUNTER; 
         START_MIN_ALARM;
         START_ALL_LOSS;         //全失压
@@ -526,10 +560,11 @@ void Init_Inter_Abs(INT32U Mode)
         STOP_1MS;
         STOP_PMW;
         STOP_IR_DECODE;
+        STOP_FAST_TIMER;  //关闭快速时钟，避免进入halt时，还在继续执行！
         
         START_RTC_COUNTER; 
-        START_MIN_ALARM;
-        START_UP_KEY;
+        START_MIN_ALARM;        
+        START_UP_KEY;        
         START_IRDA_WAKE; 
         START_ALL_LOSS;       //打开全失压
         break;

@@ -53,8 +53,6 @@
 #define  CONSTANT_RTC_INT_ENABLE   //宏开启，开启中断
 //#define  CONSTANT_RTC_INT_ONESEC   //宏开启，按每秒中断闹铃；否则按分闹铃
 
-#define ALARM_0  PORT_ChangeP54Output( 0 )//测试灯 
-#define ALARM_1  PORT_ChangeP54Output( 1 ) 
 
 #define ALARM_BEEP_0  PORT_ChangeP142Output(0, 0 )//喇叭报警         
 #define ALARM_BEEP_1  PORT_ChangeP142Output(0, 1 ) 
@@ -144,12 +142,39 @@
   //UP Key
   #define Inter_Up_Key_STATUS (P7_bit.no6)
 
+  #define ALARM_0  PORT_ChangeP54Output( 0 )//报警灯 
+  #define ALARM_1  PORT_ChangeP54Output( 1 ) 
+
 #endif
 
-#if METER_HARD_TYPE==HARD_TYPE_20090224
-  #define IC_FAIL (P5_bit.no2)   //新板子(2009-02-18):IC_FAIL
-  #define B_WTD_0  P5_bit.no4=0          //OUT WTD  
-  #define B_WTD_1  P5_bit.no4=1
+#if METER_HARD_TYPE>=HARD_TYPE_20090224
+
+  #define SET_IC_CARD_IN_DIR       PM5_bit.no0=1
+  #define SET_IC_CARD_FAIL_DIR     PM3_bit.no0=1
+  #define SET_IC_CARD_SW_DIR       PM5_bit.no3=1 
+
+  #define SET_IC_CARD_OUT_DIR      PM5_bit.no1=0
+  #define SET_IC_CARD_RST_DIR      PM5_bit.no2=0
+  #define SET_IC_CARD_CLK_DIR      PM8_bit.no7=0
+  #define SET_IC_CARD_PWR_DIR      PM6_bit.no3=0 
+
+  #define IC_CARD_IN   (P5_bit.no0)   //输入
+  #define IC_CARD_FAIL (P3_bit.no0)   //输入
+  #define IC_CARD_SW   (P5_bit.no3)   //输入
+
+  #define IC_CARD_OUT_0  P5_bit.no1=0   //输出
+  #define IC_CARD_OUT_1  P5_bit.no1=1   //输出
+  #define IC_CARD_RST_0  P5_bit.no2=0   //输出
+  #define IC_CARD_RST_1  P5_bit.no2=1   //输出
+  #define IC_CARD_CLK_0  P8_bit.no7=0  //输出
+  #define IC_CARD_CLK_1  P8_bit.no7=1  //输出
+  #define IC_CARD_POWR_ON  P6_bit.no3=1   //输出
+  #define IC_CARD_POWR_OFF P6_bit.no3=0   //输出
+
+
+  #define B_WTD_0  P5_bit.no4=0   //OUT WTD  
+  #define B_WTD_1  P5_bit.no4=1   //OUT WTD  
+
   #define B_REED_TEST_STATUS  (P5_bit.no5)   //新板子(2009-02-18):干皇管---K1
   #define B_TEST_HARD_STATUS  (P5_bit.no6)   //新板子(2009-02-18):自检---K2
   #define OPEN_PROG_KEY  (P7_bit.no6)         //编程开关
@@ -164,6 +189,8 @@
   //UP Key
   #define Inter_Up_Key_STATUS (P7_bit.no3)
 
+  #define ALARM_0  PORT_ChangeP157Output( 0 )//报警灯 
+  #define ALARM_1  PORT_ChangeP157Output( 1 ) 
 #endif
 
 
@@ -284,6 +311,8 @@ INT8U UART3_RecData_pre_suck(void);
 #define START_SEC_ALARM RTC_ConstPeriodInterruptEnable(ONESEC)
 #define START_MIN_ALARM RTC_ConstPeriodInterruptEnable(ONEMIN)
 #define STOP_RTC_ALARM  RTC_ConstPeriodInterruptDisable()
+
+
 
 
 void hdwinit(INT32U Mode);

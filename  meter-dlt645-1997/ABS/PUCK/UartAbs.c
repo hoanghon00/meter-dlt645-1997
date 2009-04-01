@@ -133,7 +133,7 @@ INT8U Channel_DataSend_PUCK(INT8U Type,INT8U *DataSrc,INT16U DataLen)
         IRDA_SEND_DIS;    //红外禁止发送
         STOP_PMW;
       }      
-      IRDA_Rec_Enable();   //根据当前的状态，打开不同的红外通道
+      IRDA_Rec_Enable();   //根据当前的状态，打开不同的红外通道      
       return 1;
     }    
     Const_Uart_Attib[Type].Send_Uart(DataSrc,DataLen);
@@ -160,7 +160,7 @@ void Channel_DataReceive_PUCK(INT8U Type,INT32U Status)
     if(Type!=CHANEL_IRDA)
       return ;
     
-    if(IRDA_READ_METER_EN==0)  //唤醒模式下，根据红外抄表模式子
+    if(IRDA_READ_METER_EN==0)  //唤醒模式下，红外抄表禁止
       return ;
     
   }
@@ -192,7 +192,8 @@ void Channel_DataReceive_PUCK(INT8U Type,INT32U Status)
     SET_STRUCT_SUM(Chanel_Para[Type]);
     Const_Uart_Attib[Type].Ready_Uart();    //重置接收区
     if(CHECK_STRUCT_VAR(S_Buf_PUCK)==0)
-      ASSERT(A_WARNING,0);
+      ASSERT(A_WARNING,0);    
+    Clr_LCDSleep_Timer();   //清除唤醒后计数器
   }
   else
   {

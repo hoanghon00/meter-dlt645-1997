@@ -141,14 +141,23 @@ void Debug_Channel_Switch(INT32U Mode)
       }
       if(SYS_RESUME==Mode &&Check_Resume_Source(IRAD_RESUME)) //红外唤醒模式
       {
-        if(IRDA_READ_METER_EN)   //在key已经唤醒下，红外唤醒，HUCK不会调用 Init_ExtDevice_PUCK()
-        {
+        if(IRDA_READ_METER_EN)   //在key已经唤醒下，红外唤醒，HUCK不会调用 Init_ExtDevice_PUCK()，对红外口的初始化
+        {          
+          //Switch_Main_Osc(RUN_MODE);      //唤醒后由内部晶振切换至外部晶振
           //IRDA_FAR_REC_EN;              //红外接收开启
           BAK_POWER_FOR_IRDA;            //远红外电源由低功耗电池供给;
           //Debug_Out_Public_Puck("\r\nPUCK:Switch To IRDA CHannel!",30);
           Chanel_Para[CHANEL_IRDA].Baud=BAUD_IRDA;
-          Open_Channel_PUCK(CHANEL_IRDA,BAUD_IRDA,SAU_PARITY_EVEN);
           SET_STRUCT_SUM(Chanel_Para[CHANEL_IRDA]); 
+          Open_Channel_PUCK(CHANEL_IRDA,BAUD_IRDA,SAU_PARITY_EVEN);
+          if(0==INTER_DECODE_EN)  //在resume模式下的红外唤醒，停止唤醒，启动解码(Sleep模式下的唤醒，已处理)
+          {
+            STOP_FAST_TIMER;
+#if RSUME_REMOTER_EN==1         
+            START_IR_DECODE;       //唤醒下，可以使用红外遥控器
+#endif
+            STOP_IRDA_WAKE;           //确定已经唤醒，以后关闭唤醒脚的中断，与 START_IR_DECODE 互斥
+          }
         }
       }
     }  
@@ -210,12 +219,12 @@ void Init_All_UART(INT32U Mode)
   case SYS_RESUME:    //只可能是红外、按钮、红外光唤醒，其他唤醒不会进入此函数----------PUCK
     for(i=CHANEL_MIN;i<=CHANEL_MAX;i++)
     {
-      if(i!=CHANEL_DEBG)   //不是调试口
+      if(i!=CHANEL_IRDA)   //不是红外快口，统统关闭
         Close_Channel_PUCK(i); 
       else             //是调试口
         Init_DebugChanel_PUCK(1);
     }
-      
+    //唤醒后的红外口切换，在channel任务中，根据红外抄表模式字切换  
     break;    
   case SYS_SLEEP:
    //关闭所有串口
@@ -233,20 +242,26 @@ FacFlag-----1:需要判定工厂状态，0--------不需要
 *********************************************************************************/
 void Init_DebugChanel_PUCK(INT8U FacFlag)
 {
-  if(POWER_OFF_STATUS==0)  //掉电了
+  /*if(POWER_OFF_STATUS==0)  //掉电了
     return ;
-  
+  */
   if(CHANEL_DEBG==CHANEL_IRDA)
-  {
-    Chanel_Para[CHANEL_DEBG].Baud=BAUD_DEBG;
-    SET_STRUCT_SUM(Chanel_Para[CHANEL_DEBG]);    
+  {       
     if(FacFlag)         //需要判定工厂状态
     {
       if(Check_Debug_En())  //是工厂状态打印)
+      {
+        Chanel_Para[CHANEL_DEBG].Baud=BAUD_DEBG;
+        SET_STRUCT_SUM(Chanel_Para[CHANEL_DEBG]); 
         Open_Channel_PUCK(CHANEL_DEBG,BAUD_DEBG,SAU_PARITY_NONE); 
+      }
     }
     else               //不需要判定工厂状态     
-        Open_Channel_PUCK(CHANEL_DEBG,BAUD_DEBG,SAU_PARITY_NONE); 
+    {
+      Chanel_Para[CHANEL_DEBG].Baud=BAUD_DEBG;
+      SET_STRUCT_SUM(Chanel_Para[CHANEL_DEBG]); 
+      Open_Channel_PUCK(CHANEL_DEBG,BAUD_DEBG,SAU_PARITY_NONE); 
+    }
   }  
 }
 /********************************************************************************
@@ -262,7 +277,7 @@ void Close_DebugChanel_PUCK(INT8U FacFlag)
     SET_STRUCT_SUM(Chanel_Para[CHANEL_DEBG]);    
     if(FacFlag)         //需要判定工厂状态
     {
-      if(Check_Debug_En())  //是工厂状态打印)
+      if(Check_Debug_En()==0)  //不是工厂状态，关闭调试口
         Close_Channel_PUCK(CHANEL_DEBG); 
     }
     else               //不需要判定工厂状态     

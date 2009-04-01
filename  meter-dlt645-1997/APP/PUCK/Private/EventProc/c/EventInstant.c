@@ -966,8 +966,21 @@ void Set_Cal_Event(void)
 
 *********************************************************************************/
 void Monitor_Meter_System_Osc(void)
-{   
-  if(CSC!=0x01 ||CKC!=0x38)
+{
+  if(SYS_NORMAL==Sys_Status.Status)
+  {
+    if(CSC!=0x01 ||CKC!=0x38)
+    {
+      Beep_For_OSC_Alarm_PUCK();
+      DEBUG_PRINT(PUCK,1,"MCU Osc System Error:MSTOP=%d,MSTOP=%d,MSTOP=%d",MSTOP,HIOSTOP,XTSTOP);  
+      Set_Event_Instant(ID_EVENT_OSC_ERR); 
+      return ;
+    }
+    Clr_Event_Instant(ID_EVENT_OSC_ERR);
+    return ;
+  }
+  
+  if(CSC!=0x01 ||CKC!=0x39)
   {
     Beep_For_OSC_Alarm_PUCK();
     DEBUG_PRINT(PUCK,1,"MCU Osc System Error:MSTOP=%d,MSTOP=%d,MSTOP=%d",MSTOP,HIOSTOP,XTSTOP);  

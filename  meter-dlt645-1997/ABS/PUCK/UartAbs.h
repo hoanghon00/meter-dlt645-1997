@@ -15,14 +15,14 @@
 #define UART2 1
 #define UART3 2
 
-#if (MWRWE_HARD_TYPE&NETMETER_METER) || (UART1_EN==1)    //具有网络表属性，或者串口就直接开启
-#define UART1 3   //1144CPU无此口
+#ifdef UART1_EN    //UART1使能
+  #define UART1 3   //1144CPU无此口
 #endif
 
 #ifdef UART1
-#define MAX_UART_NUM  (UART1+1)
+  #define MAX_UART_NUM  (UART1+1)
 #else
-#define MAX_UART_NUM  (UART3+1)
+  #define MAX_UART_NUM  (UART3+1)
 #endif
 
 #ifdef CHANNEL_FAST_EN
@@ -46,13 +46,8 @@ void Channel_DataReceive_PUCK(INT8U Type,INT32U Status);
 INT8U Channel_DataSend_PUCK(INT8U Type,INT8U *DataSrc,INT16U DataLen);
 
 INT8U UART0_SendData_suck(INT8U *txbuf, unsigned short txnum);
-unsigned short UART0_RecData_get_suck();
-
-
-
-INT8U UART0_SendData_suck(INT8U *txbuf, unsigned short txnum);
 INT8U UART0_RecData_pre_suck(void);
-unsigned short UART0_RecData_get_suck();
+
 INT8U Channel_BufReady_PUCK(INT8U Type);
 void IRDA_Rec_Select(void);
 void IRDA_Rec_Disable(void);

@@ -179,7 +179,7 @@ void Irda_Wake_Up(void)  //正常模式下，此中断关闭，只有在sleep和resume下中断打开
   EI();
   if(CHECK_STRUCT_VAR(Irda_Wake_Ctrl)==0)//头尾不对
   {
-    Port_Out_Pub(INTER_ID_ALARM_BEEP,BEEP_MODE_400);
+    //Port_Out_Pub(INTER_ID_ALARM_BEEP,BEEP_MODE_400);  beep无供电，故去掉
     Irda_Wake_Ctrl.Start=0;
     Irda_Wake_Ctrl.WakeUp=0;
     Irda_Wake_Ctrl.PulseNum=0;    
@@ -193,14 +193,16 @@ void Irda_Wake_Up(void)  //正常模式下，此中断关闭，只有在sleep和resume下中断打开
     return ;
   }
   
-  if(0==Irda_Wake_Ctrl.Start && 0==Irda_Wake_Ctrl.WakeUp)  //没有开始检测，且没有唤醒
+  if(0==Irda_Wake_Ctrl.Start)  //红外唤醒检测开始
   {
     Irda_Wake_Ctrl.Start=1;
     Irda_Wake_Ctrl.PulseNum=0;
     Fast_Timer_Reg=0;
     START_TIMER_1mS; 
+    return ;
   } 
-  else if(1==Irda_Wake_Ctrl.Start && 0==Irda_Wake_Ctrl.WakeUp)  //已经有唤醒的嫌疑，且没有唤醒
+  
+  if(1==Irda_Wake_Ctrl.Start)  //红外唤醒检测继续
   {
     Irda_Wake_Ctrl.PulseNum++;
   }
@@ -208,7 +210,7 @@ void Irda_Wake_Up(void)  //正常模式下，此中断关闭，只有在sleep和resume下中断打开
   if((Fast_Timer_Reg<=IRDA_WAKE_UP_MS)&&(Irda_Wake_Ctrl.PulseNum>=IRDA_WAKE_UP_NUM))
   {
     Irda_Wake_Ctrl.Start=0;
-    Irda_Wake_Ctrl.WakeUp=0;
+    Irda_Wake_Ctrl.PulseNum=0;
     Irda_Wake_Ctrl.WakeUp=1;
 
     STOP_FAST_TIMER;              
@@ -226,6 +228,15 @@ void Fast_Timer(void)
   if(TDR06==0x07)   //单位：976.5625us,程序慢速晶振跑
   {
     Fast_Timer_Reg++;
+    
+    if(1==Irda_Wake_Ctrl.WakeUp)  //已经唤醒
+    {
+      STOP_IRDA_WAKE;           //确定已经唤醒，以后关闭唤醒脚的中断 
+      STOP_FAST_TIMER;
+      Fast_Timer_Reg=0;
+      return ;
+    }
+  
     if(Fast_Timer_Reg>=IRDA_WAKE_UP_MS)   //时间超限,关闭定时器，由唤醒脚来启动
     {
       Fast_Timer_Reg=0;
@@ -237,10 +248,10 @@ void Fast_Timer(void)
     }
   }
   
-  if(TDR06==0x6d)   //单位：9.94647us,程序快速晶振跑
+  if(TDR06==0x6d || TDR06==0x36)   //单位：9.94647us,程序快速晶振跑
   {
     Fast_Timer_Reg++;
-    if(Fast_Timer_Reg>=9000)  //误进入
+    if(Fast_Timer_Reg>=9000 || (0==INTER_DECODE_EN))  //时间超限，或者解码中断已经关闭！
     {
       Fast_Timer_Reg=0;
       STOP_FAST_TIMER;
@@ -273,13 +284,12 @@ void IR_Decode_Proc(void)
   }  
   
   if(Irda_Decode_Ctrl.Start==0 && Irda_Decode_Ctrl.TrigTimer==0)  //启动快速Timer
-  {
-    START_TIMER_10uS;
-    Fast_Timer_Reg=0;
-    
+  {    
     Irda_Decode_Ctrl.TrigTimer=1;
     Irda_Decode_Ctrl.Done=0;
     Irda_Decode_Ctrl.Index=0; 
+    Fast_Timer_Reg=0;
+    START_TIMER_10uS;    
     return ;
   }
 

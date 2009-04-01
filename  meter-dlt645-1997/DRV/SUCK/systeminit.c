@@ -63,7 +63,7 @@ void SystemInit(INT32U Mode)
 	/*Initialize the I/O ports*/
 	PORT_Init(Mode);
 	/*Initialize the clock generator*/
-	Clock_Init(); 
+	Clock_Init(Mode); 
 	/*Initialize the external interrupts*/
 	INTP_Init();
 	/*Initialize the key interrupt*/

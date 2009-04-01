@@ -104,8 +104,8 @@ NO_INIT INTER_ABS_PUCK_EXT volatile ALL_LOSS_STRUC All_Loss_Var;
 #define CLEAR_VAR_PUCK(Var)  {mem_set((void *)(&Var),0,sizeof(Var),(void *)(&Var),sizeof(Var));\
                               SET_VAR_CS_PUCK(Var);}
 
-#define IRDA_WAKE_UP_MS    80   //判定唤醒帧的超时时间：ms
-#define IRDA_WAKE_UP_NUM   7   //判定唤醒帧的脉冲数目：个数
+#define IRDA_WAKE_UP_MS    15//80   //判定唤醒帧的超时时间：ms
+#define IRDA_WAKE_UP_NUM   2//7   //判定唤醒帧的脉冲数目：个数
 
 
 typedef struct

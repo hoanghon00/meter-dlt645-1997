@@ -56,7 +56,7 @@
 **
 **-----------------------------------------------------------------------------
 */
-void Clock_Init( void )
+void Clock_Init(INT32U SysMode)
 {
 	ULONG i;
 	
@@ -88,7 +88,11 @@ void Clock_Init( void )
         //PER0 = 0XFD;		/* RTCEN=DACEN=ADCEN=IIC0EN=SAU1EN=SAU0EN=TAU0EN=1: supplies input clock to RTC, DAC, ADC, IIC0, SAU0, SAU1 and TAU0 */
         //PER1 = 0X00;
 	CKC &= (UCHAR)~CG_CPUCLK;         //将分频系数归0
-	CKC |= CG_CPUCLK_MAIN0;           //获取分频系数:fMAIN=晶振
+        if(SYS_NORMAL==SysMode)
+	  CKC |= CG_CPUCLK_MAIN0;           //获取分频系数:fMAIN=晶振
+        else
+          CKC |= RSUME_CLOCK_DIV;           //获取分频系数:fMAIN/2
+        
 	OSMC = CG_FCLK_OVER10M;           //10M以上频率
 }
 void Clock_Init_1( void )
@@ -261,8 +265,6 @@ MD_STATUS CG_ChangeClockMode( enum ClockMode mode )
 	}
 	return MD_OK;
 }
-
-
 
 /* End user code adding. Do not edit comment generated here */
 
