@@ -152,7 +152,7 @@ void Init_All_IO_Resume(void)
     PM6_bit.no0=1;   //内卡硬件I2C SCLK-------MEM_SCL，先设为输入，在I2C中会重新初始化
     PM6_bit.no1=1;   //内卡硬件I2C SDA--------MEM_SDA，先设为输入，在I2C中会重新初始化
     PM6_bit.no2=1;   //内卡硬件I2C写保护------MEM_WP，先设为输入，在I2C中会重新初始化
-    PM6_bit.no3=0;   //内卡电源控制-----------MEN_PWR
+    PM6_bit.no3=1;   //------新板子(2009-02-18)(VBB上拉，设计错误):IC_PWR,要改啊，FUCK大哥！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
     PM6_bit.no4=0;   //无功方向---------------A_DIR
     PM6_bit.no5=0;   //无功方向---------------R_DIR
     PM6_bit.no6=0;   //有功输出---------------A_EOUT
@@ -237,22 +237,25 @@ void Init_All_IO_Resume(void)
 1：原有输入脚还是输入脚，不变；
 2：未用的输入脚，已用的输出脚，强制输出为0；
 3：双向IO，
+4：注意的几个脚：IC_PWR，SECOND_PULSE，K1(干皇管)
 ********************************************************************************/
 void Init_All_IO_Sleep(void)
 {    
 
     P0=0;
     PU0=0;
-    PM0_bit.no1=0;     //预留----------------------    
+    
     PM0_bit.no2=0;     //预留----------------------------新板子(2009-02-18):TXD_GPRS(VCC供电,CPU收)
 #if METER_HARD_TYPE==HARD_TYPE_20081005
     PM0_bit.no0=1;     //红外唤醒(P00)-------------IRDA_WKP,TO0实际未用，做悬空处理
+    PM0_bit.no1=0;     //预留----------------------    
     PM0_bit.no3=1;     //RTC(VBB供电)--------------RTC1_SDA
     PM0_bit.no4=1;     //RTC(VBB供电)--------------RTC1_SCL
     PM0_bit.no6=0;     //外部总线扩展 WAIT---------预留不用
 #endif
 #if METER_HARD_TYPE>=HARD_TYPE_20090224
-    PM0_bit.no0=1;     //开盖检测-------------
+    PM0_bit.no0=0;     //开盖检测-------------
+    PM0_bit.no1=0;     //KEY5---------------------开大盖(上端盖)
     PM0_bit.no3=0;     //RTC(VBB供电)--------------RTC1_SDA------新板子(2009-02-18):RXD_GPRS(VCC供电,CPU收)
     PM0_bit.no4=0;     //RTC(VBB供电)--------------RTC1_SCL------新板子(2009-02-18):事件指示脚：EVENT_GPRS(VCC供电)
     PM0_bit.no6=0;     //------新板子(2009-02-18):门节点输入检测
@@ -266,7 +269,7 @@ void Init_All_IO_Sleep(void)
     PM1_bit.no1=0;   //串口1----------------RXD1
     PM1_bit.no2=0;   //串口1----------------TXD1
     PM1_bit.no3=0;   //串口2----------------TXD2
-    PM1_bit.no4=0;   //串口3----------------RXD2
+    PM1_bit.no4=0;   //串口2----------------RXD2
     PM1_bit.no5=0;   //485控制口------------RE/DE2
     PM1_bit.no6=0;   //遥控器解码-----------RXD1
     PM1_bit.no7=1;   //PWM------------------PWM
@@ -302,7 +305,7 @@ void Init_All_IO_Sleep(void)
     PM4_bit.no3=0; //DataFlash时钟----------------45DB161_SCK
     PM4_bit.no4=0; //DataFlash输出----------------45DB161_SO
     PM4_bit.no5=0; //DataFlash输入----------------45DB161_SI
-    PM4_bit.no6=0; //全失压-----------------------ALL_V_LOSS
+    PM4_bit.no6=1; //------新板子(2009-02-18):全失压----------ALL_V_LOSS
     PM4_bit.no7=0; //DataFlash--------------------45DB161_RDY  
         
     P5=0;
@@ -321,7 +324,7 @@ void Init_All_IO_Sleep(void)
     PM6_bit.no0=0;   //内卡硬件I2C SCLK-------MEM_SCL
     PM6_bit.no1=0;   //内卡硬件I2C SDA--------MEM_SDA
     PM6_bit.no2=0;   //内卡硬件I2C写保护------MEM_WP
-    PM6_bit.no3=0;   //内卡电源控制-----------MEN_PWR
+    PM6_bit.no3=1;   //------新板子(2009-02-18)(VBB上拉，设计错误):IC_PWR,要改啊，FUCK大哥！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
     PM6_bit.no4=0;   //无功方向---------------A_DIR
     PM6_bit.no5=0;   //无功方向---------------R_DIR
     PM6_bit.no6=0;   //有功输出---------------A_EOUT
@@ -331,28 +334,28 @@ void Init_All_IO_Sleep(void)
     PU7=0;
 
 #if METER_HARD_TYPE==HARD_TYPE_20081005
-    PM7_bit.no0=0;   //UPKEY------------------KEY7
+    PM7_bit.no0=0;   //编程按钮检测------------------KEY7
     PM7_bit.no1=0;   //UPKEY------------------KEY6
     PM7_bit.no2=0;   //UPKEY------------------KEY5
     PM7_bit.no5=1;   //UPKEY(VBB上拉)---------KEY3
 #endif 
 #if METER_HARD_TYPE>=HARD_TYPE_20090224
     PM7_bit.no0=0;   //NC----------------------
-    PM7_bit.no1=1;   //UPKEY------------------KEY6
-    PM7_bit.no2=1;   //UPKEY------------------KEY5
+    PM7_bit.no1=1;   //右键------------------KEY3
+    PM7_bit.no2=1;   //左键------------------KEY1
     PM7_bit.no5=0;   //NC------------------------    
 #endif
-    PM7_bit.no3=1;   //UPKEY(VBB上拉)---------KEY1
-    PM7_bit.no4=1;   //UPKEY(VBB上拉)---------KEY2
-    PM7_bit.no6=1;   //UPKEY(VBB上拉)---------KEY4
-    PM7_bit.no7=1;   //激光点亮(VBB上拉)------LASER_WAKEUP
+    PM7_bit.no3=1;   //上翻(VBB上拉)---------KEY4
+    PM7_bit.no4=1;   //下翻(VBB上拉)---------KEY2
+    PM7_bit.no6=0;   //------新板子(2009-02-18):编程---------KEY7
+    PM7_bit.no7=1;   //红外唤醒(VBB上拉)------IRD_WKP
     
     
     P8=0;
     PU8=0;
     PM8_bit.no0=0;   //跳闸输出-------------------SWITCH_TOGGLE
     PM8_bit.no1=0;   //报警端子排-----------------ALARM
-    PM8_bit.no2=1;   //时钟秒脉冲-------------------SECOND_PULSE
+    PM8_bit.no2=0;   //------新板子(2009-02-18):秒脉冲使能(和3231连接)-----SECOND_/EN
     PM8_bit.no3=0;   //需量周期-------------------DEMAND
     PM8_bit.no4=0;   //时段输出-------------------TIME_SW
     PM8_bit.no5=0;   //低功耗电池检测-------------VB3_OK1
@@ -381,8 +384,8 @@ void Init_All_IO_Sleep(void)
     
     P14=0;
     PU14=0;
-    PM14_bit.no0=0;   //CF1输入----------7022_CF1
-    PM14_bit.no1=1;   //全失压----------ALL_V_LOSS
+    PM14_bit.no0=0;   //CF1输入口----------7022_CF1
+    PM14_bit.no1=0;   //------新板子(2009-02-18):时钟秒脉冲-------------------SECOND_PULSE
     PM14_bit.no2=0;   //蜂鸣器----------ALARM_SND
     PM14_bit.no3=0;   //串口0----------RXD0
     PM14_bit.no4=0;   //串口0----------TXD0
