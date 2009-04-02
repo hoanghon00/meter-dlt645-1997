@@ -56,10 +56,10 @@
 
 #if METER_HARD_TYPE>=HARD_TYPE_20090224
   #define INTER_WAKEUP_EN  	  ((PMK11==0)?1:0)  //查询红外唤醒是否开启了
-  #define CTRL_IRDA_SWITCH(a)     {PMK11 = a;}
+  #define CTRL_IRDA_SWITCH(a)     PMK11 = a
   #define CTRL_IRDA_GRADE(a)	  {PPR111=(a&0x02)>>1;PPR011=a&0x01;PIF11 = 0;}
   #define START_IRDA_WAKE         {CTRL_IRDA_GRADE(INTER_GRADE_LOW); CTRL_IRDA_SWITCH(INTER_EN);}
-  #define STOP_IRDA_WAKE          {CTRL_IRDA_SWITCH(INTER_DIS);}
+  #define STOP_IRDA_WAKE          PMK11 = 1   //CTRL_IRDA_SWITCH(INTER_DIS)
 
   #define START_LASER_UP          //目前无此功能，用空语句替代
   #define STOP_LASER_UP           //目前无此功能，用空语句替代

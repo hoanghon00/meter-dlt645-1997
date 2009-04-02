@@ -2,7 +2,7 @@
 #                                                                              #
 #      IAR Universal Linker V4.61C/386                                         #
 #                                                                              #
-#           Link time     =  01/Apr/2009  16:45:27                             #
+#           Link time     =  02/Apr/2009  11:39:32                             #
 #           Target CPU    =  78000                                             #
 #           List file     =  F:\work\Prog\Meter_GD\Meter_GD\Debug\List\meter.m #
 #                            ap                                                #
@@ -300,12 +300,12 @@ Absolute parts
            Alarm_Event_Property    0000A710 
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003CF29 - 0003D00F (0xe7 bytes), align: 0
+  Relative segment, address: 0003CF48 - 0003D02E (0xe7 bytes), align: 0
   Segment part 4.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            Sound_LED_LCD_Port_Alarm
-                                   0003CF29        EventPropertyVar (EventStatus)
+                                   0003CF48        EventPropertyVar (EventStatus)
                calls direct
                stack 1 = 00000000 ( 0000000C )
 
@@ -317,23 +317,23 @@ Absolute parts
   SEGMENTS IN THE MODULE
   ======================
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D1D3 - 0003D231 (0x5f bytes), align: 0
+  Relative segment, address: 0003D1F2 - 0003D250 (0x5f bytes), align: 0
   Segment part 3.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            Write_EEPROM_Dvice_PUCK
-                                   0003D1D3        Test_Memory (DRV_TEST)
+                                   0003D1F2        Test_Memory (DRV_TEST)
                                                    Write_PHY_Mem_PUCK (MemoryAbs)
                calls direct
                stack 1 = 00000004 ( 00000008 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D232 - 0003D297 (0x66 bytes), align: 0
+  Relative segment, address: 0003D251 - 0003D2B6 (0x66 bytes), align: 0
   Segment part 4.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            Read_EEPROM_Dvice_PUCK
-                                   0003D232        Read_PHY_Mem_PUCK (MemoryAbs)
+                                   0003D251        Read_PHY_Mem_PUCK (MemoryAbs)
                                                    Test_Memory (DRV_TEST)
                calls direct
                stack 1 = 00000004 ( 0000000A )
@@ -370,13 +370,13 @@ FAR_Z
                                                    Set_PSW_Proc (Data_Trans)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00038ECD - 00038ED8 (0xc bytes), align: 0
+  Relative segment, address: 00038EEC - 00038EF7 (0xc bytes), align: 0
   Segment part 7.             Intra module refs:   Check_Clear_Data_Authority
                                                    Get_User_Authority
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            Check_Meter_Factory_Status
-                                   00038ECD        Check_Boot_On_Flag (Def_Para)
+                                   00038EEC        Check_Boot_On_Flag (Def_Para)
                                                    Check_Frame_Meter_Addr (Data_Trans)
                                                    Check_Sys_Storage (Data_Para)
                                                    PSW_Lock_Proc (Energy)
@@ -390,11 +390,11 @@ FAR_Z
                stack 1 = 00000004 ( 00000000 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00038ED9 - 00038EE4 (0xc bytes), align: 0
+  Relative segment, address: 00038EF8 - 00038F03 (0xc bytes), align: 0
   Segment part 8.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Check_Debug_En          00038ED9        Channel_DataSend_PUCK (UartAbs)
+           Check_Debug_En          00038EF8        Channel_DataSend_PUCK (UartAbs)
                                                    Close_DebugChanel_PUCK (Channel)
                                                    DEBUG_BUF_PRINT (Pub_Debug)
                                                    Debug_Channel_Switch (Channel)
@@ -408,32 +408,32 @@ FAR_Z
                calls direct
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00038EE5 - 00038EE8 (0x4 bytes), align: 0
+  Relative segment, address: 00038F04 - 00038F07 (0x4 bytes), align: 0
   Segment part 9.             Intra module refs:   Check_Clear_Data_Authority
                                                    Get_User_Authority
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            Check_Meter_Prog_Status
-                                   00038EE5 
+                                   00038F04 
                calls direct
                stack 1 = 00000004 ( 00000000 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00038EE9 - 00038EEC (0x4 bytes), align: 0
+  Relative segment, address: 00038F08 - 00038F0B (0x4 bytes), align: 0
   Segment part 10.            Intra module refs:   Get_User_Authority
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Check_Set_ADDR_Key      00038EE9        Set_MeterAddr_Proc (Data_Trans)
+           Check_Set_ADDR_Key      00038F08        Set_MeterAddr_Proc (Data_Trans)
                calls direct
                stack 1 = 00000004 ( 00000000 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00038EED - 00038F4B (0x5f bytes), align: 0
+  Relative segment, address: 00038F0C - 00038F6A (0x5f bytes), align: 0
   Segment part 11.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            Check_Clear_Data_Authority
-                                   00038EED        Clear_All_Demand_Data (Demand)
+                                   00038F0C        Clear_All_Demand_Data (Demand)
                                                    Clear_Cur_Demand_Data (Demand)
                                                    Clear_Energy_Data (Energy)
                                                    Clear_Event_Data (Event_Data)
@@ -442,31 +442,31 @@ FAR_Z
                stack 1 = 00000000 ( 0000000A )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00038F4C - 00038F90 (0x45 bytes), align: 0
+  Relative segment, address: 00038F6B - 00038FAF (0x45 bytes), align: 0
   Segment part 12.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Clear_PSW_Err_Info      00038F4C        PSW_Lock_Proc (Energy)
+           Clear_PSW_Err_Info      00038F6B        PSW_Lock_Proc (Energy)
                                                    Rcv_DLT645_Data_Proc (Data_Trans)
                calls direct
                stack 1 = 00000000 ( 00000012 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00038F91 - 000390D0 (0x140 bytes), align: 0
+  Relative segment, address: 00038FB0 - 000390EF (0x140 bytes), align: 0
   Segment part 13.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Get_User_Authority      00038F91        Rcv_DLT645_Data_Proc (Data_Trans)
+           Get_User_Authority      00038FB0        Rcv_DLT645_Data_Proc (Data_Trans)
                calls direct
                stack 1 = 00000008 ( 0000000C )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 000390D1 - 000392A6 (0x1d6 bytes), align: 0
+  Relative segment, address: 000390F0 - 000392C5 (0x1d6 bytes), align: 0
   Segment part 14.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            Get_Protocol_Data_Authority
-                                   000390D1        Rcv_DLT645_Data_Proc (Data_Trans)
+                                   000390F0        Rcv_DLT645_Data_Proc (Data_Trans)
                calls direct
                stack 1 = 00000004 ( 00000018 )
     -------------------------------------------------------------------------
@@ -505,11 +505,11 @@ NEAR_A
            _A_CSC                  000FFFA1 
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D5CF - 0003D618 (0x4a bytes), align: 0
+  Relative segment, address: 0003D5EE - 0003D637 (0x4a bytes), align: 0
   Segment part 3.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Switch_Main_Osc         0003D5CF        Goto_Sleep_PUCK (DeviceAbs)
+           Switch_Main_Osc         0003D5EE        Goto_Sleep_PUCK (DeviceAbs)
                calls direct
 
     *************************************************************************
@@ -588,6 +588,7 @@ FAR_Z
                                                    Close_DebugChanel_PUCK
                                                    Debug_Channel_Switch
                                                    Init_All_Cannel
+                                                   Init_All_UART
                                                    Init_DebugChanel_PUCK
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
@@ -596,133 +597,133 @@ FAR_Z
                                                    getdata (interface)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00038070 - 000380AB (0x3c bytes), align: 0
+  Relative segment, address: 00037B39 - 00037B74 (0x3c bytes), align: 0
   Segment part 14.            Intra module refs:   Init_All_Cannel
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Get_Baud_Spec           00038070 
+           Get_Baud_Spec           00037B39 
                stack 1 = 00000006 ( 00000002 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 000380AC - 000381BE (0x113 bytes), align: 0
+  Relative segment, address: 00037B75 - 00037C87 (0x113 bytes), align: 0
   Segment part 15.            Intra module refs:   Init_All_UART
                                                    Para_Modi_Monitor_PUCK
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Init_All_Cannel         000380AC 
+           Init_All_Cannel         00037B75 
                calls direct
                stack 1 = 00000002 ( 00000012 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 000381BF - 000381D3 (0x15 bytes), align: 0
+  Relative segment, address: 00037C88 - 00037C9C (0x15 bytes), align: 0
   Segment part 16.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            Send_HostData_Public_Puck
-                                   000381BF        Channel_DataReceive_PUCK (UartAbs)
+                                   00037C88        Channel_DataReceive_PUCK (UartAbs)
                calls direct
                stack 1 = 00000004 ( 00000006 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 000381D4 - 000381E8 (0x15 bytes), align: 0
+  Relative segment, address: 00037C9D - 00037CB1 (0x15 bytes), align: 0
   Segment part 17.            Intra module refs:   Debug_Channel_Switch
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Debug_Out_Public_Puck   000381D4        OS_vsPrintf (OS_Pub)
+           Debug_Out_Public_Puck   00037C9D        OS_vsPrintf (OS_Pub)
                calls direct
                stack 1 = 00000008 ( 00000006 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 000381E9 - 00038209 (0x21 bytes), align: 0
+  Relative segment, address: 00037CB2 - 00037CD2 (0x21 bytes), align: 0
   Segment part 18.            Intra module refs:   Channel_Main_PUCK
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            Channel_Data_Proc_PUCK
-                                   000381E9        Test_HardWare_PUCK (DRV_TEST)
+                                   00037CB2        Test_HardWare_PUCK (DRV_TEST)
                calls direct
                stack 1 = 00000008 ( 0000000A )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003820A - 00038343 (0x13a bytes), align: 0
+  Relative segment, address: 00037CD3 - 00037E0C (0x13a bytes), align: 0
   Segment part 19.            Intra module refs:   Channel_Switch_PUCK
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Debug_Channel_Switch    0003820A 
+           Debug_Channel_Switch    00037CD3 
                calls direct
                stack 1 = 00000000 ( 0000000C )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00038344 - 00038347 (0x4 bytes), align: 0
+  Relative segment, address: 00037E0D - 00037E10 (0x4 bytes), align: 0
   Segment part 20.            Intra module refs:   Channel_Main_PUCK
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Channel_Switch_PUCK     00038344 
+           Channel_Switch_PUCK     00037E0D 
                calls direct
                stack 1 = 00000008 ( 00000000 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00038348 - 000383B4 (0x6d bytes), align: 0
+  Relative segment, address: 00037E11 - 00037E7D (0x6d bytes), align: 0
   Segment part 21.            Intra module refs:   Channel_Main_PUCK
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            Para_Modi_Monitor_PUCK
-                                   00038348 
+                                   00037E11 
                calls direct
                stack 1 = 00000008 ( 00000008 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 000383B5 - 000383F1 (0x3d bytes), align: 0
+  Relative segment, address: 00037E7E - 00037ED9 (0x5c bytes), align: 0
   Segment part 22.            Intra module refs:   Segment part 28
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Init_All_UART           000383B5        Init_CPU_PUCK (DeviceAbs)
+           Init_All_UART           00037E7E        Init_CPU_PUCK (DeviceAbs)
                calls direct
-               stack 1 = 00000000 ( 00000002 )
+               stack 1 = 00000000 ( 0000000A )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 000383F2 - 0003842C (0x3b bytes), align: 0
+  Relative segment, address: 00037EDA - 00037F14 (0x3b bytes), align: 0
   Segment part 23.            Intra module refs:   Init_All_UART
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Init_DebugChanel_PUCK   000383F2        Main_Init_Print (TaskProc)
+           Init_DebugChanel_PUCK   00037EDA        Main_Init_Print (TaskProc)
                                                    Save_PD_Data (Low_Power)
                                                    Test_HardWare_PUCK (DRV_TEST)
                calls direct
                stack 1 = 00000002 ( 0000000A )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003842D - 0003845E (0x32 bytes), align: 0
+  Relative segment, address: 00037F15 - 00037F46 (0x32 bytes), align: 0
   Segment part 24.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            Close_DebugChanel_PUCK
-                                   0003842D        Main_Init_Print (TaskProc)
+                                   00037F15        Main_Init_Print (TaskProc)
                calls direct
                stack 1 = 00000000 ( 0000000A )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003845F - 00038502 (0xa4 bytes), align: 0
+  Relative segment, address: 00037F47 - 00037FEA (0xa4 bytes), align: 0
   Segment part 25.            Intra module refs:   Channel_Main_PUCK
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Check_Channel_ParaCS    0003845F 
+           Check_Channel_ParaCS    00037F47 
                calls direct
                stack 1 = 00000008 ( 0000000C )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00038503 - 0003850F (0xd bytes), align: 0
+  Relative segment, address: 00037FEB - 00037FF7 (0xd bytes), align: 0
   Segment part 26.            Intra module refs:   Channel_Main_PUCK
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Init_Channel_Sram       00038503 
+           Init_Channel_Sram       00037FEB 
                stack 1 = 00000008 ( 00000000 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00038510 - 0003859E (0x8f bytes), align: 0
+  Relative segment, address: 00037FF8 - 00038086 (0x8f bytes), align: 0
   Segment part 27.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Channel_Main_PUCK       00038510        AppLCDTask_LUCK (TaskProc)
+           Channel_Main_PUCK       00037FF8        AppLCDTask_LUCK (TaskProc)
                calls direct
                stack 1 = 00000000 ( 0000000C )
     -------------------------------------------------------------------------
@@ -2102,65 +2103,65 @@ NEAR_A
            _A_PM2                  000FFF22 
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D010 - 0003D01A (0xb bytes), align: 0
+  Relative segment, address: 0003D02F - 0003D039 (0xb bytes), align: 0
   Segment part 4.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Set_3231_Sclk_Dir       0003D010        Segment part 10 (I2C_Soft)
+           Set_3231_Sclk_Dir       0003D02F        Segment part 10 (I2C_Soft)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D01B - 0003D025 (0xb bytes), align: 0
+  Relative segment, address: 0003D03A - 0003D044 (0xb bytes), align: 0
   Segment part 5.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Set_3231_Sda_Dir        0003D01B        Segment part 10 (I2C_Soft)
+           Set_3231_Sda_Dir        0003D03A        Segment part 10 (I2C_Soft)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D026 - 0003D030 (0xb bytes), align: 0
+  Relative segment, address: 0003D045 - 0003D04F (0xb bytes), align: 0
   Segment part 6.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Set_3231_Sclk_Pin       0003D026        Segment part 10 (I2C_Soft)
+           Set_3231_Sclk_Pin       0003D045        Segment part 10 (I2C_Soft)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D031 - 0003D03B (0xb bytes), align: 0
+  Relative segment, address: 0003D050 - 0003D05A (0xb bytes), align: 0
   Segment part 7.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Set_3231_Sda_Pin        0003D031        Segment part 10 (I2C_Soft)
+           Set_3231_Sda_Pin        0003D050        Segment part 10 (I2C_Soft)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D03C - 0003D042 (0x7 bytes), align: 0
+  Relative segment, address: 0003D05B - 0003D061 (0x7 bytes), align: 0
   Segment part 8.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Get_3231_Sda_Pin        0003D03C        Segment part 10 (I2C_Soft)
+           Get_3231_Sda_Pin        0003D05B        Segment part 10 (I2C_Soft)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D043 - 0003D047 (0x5 bytes), align: 0
+  Relative segment, address: 0003D062 - 0003D066 (0x5 bytes), align: 0
   Segment part 9.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Init_DS3231_IIC_Soft    0003D043        Test_All_RTC (DRV_TEST)
+           Init_DS3231_IIC_Soft    0003D062        Test_All_RTC (DRV_TEST)
                calls direct
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D048 - 0003D09C (0x55 bytes), align: 0
+  Relative segment, address: 0003D067 - 0003D0BB (0x55 bytes), align: 0
   Segment part 11.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           DS3231_Read_Buf         0003D048        Check_ExtRTC_Busy (RTCAbs)
+           DS3231_Read_Buf         0003D067        Check_ExtRTC_Busy (RTCAbs)
                                                    Read_ExtRTC_PUCK (RTCAbs)
                                                    Read_Ext_RTC_Status (RTCAbs)
                calls direct
                stack 1 = 00000004 ( 00000008 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D09D - 0003D0F3 (0x57 bytes), align: 0
+  Relative segment, address: 0003D0BC - 0003D112 (0x57 bytes), align: 0
   Segment part 12.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           DS3231_Write_Buf        0003D09D        Init_ExtRTC_Pulse (RTCAbs)
+           DS3231_Write_Buf        0003D0BC        Init_ExtRTC_Pulse (RTCAbs)
                                                    Read_Ext_RTC_Status (RTCAbs)
                                                    Write_ExtRTC_PUCK (RTCAbs)
                calls direct
@@ -4073,59 +4074,59 @@ FAR_ID
            Def_Para                00008D26 
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00038A8C - 00038AFA (0x6f bytes), align: 0
+  Relative segment, address: 00038AAB - 00038B19 (0x6f bytes), align: 0
   Segment part 53.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Set_Def_Adj_Para        00038A8C        Set_Spec_Data_Proc (Data_Spec)
+           Set_Def_Adj_Para        00038AAB        Set_Spec_Data_Proc (Data_Spec)
                calls direct
                stack 1 = 00000000 ( 0000001A )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00038AFB - 00038BE8 (0xee bytes), align: 0
+  Relative segment, address: 00038B1A - 00038C07 (0xee bytes), align: 0
   Segment part 54.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Read_Def_Para           00038AFB        Read_Data_Trans_Para_From_Rom (Data_Trans)
+           Read_Def_Para           00038B1A        Read_Data_Trans_Para_From_Rom (Data_Trans)
                                                    Read_Energy_Para_From_Rom (Energy)
                                                    Read_Storage_Data (Data_Para)
                calls direct
                stack 1 = 0000000A ( 0000001C )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00038BE9 - 00038C58 (0x70 bytes), align: 0
+  Relative segment, address: 00038C08 - 00038C77 (0x70 bytes), align: 0
   Segment part 55.            Intra module refs:   Write_Def_Para
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Set_All_Def_Data        00038BE9        Set_Spec_Data_Proc (Data_Spec)
+           Set_All_Def_Data        00038C08        Set_Spec_Data_Proc (Data_Spec)
                calls direct
                stack 1 = 0000000E ( 0000000A )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00038C59 - 00038D6B (0x113 bytes), align: 0
+  Relative segment, address: 00038C78 - 00038D8A (0x113 bytes), align: 0
   Segment part 56.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            Set_Def_Para_Except_Adj
-                                   00038C59        Set_Spec_Data_Proc (Data_Spec)
+                                   00038C78        Set_Spec_Data_Proc (Data_Spec)
                calls direct
                stack 1 = 00000000 ( 00000018 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00038D6C - 00038E45 (0xda bytes), align: 0
+  Relative segment, address: 00038D8B - 00038E64 (0xda bytes), align: 0
   Segment part 57.            Intra module refs:   Check_Boot_On_Flag
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Write_Def_Para          00038D6C 
+           Write_Def_Para          00038D8B 
                calls direct
                stack 1 = 0000000A ( 00000018 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00038E46 - 00038ECC (0x87 bytes), align: 0
+  Relative segment, address: 00038E65 - 00038EEB (0x87 bytes), align: 0
   Segment part 59.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Check_Boot_On_Flag      00038E46        Main_Task_PUB (TaskProc)
+           Check_Boot_On_Flag      00038E65        Main_Task_PUB (TaskProc)
                calls direct
                stack 1 = 00000000 ( 00000016 )
     -------------------------------------------------------------------------
@@ -5563,11 +5564,11 @@ FAR_Z
                                                    Write_Hard_EEPROM (Epp_Hard)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D7DB - 0003D7E7 (0xd bytes), align: 0
+  Relative segment, address: 0003D7FA - 0003D806 (0xd bytes), align: 0
   Segment part 13.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Init_IIC_Soft           0003D7DB        SystemInit (systeminit)
+           Init_IIC_Soft           0003D7FA        SystemInit (systeminit)
                calls direct
 
     *************************************************************************
@@ -7312,11 +7313,11 @@ FAR_ID
   SEGMENTS IN THE MODULE
   ======================
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D45B - 0003D4CD (0x73 bytes), align: 0
+  Relative segment, address: 0003D47A - 0003D4EC (0x73 bytes), align: 0
   Segment part 5.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           I2cSoft_Read_nByteS     0003D45B        DS3231_Read_Buf (DS3231_Soft)
+           I2cSoft_Read_nByteS     0003D47A        DS3231_Read_Buf (DS3231_Soft)
                calls direct
                stack 1 = 00000008 ( 0000000C )
 
@@ -9024,37 +9025,37 @@ FAR_ID
   SEGMENTS IN THE MODULE
   ======================
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D298 - 0003D2A3 (0xc bytes), align: 0
+  Relative segment, address: 0003D2B7 - 0003D2C2 (0xc bytes), align: 0
   Segment part 6.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Check_Event_Occuring    0003D298        Get_MultiTimes_Event_Data (Data_Spec)
+           Check_Event_Occuring    0003D2B7        Get_MultiTimes_Event_Data (Data_Spec)
                calls direct
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D2A4 - 0003D30C (0x69 bytes), align: 0
+  Relative segment, address: 0003D2C3 - 0003D32B (0x69 bytes), align: 0
   Segment part 7.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Event_Data_Proc         0003D2A4        Event_Judge_StartAndEnd (EventStatus)
+           Event_Data_Proc         0003D2C3        Event_Judge_StartAndEnd (EventStatus)
                calls direct
                stack 1 = 00000000 ( 0000000E )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D30D - 0003D350 (0x44 bytes), align: 0
+  Relative segment, address: 0003D32C - 0003D36F (0x44 bytes), align: 0
   Segment part 8.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Clear_Event_Data        0003D30D        Check_Clear_Data (Energy)
+           Clear_Event_Data        0003D32C        Check_Clear_Data (Energy)
                calls direct
                stack 1 = 00000000 ( 00000006 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D351 - 0003D358 (0x8 bytes), align: 0
+  Relative segment, address: 0003D370 - 0003D377 (0x8 bytes), align: 0
   Segment part 9.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Set_Def_Event_Data      0003D351        Set_All_Def_Data (Def_Para)
+           Set_Def_Event_Data      0003D370        Set_All_Def_Data (Def_Para)
                calls direct
     -------------------------------------------------------------------------
 <FAR_CONST> 2 (was FAR_CONST)
@@ -9289,92 +9290,92 @@ FAR_Z
   SEGMENTS IN THE MODULE
   ======================
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D619 - 0003D628 (0x10 bytes), align: 0
+  Relative segment, address: 0003D638 - 0003D647 (0x10 bytes), align: 0
   Segment part 2.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            Extend_Event_MultiTimes_Proc
-                                   0003D619        Event_MultiTimes_Proc (Event_MultiTimes)
+                                   0003D638        Event_MultiTimes_Proc (Event_MultiTimes)
                stack 1 = 00000004 ( 00000000 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D629 - 0003D638 (0x10 bytes), align: 0
+  Relative segment, address: 0003D648 - 0003D657 (0x10 bytes), align: 0
   Segment part 3.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            Extend_Event_Cumu_Proc
-                                   0003D629        Event_Cumu_Data_Proc (Event_Cumu)
+                                   0003D648        Event_Cumu_Data_Proc (Event_Cumu)
                stack 1 = 00000004 ( 00000000 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D639 - 0003D639 (0x1 bytes), align: 0
+  Relative segment, address: 0003D658 - 0003D658 (0x1 bytes), align: 0
   Segment part 4.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Extend_Init             0003D639        Main_Task_PUB (TaskProc)
+           Extend_Init             0003D658        Main_Task_PUB (TaskProc)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D63A - 0003D64A (0x11 bytes), align: 0
+  Relative segment, address: 0003D659 - 0003D669 (0x11 bytes), align: 0
   Segment part 6.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Extend_Get_Proto_Data   0003D63A        _Get_DLT645_Spec_Data (Data_Trans)
+           Extend_Get_Proto_Data   0003D659        _Get_DLT645_Spec_Data (Data_Trans)
                stack 1 = 0000000C ( 00000000 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D64B - 0003D65B (0x11 bytes), align: 0
+  Relative segment, address: 0003D66A - 0003D67A (0x11 bytes), align: 0
   Segment part 7.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            Extend_Get_Single_Proto_Data_Proc
-                                   0003D64B        Get_DLT645_Spec_Single_Data (Data_Spec)
+                                   0003D66A        Get_DLT645_Spec_Single_Data (Data_Spec)
                stack 1 = 0000000C ( 00000000 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D65C - 0003D65C (0x1 bytes), align: 0
+  Relative segment, address: 0003D67B - 0003D67B (0x1 bytes), align: 0
   Segment part 8.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Extend_Save_PD_Data     0003D65C        Save_PD_Data (Low_Power)
+           Extend_Save_PD_Data     0003D67B        Save_PD_Data (Low_Power)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D65D - 0003D65D (0x1 bytes), align: 0
+  Relative segment, address: 0003D67C - 0003D67C (0x1 bytes), align: 0
   Segment part 9.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Extend_Set_Prog_Flag    0003D65D        Set_Pog_Flag (Data_Trans)
+           Extend_Set_Prog_Flag    0003D67C        Set_Pog_Flag (Data_Trans)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D65E - 0003D65E (0x1 bytes), align: 0
+  Relative segment, address: 0003D67D - 0003D67D (0x1 bytes), align: 0
   Segment part 10.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Extend_Main_Proc        0003D65E        Energy_Demand_Task (Energy)
+           Extend_Main_Proc        0003D67D        Energy_Demand_Task (Energy)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D65F - 0003D65F (0x1 bytes), align: 0
+  Relative segment, address: 0003D67E - 0003D67E (0x1 bytes), align: 0
   Segment part 11.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            Extend_Def_Event_MultiTimes_Data
-                                   0003D65F        Clear_Event_MultiTimes_Data (Event_MultiTimes)
+                                   0003D67E        Clear_Event_MultiTimes_Data (Event_MultiTimes)
                                                    Set_Def_Event_MultiTimes_Data (Event_MultiTimes)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D660 - 0003D660 (0x1 bytes), align: 0
+  Relative segment, address: 0003D67F - 0003D67F (0x1 bytes), align: 0
   Segment part 12.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            Extend_Set_Def_Event_Cumu_Data
-                                   0003D660        Set_Def_Event_Cumu0_Data (Event_Cumu)
+                                   0003D67F        Set_Def_Event_Cumu0_Data (Event_Cumu)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D661 - 0003D661 (0x1 bytes), align: 0
+  Relative segment, address: 0003D680 - 0003D680 (0x1 bytes), align: 0
   Segment part 13.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            Extend_Set_Def_Energy_Data
-                                   0003D661        Set_Def_Energy_Data (Energy)
+                                   0003D680        Set_Def_Energy_Data (Energy)
 
     *************************************************************************
 
@@ -9403,35 +9404,35 @@ FAR_Z
            Energy_Freeze_Time      000FE485 
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003A14C - 0003A20B (0xc0 bytes), align: 0
+  Relative segment, address: 0003A16B - 0003A22A (0xc0 bytes), align: 0
   Segment part 13.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            Read_Freeze_Data_Para_From_Rom
-                                   0003A14C        Rcv_DLT645_Data_Proc (Data_Trans)
+                                   0003A16B        Rcv_DLT645_Data_Proc (Data_Trans)
                                                    Read_Para_From_Rom (Energy)
                                                    Refresh_Para_From_Rom (Energy)
                calls direct
                stack 1 = 00000000 ( 00000014 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003A20C - 0003A2F9 (0xee bytes), align: 0
+  Relative segment, address: 0003A22B - 0003A318 (0xee bytes), align: 0
   Segment part 14.            Intra module refs:   Freeze_Right_Now
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            Get_Period_Freeze_Data
-                                   0003A20C        Get_Freeze_Data (Data_Spec)
+                                   0003A22B        Get_Freeze_Data (Data_Spec)
                calls direct
                recursive function = 0004
                stack 1 = 00000014 ( 00000022 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003A2FA - 0003A381 (0x88 bytes), align: 0
+  Relative segment, address: 0003A319 - 0003A3A0 (0x88 bytes), align: 0
   Segment part 15.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            Period_Freeze_Data_Proc
-                                   0003A2FA        Energy_Demand_Task (Energy)
+                                   0003A319        Energy_Demand_Task (Energy)
                calls direct
                stack 1 = 00000000 ( 0000000A )
     -------------------------------------------------------------------------
@@ -9444,20 +9445,20 @@ FAR_I
                                    000FD290 
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003A382 - 0003A3EA (0x69 bytes), align: 0
+  Relative segment, address: 0003A3A1 - 0003A409 (0x69 bytes), align: 0
   Segment part 16.            Intra module refs:   Period_Freeze_Data_Proc
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Freeze_Right_Now        0003A382        Rcv_DLT645_Data_Proc (Data_Trans)
+           Freeze_Right_Now        0003A3A1        Rcv_DLT645_Data_Proc (Data_Trans)
                calls direct
                stack 1 = 00000002 ( 00000014 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003A3EB - 0003A46F (0x85 bytes), align: 0
+  Relative segment, address: 0003A40A - 0003A48E (0x85 bytes), align: 0
   Segment part 18.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Set_Def_Freeze_Data     0003A3EB        Set_All_Def_Data (Def_Para)
+           Set_Def_Freeze_Data     0003A40A        Set_All_Def_Data (Def_Para)
                calls direct
                stack 1 = 00000000 ( 00000018 )
     -------------------------------------------------------------------------
@@ -9681,38 +9682,38 @@ FAR_Z
            LED_Pixy8_Const         0000A4F4 
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00039DC1 - 00039E32 (0x72 bytes), align: 0
+  Relative segment, address: 00039DE0 - 00039E51 (0x72 bytes), align: 0
   Segment part 8.             Intra module refs:   SetOnPixyLED8
                                                    SetOrClrPixPiyDot
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           GetPixySegPos_SxNxDx    00039DC1 
+           GetPixySegPos_SxNxDx    00039DE0 
                stack 1 = 00000008 ( 00000004 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00039E33 - 00039EA6 (0x74 bytes), align: 0
+  Relative segment, address: 00039E52 - 00039EC5 (0x74 bytes), align: 0
   Segment part 9.             Intra module refs:   SetOrClrPixPiyDot
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           SetOrClrAndChkSEGCOM    00039E33 
+           SetOrClrAndChkSEGCOM    00039E52 
                stack 1 = 00000008 ( 00000004 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00039EA7 - 00039F57 (0xb1 bytes), align: 0
+  Relative segment, address: 00039EC6 - 00039F76 (0xb1 bytes), align: 0
   Segment part 10.            Intra module refs:   SetOnDevice_D_PUCK
                                                    SetOnDevice_PUCK
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           SetOrClrPixPiyDot       00039EA7 
+           SetOrClrPixPiyDot       00039EC6 
                calls direct
                stack 1 = 00000002 ( 00000008 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00039F58 - 00039F60 (0x9 bytes), align: 0
+  Relative segment, address: 00039F77 - 00039F7F (0x9 bytes), align: 0
   Segment part 11.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           SetOnDevice_PUCK        00039F58        Dis_Per_Item (DRV_TEST)
+           SetOnDevice_PUCK        00039F77        Dis_Per_Item (DRV_TEST)
                                                    lcd_active (interface)
                                                    lcd_angle (interface)
                                                    lcd_assemble (interface)
@@ -9745,29 +9746,29 @@ FAR_Z
                stack 1 = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00039F61 - 00039F6A (0xa bytes), align: 0
+  Relative segment, address: 00039F80 - 00039F89 (0xa bytes), align: 0
   Segment part 12.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           SetOnDevice_D_PUCK      00039F61        lcd_value (interface)
+           SetOnDevice_D_PUCK      00039F80        lcd_value (interface)
                calls direct
                stack 1 = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00039F6B - 00039FE5 (0x7b bytes), align: 0
+  Relative segment, address: 00039F8A - 0003A004 (0x7b bytes), align: 0
   Segment part 13.            Intra module refs:   SetOnLED8Device_PUCK
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           SetOnPixyLED8           00039F6B 
+           SetOnPixyLED8           00039F8A 
                calls direct
                stack 1 = 00000008 ( 00000004 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00039FE6 - 0003A05A (0x75 bytes), align: 0
+  Relative segment, address: 0003A005 - 0003A079 (0x75 bytes), align: 0
   Segment part 14.            Intra module refs:   Main_Dis_Info
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           SetOnLED8Device_PUCK    00039FE6        Dis_Per_Item (DRV_TEST)
+           SetOnLED8Device_PUCK    0003A005        Dis_Per_Item (DRV_TEST)
                                                    Test_Lcd (DRV_TEST)
                                                    lcd_code (interface)
                                                    lcd_events (interface)
@@ -9779,41 +9780,41 @@ FAR_Z
                stack 1 = 00000004 ( 00000008 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003A05B - 0003A097 (0x3d bytes), align: 0
+  Relative segment, address: 0003A07A - 0003A0B6 (0x3d bytes), align: 0
   Segment part 15.            Intra module refs:   FillAllScreen
                                                    Main_Dis_Info
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           UpdataLcdShow           0003A05B        Dis_Per_Item (DRV_TEST)
+           UpdataLcdShow           0003A07A        Dis_Per_Item (DRV_TEST)
                                                    Test_Lcd (DRV_TEST)
                                                    lcd_update (interface)
                calls direct
                stack 1 = 00000004 ( 00000010 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003A098 - 0003A0BF (0x28 bytes), align: 0
+  Relative segment, address: 0003A0B7 - 0003A0DE (0x28 bytes), align: 0
   Segment part 17.            Intra module refs:   MainHTLCD_Puck_Pub
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           FillAllScreen           0003A098 
+           FillAllScreen           0003A0B7 
                calls direct
                stack 1 = 00000002 ( 00000010 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003A0C0 - 0003A0DD (0x1e bytes), align: 0
+  Relative segment, address: 0003A0DF - 0003A0FC (0x1e bytes), align: 0
   Segment part 18.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           InitLcdAllRam           0003A0C0        Test_Lcd (DRV_TEST)
+           InitLcdAllRam           0003A0DF        Test_Lcd (DRV_TEST)
                calls direct
                stack 1 = 00000000 ( 00000010 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003A0DE - 0003A12B (0x4e bytes), align: 0
+  Relative segment, address: 0003A0FD - 0003A14A (0x4e bytes), align: 0
   Segment part 19.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Main_Dis_Info           0003A0DE        Set_Def_Adj_Para (Def_Para)
+           Main_Dis_Info           0003A0FD        Set_Def_Adj_Para (Def_Para)
                                                    Set_Def_Energy_Data (Energy)
                                                    Set_Def_Event_Cumu0_Data (Event_Cumu)
                                                    Set_Def_Event_MultiTimes_Data (Event_MultiTimes)
@@ -9823,29 +9824,29 @@ FAR_Z
                stack 1 = 00000004 ( 00000008 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003A12C - 0003A12C (0x1 bytes), align: 0
+  Relative segment, address: 0003A14B - 0003A14B (0x1 bytes), align: 0
   Segment part 20.            Intra module refs:   MainHTLCD_Puck_Pub
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Chk_Table_Conflict      0003A12C        Test_HardWare_PUCK (DRV_TEST)
+           Chk_Table_Conflict      0003A14B        Test_HardWare_PUCK (DRV_TEST)
                stack 1 = 00000002 ( 00000000 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003A12D - 0003A140 (0x14 bytes), align: 0
+  Relative segment, address: 0003A14C - 0003A15F (0x14 bytes), align: 0
   Segment part 22.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           MainHTLCD_Puck_Pub      0003A12D        Init_ExtDevice_PUCK (DeviceAbs)
+           MainHTLCD_Puck_Pub      0003A14C        Init_ExtDevice_PUCK (DeviceAbs)
                                                    LCD_main_LUCK (Lcd_main_LUCK)
                calls direct
                stack 1 = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003A141 - 0003A14B (0xb bytes), align: 0
+  Relative segment, address: 0003A160 - 0003A16A (0xb bytes), align: 0
   Segment part 23.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Clr_Screen_PUCK         0003A141        Main_Task_PUB (TaskProc)
+           Clr_Screen_PUCK         0003A160        Main_Task_PUB (TaskProc)
                calls direct
                stack 1 = 00000000 ( 00000002 )
 
@@ -9857,50 +9858,50 @@ FAR_Z
   SEGMENTS IN THE MODULE
   ======================
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003AFF0 - 0003B03B (0x4c bytes), align: 0
+  Relative segment, address: 0003B00F - 0003B05A (0x4c bytes), align: 0
   Segment part 5.             Intra module refs:   Init_HTLCD_Mode
                                                    Init_LCD_Loop
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           HTLCDWriteACommand      0003AFF0 
+           HTLCDWriteACommand      0003B00F 
                calls direct
                stack 1 = 00000004 ( 00000006 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B03C - 0003B0B0 (0x75 bytes), align: 0
+  Relative segment, address: 0003B05B - 0003B0CF (0x75 bytes), align: 0
   Segment part 6.             Intra module refs:   HTLCDWriteMultiData
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           HTLCDInWriteMode        0003B03C 
+           HTLCDInWriteMode        0003B05B 
                calls direct
                stack 1 = 0000000E ( 00000010 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B0B1 - 0003B154 (0xa4 bytes), align: 0
+  Relative segment, address: 0003B0D0 - 0003B173 (0xa4 bytes), align: 0
   Segment part 7.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           HTLCDWriteMultiData     0003B0B1        UpdataLcdShow (HTLCD_LIB)
+           HTLCDWriteMultiData     0003B0D0        UpdataLcdShow (HTLCD_LIB)
                calls direct
                stack 1 = 00000008 ( 00000012 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B155 - 0003B1E2 (0x8e bytes), align: 0
+  Relative segment, address: 0003B174 - 0003B201 (0x8e bytes), align: 0
   Segment part 8.             Intra module refs:   Segment part 10
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Init_HTLCD_Mode         0003B155        Clr_Screen_PUCK (HTLCD_LIB)
+           Init_HTLCD_Mode         0003B174        Clr_Screen_PUCK (HTLCD_LIB)
                                                    Init_ExtDevice_PUCK (DeviceAbs)
                                                    Test_Lcd (DRV_TEST)
                calls direct
                stack 1 = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B1E3 - 0003B2A6 (0xc4 bytes), align: 0
+  Relative segment, address: 0003B202 - 0003B2C5 (0xc4 bytes), align: 0
   Segment part 9.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Init_LCD_Loop           0003B1E3        LCD_main_LUCK (Lcd_main_LUCK)
+           Init_LCD_Loop           0003B202        LCD_main_LUCK (Lcd_main_LUCK)
                calls direct
                stack 1 = 00000000 ( 00000008 )
     -------------------------------------------------------------------------
@@ -9950,79 +9951,79 @@ FAR_I
            CONST_I2C_PORT          000FCF9A 
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 000392A7 - 00039307 (0x61 bytes), align: 0
+  Relative segment, address: 000392C6 - 00039326 (0x61 bytes), align: 0
   Segment part 12.            Intra module refs:   I2cSoft_Reset
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           I2cSoft_Open            000392A7        Init_DS3231_IIC_Soft (DS3231_Soft)
+           I2cSoft_Open            000392C6        Init_DS3231_IIC_Soft (DS3231_Soft)
                                                    Init_IIC_Soft (DrvPub)
                calls direct and indirect
                stack 1 = 0000000A ( 0000000C )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00039308 - 0003935B (0x54 bytes), align: 0
+  Relative segment, address: 00039327 - 0003937A (0x54 bytes), align: 0
   Segment part 14.            Intra module refs:   I2cSoft_Reset
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           I2cSoft_Start           00039308        DS3231_Read_Buf (DS3231_Soft)
+           I2cSoft_Start           00039327        DS3231_Read_Buf (DS3231_Soft)
                                                    DS3231_Write_Buf (DS3231_Soft)
                calls direct and indirect
                stack 1 = 0000000A ( 0000000C )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003935C - 000393A7 (0x4c bytes), align: 0
+  Relative segment, address: 0003937B - 000393C6 (0x4c bytes), align: 0
   Segment part 15.            Intra module refs:   I2cSoft_Reset
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           I2cSoft_Stop            0003935C        DS3231_Read_Buf (DS3231_Soft)
+           I2cSoft_Stop            0003937B        DS3231_Read_Buf (DS3231_Soft)
                                                    DS3231_Write_Buf (DS3231_Soft)
                calls indirect
                stack 1 = 0000000A ( 00000004 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 000393A8 - 00039403 (0x5c bytes), align: 0
+  Relative segment, address: 000393C7 - 00039422 (0x5c bytes), align: 0
   Segment part 16.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           I2cSoft_Send_N_Ack      000393A8        I2cSoft_Read_nByteS (Epp_Soft)
+           I2cSoft_Send_N_Ack      000393C7        I2cSoft_Read_nByteS (Epp_Soft)
                calls indirect
                stack 1 = 00000000 ( 00000004 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00039404 - 000394BD (0xba bytes), align: 0
+  Relative segment, address: 00039423 - 000394DC (0xba bytes), align: 0
   Segment part 17.            Intra module refs:   I2cSoft_Send_Byte
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           I2cSoft_Check_Ack       00039404 
+           I2cSoft_Check_Ack       00039423 
                calls direct and indirect
                stack 1 = 00000006 ( 0000000C )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 000394BE - 00039538 (0x7b bytes), align: 0
+  Relative segment, address: 000394DD - 00039557 (0x7b bytes), align: 0
   Segment part 18.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           I2cSoft_Send_Byte       000394BE        DS3231_Read_Buf (DS3231_Soft)
+           I2cSoft_Send_Byte       000394DD        DS3231_Read_Buf (DS3231_Soft)
                                                    DS3231_Write_Buf (DS3231_Soft)
                calls direct and indirect
                stack 1 = 00000000 ( 00000006 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00039539 - 000395F1 (0xb9 bytes), align: 0
+  Relative segment, address: 00039558 - 00039610 (0xb9 bytes), align: 0
   Segment part 19.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           I2cSoft_Reset           00039539        DS3231_Read_Buf (DS3231_Soft)
+           I2cSoft_Reset           00039558        DS3231_Read_Buf (DS3231_Soft)
                                                    DS3231_Write_Buf (DS3231_Soft)
                calls direct and indirect
                stack 1 = 00000000 ( 00000012 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 000395F2 - 0003966F (0x7e bytes), align: 0
+  Relative segment, address: 00039611 - 0003968E (0x7e bytes), align: 0
   Segment part 20.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           I2cSoft_Read_Byte       000395F2        I2cSoft_Read_nByteS (Epp_Soft)
+           I2cSoft_Read_Byte       00039611        I2cSoft_Read_nByteS (Epp_Soft)
                calls indirect
                stack 1 = 00000004 ( 00000004 )
     -------------------------------------------------------------------------
@@ -10141,105 +10142,105 @@ FAR_Z
                                                    Write_Hard_EEPROM (Epp_Hard)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003A76A - 0003A7DD (0x74 bytes), align: 0
+  Relative segment, address: 0003A789 - 0003A7FC (0x74 bytes), align: 0
   Segment part 22.            Intra module refs:   I2cGetDataAckSet
                                                    I2cGetDataNackSet
                                                    I2cPutData
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           I2cWait                 0003A76A 
+           I2cWait                 0003A789 
                calls direct
                stack 1 = 00000002 ( 0000000A )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003A7DE - 0003A7E1 (0x4 bytes), align: 0
+  Relative segment, address: 0003A7FD - 0003A800 (0x4 bytes), align: 0
   Segment part 23.            Intra module refs:   I2cStartCondition
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           I2cStart                0003A7DE        Read_ChangeAddr_EEPROM (Epp_Hard)
+           I2cStart                0003A7FD        Read_ChangeAddr_EEPROM (Epp_Hard)
                                                    Read_FixAddr_EEPROM (Epp_Hard)
                stack 1 = 00000002 ( 00000000 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003A7E2 - 0003A829 (0x48 bytes), align: 0
+  Relative segment, address: 0003A801 - 0003A848 (0x48 bytes), align: 0
   Segment part 24.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           I2cGetDataNackSet       0003A7E2        Read_ChangeAddr_EEPROM (Epp_Hard)
+           I2cGetDataNackSet       0003A801        Read_ChangeAddr_EEPROM (Epp_Hard)
                                                    Read_FixAddr_EEPROM (Epp_Hard)
                calls direct
                stack 1 = 00000004 ( 0000000A )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003A82A - 0003A871 (0x48 bytes), align: 0
+  Relative segment, address: 0003A849 - 0003A890 (0x48 bytes), align: 0
   Segment part 25.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           I2cGetDataAckSet        0003A82A        Read_ChangeAddr_EEPROM (Epp_Hard)
+           I2cGetDataAckSet        0003A849        Read_ChangeAddr_EEPROM (Epp_Hard)
                                                    Read_FixAddr_EEPROM (Epp_Hard)
                calls direct
                stack 1 = 00000004 ( 0000000A )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003A872 - 0003A8A1 (0x30 bytes), align: 0
+  Relative segment, address: 0003A891 - 0003A8C0 (0x30 bytes), align: 0
   Segment part 26.            Intra module refs:   I2cPutAddress
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           I2cPutData              0003A872        Read_ChangeAddr_EEPROM (Epp_Hard)
+           I2cPutData              0003A891        Read_ChangeAddr_EEPROM (Epp_Hard)
                                                    Read_FixAddr_EEPROM (Epp_Hard)
                                                    Write_Hard_EEPROM (Epp_Hard)
                calls direct
                stack 1 = 00000002 ( 0000000A )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003A8A2 - 0003A8D5 (0x34 bytes), align: 0
+  Relative segment, address: 0003A8C1 - 0003A8F4 (0x34 bytes), align: 0
   Segment part 27.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           I2cPutAddress           0003A8A2        Read_ChangeAddr_EEPROM (Epp_Hard)
+           I2cPutAddress           0003A8C1        Read_ChangeAddr_EEPROM (Epp_Hard)
                                                    Read_FixAddr_EEPROM (Epp_Hard)
                                                    Write_Hard_EEPROM (Epp_Hard)
                calls direct
                stack 1 = 00000000 ( 0000000A )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003A8D6 - 0003A95B (0x86 bytes), align: 0
+  Relative segment, address: 0003A8F5 - 0003A97A (0x86 bytes), align: 0
   Segment part 28.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           I2cStartCondition       0003A8D6        Read_ChangeAddr_EEPROM (Epp_Hard)
+           I2cStartCondition       0003A8F5        Read_ChangeAddr_EEPROM (Epp_Hard)
                                                    Read_FixAddr_EEPROM (Epp_Hard)
                                                    Write_Hard_EEPROM (Epp_Hard)
                calls direct
                stack 1 = 00000000 ( 0000000A )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003A95C - 0003A95F (0x4 bytes), align: 0
+  Relative segment, address: 0003A97B - 0003A97E (0x4 bytes), align: 0
   Segment part 29.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           I2cStopCondition        0003A95C        Read_ChangeAddr_EEPROM (Epp_Hard)
+           I2cStopCondition        0003A97B        Read_ChangeAddr_EEPROM (Epp_Hard)
                                                    Read_FixAddr_EEPROM (Epp_Hard)
                                                    Write_Hard_EEPROM (Epp_Hard)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003A960 - 0003AA1A (0xbb bytes), align: 0
+  Relative segment, address: 0003A97F - 0003AA39 (0xbb bytes), align: 0
   Segment part 30.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           I2cReset                0003A960        Read_ChangeAddr_EEPROM (Epp_Hard)
+           I2cReset                0003A97F        Read_ChangeAddr_EEPROM (Epp_Hard)
                                                    Read_FixAddr_EEPROM (Epp_Hard)
                                                    Write_Hard_EEPROM (Epp_Hard)
                calls direct
                stack 1 = 00000000 ( 00000006 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003AA1B - 0003AA56 (0x3c bytes), align: 0
+  Relative segment, address: 0003AA3A - 0003AA75 (0x3c bytes), align: 0
   Segment part 31.            Intra module refs:   I2cReset
                                                    I2cStartCondition
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           I2cInit                 0003AA1B        SystemInit (systeminit)
+           I2cInit                 0003AA3A        SystemInit (systeminit)
                stack 1 = 00000002 ( 00000000 )
     -------------------------------------------------------------------------
 <FAR_CONST,FSWITCH> 1 (was FAR_CONST)
@@ -10345,18 +10346,18 @@ NEAR_A
            _A_EGN1                 000FFF3B 
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D359 - 0003D3CB (0x73 bytes), align: 0
+  Relative segment, address: 0003D378 - 0003D3EA (0x73 bytes), align: 0
   Segment part 18.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           INTP_Init               0003D359        SystemInit (systeminit)
+           INTP_Init               0003D378        SystemInit (systeminit)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D3CC - 0003D3DB (0x10 bytes), align: 0
+  Relative segment, address: 0003D3EB - 0003D3FA (0x10 bytes), align: 0
   Segment part 19.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           KEY_Init                0003D3CC        SystemInit (systeminit)
+           KEY_Init                0003D3EB        SystemInit (systeminit)
 
     *************************************************************************
 
@@ -10828,18 +10829,18 @@ NEAR_A
            _A_LVIS                 000FFFAA 
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D78B - 0003D797 (0xd bytes), align: 0
+  Relative segment, address: 0003D7AA - 0003D7B6 (0xd bytes), align: 0
   Segment part 5.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           LVI_Init                0003D78B        SystemInit (systeminit)
+           LVI_Init                0003D7AA        SystemInit (systeminit)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D798 - 0003D7B9 (0x22 bytes), align: 0
+  Relative segment, address: 0003D7B7 - 0003D7D8 (0x22 bytes), align: 0
   Segment part 6.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           LVI_Start               0003D798        Init_CPU_PUCK (DeviceAbs)
+           LVI_Start               0003D7B7        Init_CPU_PUCK (DeviceAbs)
 
     *************************************************************************
 
@@ -10931,67 +10932,67 @@ FAR_I
            _Dis_GetData_Buf        000FCFD4        getdata (interface)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B545 - 0003B5C7 (0x83 bytes), align: 0
+  Relative segment, address: 0003B564 - 0003B5E6 (0x83 bytes), align: 0
   Segment part 20.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Set_Para_Modi_DI        0003B545        Set_Para_Modify (Data_Trans)
+           Set_Para_Modi_DI        0003B564        Set_Para_Modify (Data_Trans)
                calls direct
                stack 1 = 00000000 ( 0000000E )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B5C8 - 0003B65E (0x97 bytes), align: 0
+  Relative segment, address: 0003B5E7 - 0003B67D (0x97 bytes), align: 0
   Segment part 21.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Get_Para_Modi_DI        0003B5C8        Dis_Jump_Para (process)
+           Get_Para_Modi_DI        0003B5E7        Dis_Jump_Para (process)
                calls direct
                stack 1 = 00000000 ( 0000000E )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B65F - 0003B6C0 (0x62 bytes), align: 0
+  Relative segment, address: 0003B67E - 0003B6DF (0x62 bytes), align: 0
   Segment part 22.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Get_Para_Modi_Flag      0003B65F        lcd_data (interface)
+           Get_Para_Modi_Flag      0003B67E        lcd_data (interface)
                calls direct
                stack 1 = 00000000 ( 0000000A )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B6C1 - 0003B6D9 (0x19 bytes), align: 0
+  Relative segment, address: 0003B6E0 - 0003B6F8 (0x19 bytes), align: 0
   Segment part 23.            Intra module refs:   LCD_Init_PUCK
                                                    LCD_Task_Monitor
                                                    LCD_main_LUCK
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Clr_LCDSleep_Timer      0003B6C1        Channel_DataReceive_PUCK (UartAbs)
+           Clr_LCDSleep_Timer      0003B6E0        Channel_DataReceive_PUCK (UartAbs)
                                                    Key_Fast_LCD_Proc (process)
                stack 1 = 00000004 ( 00000002 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B6DA - 0003B742 (0x69 bytes), align: 0
+  Relative segment, address: 0003B6F9 - 0003B761 (0x69 bytes), align: 0
   Segment part 24.            Intra module refs:   LCD_main_LUCK
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           LCD_Task_Monitor        0003B6DA 
+           LCD_Task_Monitor        0003B6F9 
                calls direct
                stack 1 = 00000002 ( 00000008 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B743 - 0003B76A (0x28 bytes), align: 0
+  Relative segment, address: 0003B762 - 0003B789 (0x28 bytes), align: 0
   Segment part 25.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           LCD_Init_PUCK           0003B743        Main_Task_PUB (TaskProc)
+           LCD_Init_PUCK           0003B762        Main_Task_PUB (TaskProc)
                calls direct
                stack 1 = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B76B - 0003B7B9 (0x4f bytes), align: 0
+  Relative segment, address: 0003B78A - 0003B7D8 (0x4f bytes), align: 0
   Segment part 26.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           LCD_main_LUCK           0003B76B        AppLCDTask_LUCK (TaskProc)
+           LCD_main_LUCK           0003B78A        AppLCDTask_LUCK (TaskProc)
                calls direct
                stack 1 = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
@@ -11941,11 +11942,11 @@ OPTBYTE
            opbyte3                 000000C3 
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D728 - 0003D75B (0x34 bytes), align: 0
+  Relative segment, address: 0003D747 - 0003D77A (0x34 bytes), align: 0
   Segment part 7.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           main                    0003D728        Segment part 1 (?__MAIN_CALL)
+           main                    0003D747        Segment part 1 (?__MAIN_CALL)
                calls direct
                stack 1 = 00000000 ( 0000000E )
     -------------------------------------------------------------------------
@@ -11978,61 +11979,61 @@ FAR_Z
                                                    Retry_WritePara_To_IC (MeasuLib)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003AA57 - 0003AB30 (0xda bytes), align: 0
+  Relative segment, address: 0003AA76 - 0003AB4F (0xda bytes), align: 0
   Segment part 8.             Intra module refs:   Measu_RdAndCompData
                                                    Measu_RdCompData
                                                    Measu_WrAndCompData
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Measu_RdData            0003AA57 
+           Measu_RdData            0003AA76 
                calls direct
                stack 1 = 0000000C ( 0000000C )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003AB31 - 0003ABDF (0xaf bytes), align: 0
+  Relative segment, address: 0003AB50 - 0003ABFE (0xaf bytes), align: 0
   Segment part 9.             Intra module refs:   Measu_WrAndCompData
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Measu_WrData            0003AB31        Load_Adj_OnePara_To_IC (MeasuLib)
+           Measu_WrData            0003AB50        Load_Adj_OnePara_To_IC (MeasuLib)
                                                    Load_All_Para_To_IC (MeasuLib)
                                                    Load_Spec_Adj_Para_To_IC (MeasuLib)
                calls direct
                stack 1 = 00000008 ( 0000000A )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003ABE0 - 0003AC05 (0x26 bytes), align: 0
+  Relative segment, address: 0003ABFF - 0003AC24 (0x26 bytes), align: 0
   Segment part 10.            Intra module refs:   Measu_RdAndCompData
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Measu_RdCompData        0003ABE0 
+           Measu_RdCompData        0003ABFF 
                calls direct
                stack 1 = 00000008 ( 0000000A )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003AC06 - 0003AC3B (0x36 bytes), align: 0
+  Relative segment, address: 0003AC25 - 0003AC5A (0x36 bytes), align: 0
   Segment part 12.            Intra module refs:   Measu_WrAndCompData_3Times
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Measu_WrAndCompData     0003AC06 
+           Measu_WrAndCompData     0003AC25 
                calls direct
                stack 1 = 00000008 ( 00000008 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003AC3C - 0003AC87 (0x4c bytes), align: 0
+  Relative segment, address: 0003AC5B - 0003ACA6 (0x4c bytes), align: 0
   Segment part 13.            Intra module refs:   Measu_RdAndCompData_3Times
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Measu_RdAndCompData     0003AC3C 
+           Measu_RdAndCompData     0003AC5B 
                calls direct
                stack 1 = 00000006 ( 00000018 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003AC88 - 0003ACDD (0x56 bytes), align: 0
+  Relative segment, address: 0003ACA7 - 0003ACFC (0x56 bytes), align: 0
   Segment part 14.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            Measu_RdAndCompData_3Times
-                                   0003AC88        Clr_Cal_Requst (MeasuLib)
+                                   0003ACA7        Clr_Cal_Requst (MeasuLib)
                                                    GetCurrValue_PerOne (MeasuProc)
                                                    GetEnergChangeValue_PerOne (MeasuProc)
                                                    GetFreqValue_PUCK (MeasuProc)
@@ -12050,12 +12051,12 @@ FAR_Z
                stack 1 = 00000004 ( 0000000A )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003ACDE - 0003AD36 (0x59 bytes), align: 0
+  Relative segment, address: 0003ACFD - 0003AD55 (0x59 bytes), align: 0
   Segment part 15.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            Measu_WrAndCompData_3Times
-                                   0003ACDE        Cal_Reg_Write (MeasuLib)
+                                   0003ACFD        Cal_Reg_Write (MeasuLib)
                                                    Load_Spec_Adj_Para_To_IC (MeasuLib)
                calls direct
                stack 1 = 00000004 ( 0000000C )
@@ -12504,22 +12505,22 @@ FAR_Z
                                                    Load_Spec_Adj_Para_To_IC (MeasuLib)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D0F4 - 0003D159 (0x66 bytes), align: 0
+  Relative segment, address: 0003D113 - 0003D178 (0x66 bytes), align: 0
   Segment part 10.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Get_Buf_MulitByte_Sum   0003D0F4        Check_Frame_Format (Data_Trans)
+           Get_Buf_MulitByte_Sum   0003D113        Check_Frame_Format (Data_Trans)
                                                    DLT645_Data_Pack (Data_Trans)
                calls direct
                stack 1 = 00000008 ( 0000000A )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D15A - 0003D1D2 (0x79 bytes), align: 0
+  Relative segment, address: 0003D179 - 0003D1F1 (0x79 bytes), align: 0
   Segment part 11.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            Read_Storage_Data_PUCK
-                                   0003D15A        GetSysModeProc (MeasuProc)
+                                   0003D179        GetSysModeProc (MeasuProc)
                                                    Get_Power_Save_Time (DRV_TEST)
                                                    Get_Pulse_Para (MeasuPulse)
                                                    Init_Event_Instant_Para (EventInstant)
@@ -13643,30 +13644,30 @@ FAR_Z
                                                    Inter_CF2 (InterrAbs)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003AD37 - 0003AF75 (0x23f bytes), align: 0
+  Relative segment, address: 0003AD56 - 0003AF94 (0x23f bytes), align: 0
   Segment part 9.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Get_Pulse_Para          0003AD37        Init_Para (MeasuProc)
+           Get_Pulse_Para          0003AD56        Init_Para (MeasuProc)
                                                    MeasuPara_Modi_PUCK (MeasuProc)
                calls direct
                stack 1 = 00000000 ( 00000014 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003AF76 - 0003AFB2 (0x3d bytes), align: 0
+  Relative segment, address: 0003AF95 - 0003AFD1 (0x3d bytes), align: 0
   Segment part 10.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Send_Acpower_Pulse      0003AF76        Inter_CF1 (InterrAbs)
+           Send_Acpower_Pulse      0003AF95        Inter_CF1 (InterrAbs)
                calls direct
                stack 1 = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003AFB3 - 0003AFEF (0x3d bytes), align: 0
+  Relative segment, address: 0003AFD2 - 0003B00E (0x3d bytes), align: 0
   Segment part 11.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Send_Reacpower_Pulse    0003AFB3        Inter_CF2 (InterrAbs)
+           Send_Reacpower_Pulse    0003AFD2        Inter_CF2 (InterrAbs)
                calls direct
                stack 1 = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
@@ -13997,21 +13998,21 @@ FAR_ID
   SEGMENTS IN THE MODULE
   ======================
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003C244 - 0003C33B (0xf8 bytes), align: 0
+  Relative segment, address: 0003C263 - 0003C35A (0xf8 bytes), align: 0
   Segment part 7.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Read_PHY_Mem_PUCK       0003C244        Get_DLT645_Spec_Single_Data (Data_Spec)
+           Read_PHY_Mem_PUCK       0003C263        Get_DLT645_Spec_Single_Data (Data_Spec)
                                                    Read_PHY_Mem (Memory)
                calls direct
                stack 1 = 0000000C ( 0000000C )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003C33C - 0003C3FB (0xc0 bytes), align: 0
+  Relative segment, address: 0003C35B - 0003C41A (0xc0 bytes), align: 0
   Segment part 8.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Write_PHY_Mem_PUCK      0003C33C        Write_PHY_Mem (Memory)
+           Write_PHY_Mem_PUCK      0003C35B        Write_PHY_Mem (Memory)
                calls direct
                stack 1 = 00000008 ( 0000000C )
     -------------------------------------------------------------------------
@@ -14052,20 +14053,20 @@ FAR_Z
            Task_Monitor            000FE502 
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003BA11 - 0003BA49 (0x39 bytes), align: 0
+  Relative segment, address: 0003BA30 - 0003BA68 (0x39 bytes), align: 0
   Segment part 11.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Monitor_Init            0003BA11        Main_Task_PUB (TaskProc)
+           Monitor_Init            0003BA30        Main_Task_PUB (TaskProc)
                calls direct
                stack 1 = 00000000 ( 00000012 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003BA4A - 0003BB10 (0xc7 bytes), align: 0
+  Relative segment, address: 0003BA69 - 0003BB2F (0xc7 bytes), align: 0
   Segment part 12.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Clear_Task_Dog          0003BA4A        AppEnergeTask_HUCK (TaskProc)
+           Clear_Task_Dog          0003BA69        AppEnergeTask_HUCK (TaskProc)
                                                    AppEventTask_PUCK (TaskProc)
                                                    AppLCDTask_LUCK (TaskProc)
                                                    AppMeasuTask_PUCK (TaskProc)
@@ -14076,11 +14077,11 @@ FAR_Z
                stack 1 = 00000000 ( 0000000C )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003BB11 - 0003BC5F (0x14f bytes), align: 0
+  Relative segment, address: 0003BB30 - 0003BC7E (0x14f bytes), align: 0
   Segment part 13.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Task_Monitor_Proc       0003BB11        Main_Task_PUB (TaskProc)
+           Task_Monitor_Proc       0003BB30        Main_Task_PUB (TaskProc)
                                                    Wait_Tasks_Sleep (Low_Power)
                calls direct
                stack 1 = 00000000 ( 00000014 )
@@ -14384,29 +14385,29 @@ FAR_Z
   SEGMENTS IN THE MODULE
   ======================
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B2A7 - 0003B348 (0xa2 bytes), align: 0
+  Relative segment, address: 0003B2C6 - 0003B367 (0xa2 bytes), align: 0
   Segment part 14.            Intra module refs:   OS_Task_Context_Chk
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Check_Task_Stk          0003B2A7 
+           Check_Task_Stk          0003B2C6 
                calls direct
                stack 1 = 00000004 ( 0000000C )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B349 - 0003B3CF (0x87 bytes), align: 0
+  Relative segment, address: 0003B368 - 0003B3EE (0x87 bytes), align: 0
   Segment part 16.            Intra module refs:   Print_Task_Stk_Left
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Calc_Stk_Left           0003B349        OS_Create_Task (OS_Core)
+           Calc_Stk_Left           0003B368        OS_Create_Task (OS_Core)
                calls direct
                stack 1 = 00000004 ( 00000010 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B3D0 - 0003B409 (0x3a bytes), align: 0
+  Relative segment, address: 0003B3EF - 0003B428 (0x3a bytes), align: 0
   Segment part 17.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Get_Cur_Task_ID         0003B3D0        Check_Data_Avail (Energy)
+           Get_Cur_Task_ID         0003B3EF        Check_Data_Avail (Energy)
                                                    Check_Tasks_Sleep_Done (Low_Power)
                                                    Clear_Task_Dog (Monitor)
                                                    Get_Para_Modify (Data_Trans)
@@ -14416,11 +14417,11 @@ FAR_Z
                stack 1 = 00000000 ( 0000000A )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B40A - 0003B443 (0x3a bytes), align: 0
+  Relative segment, address: 0003B429 - 0003B462 (0x3a bytes), align: 0
   Segment part 18.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Get_Cur_Task_Num        0003B40A        Check_Tasks_Sleep_Done (Low_Power)
+           Get_Cur_Task_Num        0003B429        Check_Tasks_Sleep_Done (Low_Power)
                                                    Clear_Task_Dog (Monitor)
                                                    Set_Para_Modify (Data_Trans)
                                                    WR_Memory_Clear_Dog (Memory)
@@ -14428,29 +14429,29 @@ FAR_Z
                stack 1 = 00000000 ( 0000000A )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B444 - 0003B491 (0x4e bytes), align: 0
+  Relative segment, address: 0003B463 - 0003B4B0 (0x4e bytes), align: 0
   Segment part 20.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Print_Task_Stk_Left     0003B444        Task_Monitor_Proc (Monitor)
+           Print_Task_Stk_Left     0003B463        Task_Monitor_Proc (Monitor)
                calls direct
                stack 1 = 00000000 ( 0000000E )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B492 - 0003B50F (0x7e bytes), align: 0
+  Relative segment, address: 0003B4B1 - 0003B52E (0x7e bytes), align: 0
   Segment part 21.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           OS_Task_Context_Chk     0003B492        OS_Task_Switch (OS_Core)
+           OS_Task_Context_Chk     0003B4B1        OS_Task_Switch (OS_Core)
                calls direct
                stack 1 = 00000000 ( 0000000C )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B510 - 0003B544 (0x35 bytes), align: 0
+  Relative segment, address: 0003B52F - 0003B563 (0x35 bytes), align: 0
   Segment part 22.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           OS_Tick_Hook            0003B510        OS_Tick_ISR (OS_Core)
+           OS_Tick_Hook            0003B52F        OS_Tick_ISR (OS_Core)
                stack 1 = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 FAR_Z
@@ -15259,6 +15260,7 @@ FAR_Z
                                                    Get_Time_From_EXT_RTC (Clock)
                                                    Get_Time_From_Ram_Rom (Clock)
                                                    Init_All_Cannel (Channel)
+                                                   Init_All_UART (Channel)
                                                    Init_Clock (Clock)
                                                    Init_Clock_Ram_Para (Clock)
                                                    Init_Data_Trans_Ram_Para (Data_Trans)
@@ -15452,29 +15454,29 @@ FAR_Z
            OS_Sem                  000FDBCA        Save_PD_Data (Low_Power)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00037B39 - 00037B89 (0x51 bytes), align: 0
+  Relative segment, address: 00038087 - 000380D7 (0x51 bytes), align: 0
   Segment part 10.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           OS_Sem_Clr              00037B39        Init_Sem (Energy)
+           OS_Sem_Clr              00038087        Init_Sem (Energy)
                calls direct
                stack 1 = 00000000 ( 00000012 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00037B8A - 00037C37 (0xae bytes), align: 0
+  Relative segment, address: 000380D8 - 00038185 (0xae bytes), align: 0
   Segment part 11.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           OS_Sem_Init             00037B8A        Init_Sem (Energy)
+           OS_Sem_Init             000380D8        Init_Sem (Energy)
                calls direct
                stack 1 = 00000000 ( 0000000C )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00037C38 - 00037D52 (0x11b bytes), align: 0
+  Relative segment, address: 00038186 - 000382A0 (0x11b bytes), align: 0
   Segment part 12.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           OS_Sem_Post             00037C38        All_Loss_Vol_Counts_Time_Proc (Event_Cumu)
+           OS_Sem_Post             00038186        All_Loss_Vol_Counts_Time_Proc (Event_Cumu)
                                                    All_Loss_Vol_Data_Proc (Event_MultiTimes)
                                                    Check_Today_Holiday (Energy)
                                                    Clear_Event_MultiTimes_Data (Event_MultiTimes)
@@ -15502,20 +15504,20 @@ FAR_Z
                stack 1 = 00000000 ( 0000000E )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00037D53 - 00037E0B (0xb9 bytes), align: 0
+  Relative segment, address: 000382A1 - 00038359 (0xb9 bytes), align: 0
   Segment part 13.            Intra module refs:   OS_Sem_Pend
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            OS_Check_Task_Sem_Lock
-                                   00037D53 
+                                   000382A1 
                stack 1 = 00000006 ( 0000000C )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00037E0C - 0003806F (0x264 bytes), align: 0
+  Relative segment, address: 0003835A - 000385BD (0x264 bytes), align: 0
   Segment part 14.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           OS_Sem_Pend             00037E0C        All_Loss_Vol_Counts_Time_Proc (Event_Cumu)
+           OS_Sem_Pend             0003835A        All_Loss_Vol_Counts_Time_Proc (Event_Cumu)
                                                    All_Loss_Vol_Data_Proc (Event_MultiTimes)
                                                    Check_Today_Holiday (Energy)
                                                    Clear_Event_MultiTimes_Data (Event_MultiTimes)
@@ -15612,231 +15614,231 @@ NEAR_A
            _A_POM14                000F005E 
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B7BA - 0003B889 (0xd0 bytes), align: 0
+  Relative segment, address: 0003B7D9 - 0003B8A8 (0xd0 bytes), align: 0
   Segment part 37.            Intra module refs:   Segment part 115
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           PORT_Init               0003B7BA        SystemInit (systeminit)
+           PORT_Init               0003B7D9        SystemInit (systeminit)
                calls direct
                stack 1 = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B88A - 0003B898 (0xf bytes), align: 0
+  Relative segment, address: 0003B8A9 - 0003B8B7 (0xf bytes), align: 0
   Segment part 39.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           PORT_ChangeP15Output    0003B88A        UART3_Init_suck (Serial)
+           PORT_ChangeP15Output    0003B8A9        UART3_Init_suck (Serial)
                                                    UART3_SendData_suck (Serial)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B899 - 0003B8A7 (0xf bytes), align: 0
+  Relative segment, address: 0003B8B8 - 0003B8C6 (0xf bytes), align: 0
   Segment part 41.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           PORT_ChangeP20Output    0003B899        MeasuIC_HardRst (MeasuLib)
+           PORT_ChangeP20Output    0003B8B8        MeasuIC_HardRst (MeasuLib)
                                                    Test_Measure (DRV_TEST)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B8A8 - 0003B8B6 (0xf bytes), align: 0
+  Relative segment, address: 0003B8C7 - 0003B8D5 (0xf bytes), align: 0
   Segment part 42.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           PORT_ChangeP10Output    0003B8A8        Channel_DataSend_PUCK (UartAbs)
+           PORT_ChangeP10Output    0003B8C7        Channel_DataSend_PUCK (UartAbs)
                                                    Init_ExtDevice_PUCK (DeviceAbs)
                                                    PwrCtrl_ExtDevice_HigSpeed (DeviceAbs)
                                                    Test_CPU_Output_IO (DRV_TEST)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B8B7 - 0003B8C5 (0xf bytes), align: 0
+  Relative segment, address: 0003B8D6 - 0003B8E4 (0xf bytes), align: 0
   Segment part 46.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           PORT_ChangeP22Output    0003B8B7        Measu_RdData (MeasuBase)
+           PORT_ChangeP22Output    0003B8D6        Measu_RdData (MeasuBase)
                                                    Measu_WrData (MeasuBase)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B8C6 - 0003B8D4 (0xf bytes), align: 0
+  Relative segment, address: 0003B8E5 - 0003B8F3 (0xf bytes), align: 0
   Segment part 50.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           PORT_ChangeP24Output    0003B8C6        Measu_RdData (MeasuBase)
+           PORT_ChangeP24Output    0003B8E5        Measu_RdData (MeasuBase)
                                                    Measu_WrData (MeasuBase)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B8D5 - 0003B8E3 (0xf bytes), align: 0
+  Relative segment, address: 0003B8F4 - 0003B902 (0xf bytes), align: 0
   Segment part 52.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           PORT_ChangeP25Output    0003B8D5        Init_ExtDevice_PUCK (DeviceAbs)
+           PORT_ChangeP25Output    0003B8F4        Init_ExtDevice_PUCK (DeviceAbs)
                                                    MeasuIC_HardRst (MeasuLib)
                                                    PwrCtrl_ExtDevice_HigSpeed (DeviceAbs)
                                                    Test_CPU_Output_IO (DRV_TEST)
                                                    Test_Measure (DRV_TEST)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B8E4 - 0003B8F2 (0xf bytes), align: 0
+  Relative segment, address: 0003B903 - 0003B911 (0xf bytes), align: 0
   Segment part 66.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           PORT_ChangeP05Output    0003B8E4        Init_CPU_PUCK (DeviceAbs)
+           PORT_ChangeP05Output    0003B903        Init_CPU_PUCK (DeviceAbs)
                                                    Init_ExtDevice_PUCK (DeviceAbs)
                                                    PwrCtrl_ExtDevice_HigSpeed (DeviceAbs)
                                                    Test_CPU_Output_IO (DRV_TEST)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B8F3 - 0003B8FD (0xb bytes), align: 0
+  Relative segment, address: 0003B912 - 0003B91C (0xb bytes), align: 0
   Segment part 68.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           PORT_ChangeP64Output    0003B8F3        Segment part 4 (PortAbs)
+           PORT_ChangeP64Output    0003B912        Segment part 4 (PortAbs)
                                                    Test_CPU_Output_IO (DRV_TEST)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B8FE - 0003B908 (0xb bytes), align: 0
+  Relative segment, address: 0003B91D - 0003B927 (0xb bytes), align: 0
   Segment part 70.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           PORT_ChangeP65Output    0003B8FE        Segment part 4 (PortAbs)
+           PORT_ChangeP65Output    0003B91D        Segment part 4 (PortAbs)
                                                    Test_CPU_Output_IO (DRV_TEST)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B909 - 0003B913 (0xb bytes), align: 0
+  Relative segment, address: 0003B928 - 0003B932 (0xb bytes), align: 0
   Segment part 72.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           PORT_ChangeP66Output    0003B909        Segment part 4 (PortAbs)
+           PORT_ChangeP66Output    0003B928        Segment part 4 (PortAbs)
                                                    Test_CPU_Output_IO (DRV_TEST)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B914 - 0003B91E (0xb bytes), align: 0
+  Relative segment, address: 0003B933 - 0003B93D (0xb bytes), align: 0
   Segment part 74.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           PORT_ChangeP67Output    0003B914        Segment part 4 (PortAbs)
+           PORT_ChangeP67Output    0003B933        Segment part 4 (PortAbs)
                                                    Test_CPU_Output_IO (DRV_TEST)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B91F - 0003B929 (0xb bytes), align: 0
+  Relative segment, address: 0003B93E - 0003B948 (0xb bytes), align: 0
   Segment part 78.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           PORT_ChangeP80Output    0003B91F        Segment part 4 (PortAbs)
+           PORT_ChangeP80Output    0003B93E        Segment part 4 (PortAbs)
                                                    Test_CPU_Output_IO (DRV_TEST)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B92A - 0003B934 (0xb bytes), align: 0
+  Relative segment, address: 0003B949 - 0003B953 (0xb bytes), align: 0
   Segment part 80.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           PORT_ChangeP81Output    0003B92A        Segment part 4 (PortAbs)
+           PORT_ChangeP81Output    0003B949        Segment part 4 (PortAbs)
                                                    Test_CPU_Output_IO (DRV_TEST)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B935 - 0003B93F (0xb bytes), align: 0
+  Relative segment, address: 0003B954 - 0003B95E (0xb bytes), align: 0
   Segment part 82.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           PORT_ChangeP82Output    0003B935        Segment part 4 (PortAbs)
+           PORT_ChangeP82Output    0003B954        Segment part 4 (PortAbs)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B940 - 0003B94A (0xb bytes), align: 0
+  Relative segment, address: 0003B95F - 0003B969 (0xb bytes), align: 0
   Segment part 84.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           PORT_ChangeP83Output    0003B940        Segment part 4 (PortAbs)
+           PORT_ChangeP83Output    0003B95F        Segment part 4 (PortAbs)
                                                    Test_CPU_Output_IO (DRV_TEST)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B94B - 0003B955 (0xb bytes), align: 0
+  Relative segment, address: 0003B96A - 0003B974 (0xb bytes), align: 0
   Segment part 86.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           PORT_ChangeP84Output    0003B94B        Segment part 4 (PortAbs)
+           PORT_ChangeP84Output    0003B96A        Segment part 4 (PortAbs)
                                                    Test_CPU_Output_IO (DRV_TEST)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B956 - 0003B964 (0xf bytes), align: 0
+  Relative segment, address: 0003B975 - 0003B983 (0xf bytes), align: 0
   Segment part 90.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           PORT_ChangeP86Output    0003B956        Debug_Channel_Switch (Channel)
+           PORT_ChangeP86Output    0003B975        Debug_Channel_Switch (Channel)
                                                    Init_ExtDevice_PUCK (DeviceAbs)
                                                    PwrCtrl_ExtDevice_HigSpeed (DeviceAbs)
                                                    Test_CPU_Output_IO (DRV_TEST)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B965 - 0003B973 (0xf bytes), align: 0
+  Relative segment, address: 0003B984 - 0003B992 (0xf bytes), align: 0
   Segment part 92.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           PORT_ChangeP110Output   0003B965        IRDA_Rec_Disable (UartAbs)
+           PORT_ChangeP110Output   0003B984        IRDA_Rec_Disable (UartAbs)
                                                    IRDA_Rec_Enable (UartAbs)
                                                    Test_CPU_Output_IO (DRV_TEST)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B974 - 0003B97E (0xb bytes), align: 0
+  Relative segment, address: 0003B993 - 0003B99D (0xb bytes), align: 0
   Segment part 95.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           PORT_ChangeP130Output   0003B974        Measu_RdData (MeasuBase)
+           PORT_ChangeP130Output   0003B993        Measu_RdData (MeasuBase)
                                                    Measu_WrData (MeasuBase)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B97F - 0003B995 (0x17 bytes), align: 0
+  Relative segment, address: 0003B99E - 0003B9B4 (0x17 bytes), align: 0
   Segment part 97.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           PORT_ChangeP142Output   0003B97F        PORT_ChangeP142Output_PUCK (PortAbs)
+           PORT_ChangeP142Output   0003B99E        PORT_ChangeP142Output_PUCK (PortAbs)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B996 - 0003B9A4 (0xf bytes), align: 0
+  Relative segment, address: 0003B9B5 - 0003B9C3 (0xf bytes), align: 0
   Segment part 99.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           PORT_ChangeP145Output   0003B996        UART2_Init_suck (Serial)
+           PORT_ChangeP145Output   0003B9B5        UART2_Init_suck (Serial)
                                                    UART2_SendData_suck (Serial)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B9A5 - 0003B9AF (0xb bytes), align: 0
+  Relative segment, address: 0003B9C4 - 0003B9CE (0xb bytes), align: 0
   Segment part 101.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           PORT_ChangeP150Output   0003B9A5        Segment part 4 (PortAbs)
+           PORT_ChangeP150Output   0003B9C4        Segment part 4 (PortAbs)
                                                    Test_CPU_Output_IO (DRV_TEST)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B9B0 - 0003B9BA (0xb bytes), align: 0
+  Relative segment, address: 0003B9CF - 0003B9D9 (0xb bytes), align: 0
   Segment part 103.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           PORT_ChangeP151Output   0003B9B0        Segment part 4 (PortAbs)
+           PORT_ChangeP151Output   0003B9CF        Segment part 4 (PortAbs)
                                                    Test_CPU_Output_IO (DRV_TEST)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B9BB - 0003B9C9 (0xf bytes), align: 0
+  Relative segment, address: 0003B9DA - 0003B9E8 (0xf bytes), align: 0
   Segment part 105.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           PORT_ChangeP152Output   0003B9BB        Init_HTLCD_Mode (HTLCD_SPI)
+           PORT_ChangeP152Output   0003B9DA        Init_HTLCD_Mode (HTLCD_SPI)
                                                    LCD_Dis_Result (DRV_TEST)
                                                    MainHTLCD_Puck_Pub (HTLCD_LIB)
                                                    Test_Lcd (DRV_TEST)
                                                    lcdlight (interface)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B9CA - 0003B9D8 (0xf bytes), align: 0
+  Relative segment, address: 0003B9E9 - 0003B9F7 (0xf bytes), align: 0
   Segment part 107.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           PORT_ChangeP153Output   0003B9CA        HTLCDWriteACommand (HTLCD_SPI)
+           PORT_ChangeP153Output   0003B9E9        HTLCDWriteACommand (HTLCD_SPI)
                                                    HTLCDWriteMultiData (HTLCD_SPI)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B9D9 - 0003B9E7 (0xf bytes), align: 0
+  Relative segment, address: 0003B9F8 - 0003BA06 (0xf bytes), align: 0
   Segment part 109.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           PORT_ChangeP154Output   0003B9D9        Init_ExtDevice_PUCK (DeviceAbs)
+           PORT_ChangeP154Output   0003B9F8        Init_ExtDevice_PUCK (DeviceAbs)
                                                    Init_HTLCD_Mode (HTLCD_SPI)
                                                    Init_LCD_Loop (HTLCD_SPI)
                                                    PwrCtrl_ExtDevice_HigSpeed (DeviceAbs)
@@ -15844,29 +15846,29 @@ NEAR_A
                                                    Test_Lcd (DRV_TEST)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B9E8 - 0003B9F6 (0xf bytes), align: 0
+  Relative segment, address: 0003BA07 - 0003BA15 (0xf bytes), align: 0
   Segment part 111.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           PORT_ChangeP155Output   0003B9E8        HTLCDInWriteMode (HTLCD_SPI)
+           PORT_ChangeP155Output   0003BA07        HTLCDInWriteMode (HTLCD_SPI)
                                                    HTLCDWriteACommand (HTLCD_SPI)
                                                    HTLCDWriteMultiData (HTLCD_SPI)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003B9F7 - 0003BA05 (0xf bytes), align: 0
+  Relative segment, address: 0003BA16 - 0003BA24 (0xf bytes), align: 0
   Segment part 113.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           PORT_ChangeP156Output   0003B9F7        HTLCDInWriteMode (HTLCD_SPI)
+           PORT_ChangeP156Output   0003BA16        HTLCDInWriteMode (HTLCD_SPI)
                                                    HTLCDWriteACommand (HTLCD_SPI)
                                                    HTLCDWriteMultiData (HTLCD_SPI)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003BA06 - 0003BA10 (0xb bytes), align: 0
+  Relative segment, address: 0003BA25 - 0003BA2F (0xb bytes), align: 0
   Segment part 114.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           PORT_ChangeP157Output   0003BA06        Segment part 4 (PortAbs)
+           PORT_ChangeP157Output   0003BA25        Segment part 4 (PortAbs)
                                                    Test_CPU_Output_IO (DRV_TEST)
     -------------------------------------------------------------------------
 <FAR_CONST,FSWITCH> 1 (was FSWITCH)
@@ -16085,32 +16087,32 @@ FAR_Z
            Power_Ctrl_Para         000FDC9A 
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003BE7E - 0003BF68 (0xeb bytes), align: 0
+  Relative segment, address: 0003BE9D - 0003BF87 (0xeb bytes), align: 0
   Segment part 8.             Intra module refs:   Check_Power_Ctrl_Para_Avail
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            Read_Power_Ctrl_Para_From_Rom
-                                   0003BE7E        Read_Para_From_Rom (Energy)
+                                   0003BE9D        Read_Para_From_Rom (Energy)
                                                    Refresh_Para_From_Rom (Energy)
                calls direct
                stack 1 = 00000002 ( 00000016 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003BF69 - 0003BFA9 (0x41 bytes), align: 0
+  Relative segment, address: 0003BF88 - 0003BFC8 (0x41 bytes), align: 0
   Segment part 9.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            Check_Power_Ctrl_Para_Avail
-                                   0003BF69        Check_Energy_Demand_Task_Data_Avail (Energy)
+                                   0003BF88        Check_Energy_Demand_Task_Data_Avail (Energy)
                calls direct
                stack 1 = 00000000 ( 0000000A )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003BFAA - 0003C07F (0xd6 bytes), align: 0
+  Relative segment, address: 0003BFC9 - 0003C09E (0xd6 bytes), align: 0
   Segment part 10.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Power_Ctrl_Proc         0003BFAA        Energy_Demand_Task (Energy)
+           Power_Ctrl_Proc         0003BFC9        Energy_Demand_Task (Energy)
                calls direct
                stack 1 = 00000000 ( 0000000A )
     -------------------------------------------------------------------------
@@ -16216,12 +16218,12 @@ FAR_Z
                                                    Set_Spec_Holiday_Data (Data_Spec)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003859F - 000385D9 (0x3b bytes), align: 0
+  Relative segment, address: 000385BE - 000385F8 (0x3b bytes), align: 0
   Segment part 13.            Intra module refs:   Bcd2Hex
                                                    Bcd2Hex_Byte
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Check_BCD_Data          0003859F        Calc_Cur_Rate_Scheme (Energy)
+           Check_BCD_Data          000385BE        Calc_Cur_Rate_Scheme (Energy)
                                                    Check_BCD_Time (Clock)
                                                    Read_Energy_Para_From_Rom (Energy)
                                                    Set_DI_Data_Proc (Data_Trans)
@@ -16231,11 +16233,11 @@ FAR_Z
                stack 1 = 00000010 ( 00000004 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 000385DA - 000386E4 (0x10b bytes), align: 0
+  Relative segment, address: 000385F9 - 00038703 (0x10b bytes), align: 0
   Segment part 14.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Hex2Bcd                 000385DA        Convert_Src_2_Proto_Data (Event_Cumu)
+           Hex2Bcd                 000385F9        Convert_Src_2_Proto_Data (Event_Cumu)
                                                    Get_DLT645_Spec_Single_Data (Data_Spec)
                                                    Get_Event_Cumu_Proto_Data (Event_Cumu)
                                                    Get_HIS_Demand_Data (Data_Spec)
@@ -16248,22 +16250,22 @@ FAR_Z
                stack 1 = 00000016 ( 0000001C )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 000386E5 - 00038829 (0x145 bytes), align: 0
+  Relative segment, address: 00038704 - 00038848 (0x145 bytes), align: 0
   Segment part 15.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           S_Hex2Bcd               000386E5        Convert_Src_2_Proto_Data (Event_Cumu)
+           S_Hex2Bcd               00038704        Convert_Src_2_Proto_Data (Event_Cumu)
                                                    Get_HIS_Energy_Data (Data_Spec)
                                                    Proto_Data_Add_Dec (Event_Cumu)
                calls direct
                stack 1 = 00000016 ( 0000001C )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003882A - 0003891B (0xf2 bytes), align: 0
+  Relative segment, address: 00038849 - 0003893A (0xf2 bytes), align: 0
   Segment part 17.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Bcd2Hex                 0003882A        Get_Pulse_Para (MeasuPulse)
+           Bcd2Hex                 00038849        Get_Pulse_Para (MeasuPulse)
                                                    Init_Event_Instant_Para (EventInstant)
                                                    Lcd_Para_Modi (interface)
                                                    Read_LoadData_Para_From_Rom (Load_Data)
@@ -16277,22 +16279,22 @@ FAR_Z
                stack 1 = 00000010 ( 00000014 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003891C - 00038951 (0x36 bytes), align: 0
+  Relative segment, address: 0003893B - 00038970 (0x36 bytes), align: 0
   Segment part 18.            Intra module refs:   Hex2Bcd_Buf
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Hex2Bcd_Byte            0003891C        Convert_HEX_2_BCD_Time (Clock)
+           Hex2Bcd_Byte            0003893B        Convert_HEX_2_BCD_Time (Clock)
                                                    Get_DLT645_Spec_Single_Data (Data_Spec)
                                                    Make_LoadData (Load_Data)
                calls direct
                stack 1 = 00000004 ( 0000000C )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00038952 - 00038990 (0x3f bytes), align: 0
+  Relative segment, address: 00038971 - 000389AF (0x3f bytes), align: 0
   Segment part 19.            Intra module refs:   Bcd2Hex_Buf
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Bcd2Hex_Byte            00038952        Adjust_Time_Proc (Data_Trans)
+           Bcd2Hex_Byte            00038971        Adjust_Time_Proc (Data_Trans)
                                                    Clock_Proc (Clock)
                                                    Convert_BCD_2_HEX_Time (Clock)
                                                    Get_Event_Data_Index_From_DI (Event_MultiTimes)
@@ -16307,20 +16309,20 @@ FAR_Z
                stack 1 = 00000004 ( 0000000C )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00038991 - 000389F8 (0x68 bytes), align: 0
+  Relative segment, address: 000389B0 - 00038A17 (0x68 bytes), align: 0
   Segment part 20.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Hex2Bcd_Buf             00038991        Demand_Check_Max (Demand)
+           Hex2Bcd_Buf             000389B0        Demand_Check_Max (Demand)
                calls direct
                stack 1 = 0000000C ( 0000000C )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 000389F9 - 00038A60 (0x68 bytes), align: 0
+  Relative segment, address: 00038A18 - 00038A7F (0x68 bytes), align: 0
   Segment part 21.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Bcd2Hex_Buf             000389F9        Calc_Cur_Rate_Scheme (Energy)
+           Bcd2Hex_Buf             00038A18        Calc_Cur_Rate_Scheme (Energy)
                                                    Check_Today_Holiday (Energy)
                                                    Get_Cur_Date_Table (Energy)
                                                    Read_Energy_Para_From_Rom (Energy)
@@ -16330,11 +16332,11 @@ FAR_Z
                stack 1 = 0000000C ( 0000000C )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00038A61 - 00038A8B (0x2b bytes), align: 0
+  Relative segment, address: 00038A80 - 00038AAA (0x2b bytes), align: 0
   Segment part 23.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           GetBufSum_Pub           00038A61        Clr_All_Loss_Data (EventStatus)
+           GetBufSum_Pub           00038A80        Clr_All_Loss_Data (EventStatus)
                                                    Count_All_Loss_Proc (EventStatus)
                                                    Init_All_Loss_Sram (EventStatus)
                                                    Inter_ALL_LOSS (InterrAbs)
@@ -16414,22 +16416,22 @@ FAR_Z
   SEGMENTS IN THE MODULE
   ======================
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003C9C5 - 0003CA7E (0xba bytes), align: 0
+  Relative segment, address: 0003C9E4 - 0003CA9D (0xba bytes), align: 0
   Segment part 7.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           DEBUG_BUF_PRINT         0003C9C5        Channel_DataReceive_PUCK (UartAbs)
+           DEBUG_BUF_PRINT         0003C9E4        Channel_DataReceive_PUCK (UartAbs)
                                                    Read_PHY_Mem (Memory)
                                                    Write_PHY_Mem (Memory)
                calls direct
                stack 1 = 00000004 ( 0000000C )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003CA7F - 0003CAF5 (0x77 bytes), align: 0
+  Relative segment, address: 0003CA9E - 0003CB14 (0x77 bytes), align: 0
   Segment part 8.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Debug_Print             0003CA7F        Adjust_Time_Proc (Data_Trans)
+           Debug_Print             0003CA9E        Adjust_Time_Proc (Data_Trans)
                                                    All_Loss_Vol_Counts_Time_Proc (Event_Cumu)
                                                    All_Loss_Vol_Data_Proc (Event_MultiTimes)
                                                    Auto_Save_Cur_Data (Energy)
@@ -16737,11 +16739,11 @@ FAR_Z
                                                    ReCorrect_Energ_Sram (MeasuProc)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003C080 - 0003C0DB (0x5c bytes), align: 0
+  Relative segment, address: 0003C09F - 0003C0FA (0x5c bytes), align: 0
   Segment part 10.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Get_Max_Num             0003C080        Check_Loss_Curr (EventInstant)
+           Get_Max_Num             0003C09F        Check_Loss_Curr (EventInstant)
                                                    Check_Power_Grid_Event (EventInstant)
                                                    Chk_Light_Condition (process)
                                                    Judge_I_Start (MeasuProc)
@@ -16749,55 +16751,55 @@ FAR_Z
                stack 1 = 00000008 ( 00000008 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003C0DC - 0003C137 (0x5c bytes), align: 0
+  Relative segment, address: 0003C0FB - 0003C156 (0x5c bytes), align: 0
   Segment part 11.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Get_Min_Num             0003C0DC        Check_Volt_Curr_Seq (EventInstant)
+           Get_Min_Num             0003C0FB        Check_Volt_Curr_Seq (EventInstant)
                stack 1 = 00000008 ( 00000008 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003C138 - 0003C14E (0x17 bytes), align: 0
+  Relative segment, address: 0003C157 - 0003C16D (0x17 bytes), align: 0
   Segment part 13.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            Get_MeterPowerStatus_PUCK
-                                   0003C138        poweroff (interface)
+                                   0003C157        poweroff (interface)
                calls direct
                stack 1 = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003C14F - 0003C1FC (0xae bytes), align: 0
+  Relative segment, address: 0003C16E - 0003C21B (0xae bytes), align: 0
   Segment part 14.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Get_Curr_ComType_PUCK   0003C14F        getstat (interface)
+           Get_Curr_ComType_PUCK   0003C16E        getstat (interface)
                calls direct
                stack 1 = 00000000 ( 00000014 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003C1FD - 0003C227 (0x2b bytes), align: 0
+  Relative segment, address: 0003C21C - 0003C246 (0x2b bytes), align: 0
   Segment part 15.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           CHeck_Same_Byte         0003C1FD        Save_All_Loss_Data (EventStatus)
+           CHeck_Same_Byte         0003C21C        Save_All_Loss_Data (EventStatus)
                stack 1 = 00000004 ( 00000004 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003C228 - 0003C236 (0xf bytes), align: 0
+  Relative segment, address: 0003C247 - 0003C255 (0xf bytes), align: 0
   Segment part 16.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           SYS_TimeDly_Sec         0003C228        Retry_WritePara_To_IC (MeasuLib)
+           SYS_TimeDly_Sec         0003C247        Retry_WritePara_To_IC (MeasuLib)
                calls direct
                stack 1 = 00000000 ( 0000000C )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003C237 - 0003C243 (0xd bytes), align: 0
+  Relative segment, address: 0003C256 - 0003C262 (0xd bytes), align: 0
   Segment part 17.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           SYS_TimeDly_Ms          0003C237        ChkMeasuICWorkStatus (MeasuLib)
+           SYS_TimeDly_Ms          0003C256        ChkMeasuICWorkStatus (MeasuLib)
                                                    MeasuIC_HardRst (MeasuLib)
                calls direct
                stack 1 = 00000000 ( 0000000C )
@@ -17192,53 +17194,53 @@ NEAR_A
            _A_RTCC2                000FFF9F 
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003C86C - 0003C899 (0x2e bytes), align: 0
+  Relative segment, address: 0003C88B - 0003C8B8 (0x2e bytes), align: 0
   Segment part 23.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           RTC_Init                0003C86C        SystemInit (systeminit)
+           RTC_Init                0003C88B        SystemInit (systeminit)
                calls direct
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003C89A - 0003C89D (0x4 bytes), align: 0
+  Relative segment, address: 0003C8B9 - 0003C8BC (0x4 bytes), align: 0
   Segment part 24.            Intra module refs:   RTC_Init
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           RTC_CounterEnable       0003C89A        Init_Hard_PUCK (DeviceAbs)
+           RTC_CounterEnable       0003C8B9        Init_Hard_PUCK (DeviceAbs)
                                                    Init_Inter_Abs (DeviceAbs)
                                                    Write_InterRTC_PUCK (RTCAbs)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003C89E - 0003C949 (0xac bytes), align: 0
+  Relative segment, address: 0003C8BD - 0003C968 (0xac bytes), align: 0
   Segment part 27.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           RTC_CounterGet          0003C89E        Read_InterRTC_PUCK (RTCAbs)
+           RTC_CounterGet          0003C8BD        Read_InterRTC_PUCK (RTCAbs)
                stack 1 = 00000004 ( 00000004 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003C94A - 0003C9AA (0x61 bytes), align: 0
+  Relative segment, address: 0003C969 - 0003C9C9 (0x61 bytes), align: 0
   Segment part 28.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           RTC_CounterSet          0003C94A        Write_InterRTC_PUCK (RTCAbs)
+           RTC_CounterSet          0003C969        Write_InterRTC_PUCK (RTCAbs)
                stack 1 = 00000008 ( 00000002 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003C9AB - 0003C9BA (0x10 bytes), align: 0
+  Relative segment, address: 0003C9CA - 0003C9D9 (0x10 bytes), align: 0
   Segment part 35.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            RTC_ConstPeriodInterruptEnable
-                                   0003C9AB        Init_Inter_Abs (DeviceAbs)
+                                   0003C9CA        Init_Inter_Abs (DeviceAbs)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003C9BB - 0003C9C4 (0xa bytes), align: 0
+  Relative segment, address: 0003C9DA - 0003C9E3 (0xa bytes), align: 0
   Segment part 36.            Intra module refs:   RTC_Init
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            RTC_ConstPeriodInterruptDisable
-                                   0003C9BB        Init_Hard_PUCK (DeviceAbs)
+                                   0003C9DA        Init_Hard_PUCK (DeviceAbs)
                                                    Init_Inter_Abs (DeviceAbs)
 
     *************************************************************************
@@ -17256,80 +17258,80 @@ NEAR_A
            CPU_RTC_Time            000FF9BE 
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00039670 - 000396CC (0x5d bytes), align: 0
+  Relative segment, address: 0003968F - 000396EB (0x5d bytes), align: 0
   Segment part 26.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Read_Ext_RTC_Status     00039670        Check_Boot_On_Flag (Def_Para)
+           Read_Ext_RTC_Status     0003968F        Check_Boot_On_Flag (Def_Para)
                                                    Clock_Update (Clock)
                                                    Resume_Clock_Update (Clock)
                calls direct
                stack 1 = 00000000 ( 0000000C )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 000396CD - 00039714 (0x48 bytes), align: 0
+  Relative segment, address: 000396EC - 00039733 (0x48 bytes), align: 0
   Segment part 27.            Intra module refs:   Read_ExtRTC_PUCK
                                                    Write_ExtRTC_PUCK
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Check_ExtRTC_Busy       000396CD 
+           Check_ExtRTC_Busy       000396EC 
                calls direct
                stack 1 = 00000002 ( 0000000C )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00039715 - 0003975E (0x4a bytes), align: 0
+  Relative segment, address: 00039734 - 0003977D (0x4a bytes), align: 0
   Segment part 28.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Init_ExtRTC_Pulse       00039715        Init_ExtDevice_PUCK (DeviceAbs)
+           Init_ExtRTC_Pulse       00039734        Init_ExtDevice_PUCK (DeviceAbs)
                                                    Test_All_RTC (DRV_TEST)
                calls direct
                stack 1 = 00000000 ( 0000000E )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003975F - 00039793 (0x35 bytes), align: 0
+  Relative segment, address: 0003977E - 000397B2 (0x35 bytes), align: 0
   Segment part 29.            Intra module refs:   Set_Soft_RTC_PUCK
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Read_ExtRTC_PUCK        0003975F        Get_Time_From_EXT_RTC (Clock)
+           Read_ExtRTC_PUCK        0003977E        Get_Time_From_EXT_RTC (Clock)
                                                    Test_All_RTC (DRV_TEST)
                calls direct
                stack 1 = 00000008 ( 00000006 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00039794 - 000397B3 (0x20 bytes), align: 0
+  Relative segment, address: 000397B3 - 000397D2 (0x20 bytes), align: 0
   Segment part 30.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Write_ExtRTC_PUCK       00039794        Set_Time_To_EXT_RTC (Clock)
+           Write_ExtRTC_PUCK       000397B3        Set_Time_To_EXT_RTC (Clock)
                calls direct
                stack 1 = 00000004 ( 00000006 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 000397B4 - 00039857 (0xa4 bytes), align: 0
+  Relative segment, address: 000397D3 - 00039876 (0xa4 bytes), align: 0
   Segment part 31.            Intra module refs:   Set_Soft_RTC_PUCK
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Read_InterRTC_PUCK      000397B4        Get_Time_From_INTER_RTC (Clock)
+           Read_InterRTC_PUCK      000397D3        Get_Time_From_INTER_RTC (Clock)
                                                    Test_All_RTC (DRV_TEST)
                calls direct
                stack 1 = 00000008 ( 0000000E )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00039858 - 000398D2 (0x7b bytes), align: 0
+  Relative segment, address: 00039877 - 000398F1 (0x7b bytes), align: 0
   Segment part 32.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Write_InterRTC_PUCK     00039858        Set_Time_To_INTER_RTC (Clock)
+           Write_InterRTC_PUCK     00039877        Set_Time_To_INTER_RTC (Clock)
                calls direct
                stack 1 = 00000004 ( 00000014 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 000398D3 - 00039A2F (0x15d bytes), align: 0
+  Relative segment, address: 000398F2 - 00039A4E (0x15d bytes), align: 0
   Segment part 35.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Set_Soft_RTC_PUCK       000398D3        Clock_Proc (Clock)
+           Set_Soft_RTC_PUCK       000398F2        Clock_Proc (Clock)
                                                    PwrOff_Proc_PUCK (EventStatus)
                calls direct
                stack 1 = 00000000 ( 00000018 )
@@ -17427,12 +17429,12 @@ CODE
                stack 1 = 00000000 ( 00000006 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D7E8 - 0003D7EB (0x4 bytes), align: 0
+  Relative segment, address: 0003D807 - 0003D80A (0x4 bytes), align: 0
   Segment part 4.             Intra module refs:   MD_INTRTC
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            CALL_RTC_ConstantPeriodINT
-                                   0003D7E8 
+                                   0003D807 
                calls direct
                stack 1 = 00000006 ( 00000000 )
     -------------------------------------------------------------------------
@@ -17459,11 +17461,11 @@ INTVEC
            REMOTOR_CMD             0000ED1B 
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003C708 - 0003C7A8 (0xa1 bytes), align: 0
+  Relative segment, address: 0003C727 - 0003C7C7 (0xa1 bytes), align: 0
   Segment part 6.             Intra module refs:   Remote_Key_Proc
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Remoter_Cmd_Decode      0003C708 
+           Remoter_Cmd_Decode      0003C727 
                calls direct
                stack 1 = 00000002 ( 00000004 )
     -------------------------------------------------------------------------
@@ -17476,11 +17478,11 @@ FAR_Z
                                    000FE520 
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003C7A9 - 0003C86B (0xc3 bytes), align: 0
+  Relative segment, address: 0003C7C8 - 0003C88A (0xc3 bytes), align: 0
   Segment part 7.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Remote_Key_Proc         0003C7A9        Channel_Data_Proc_PUCK (Channel)
+           Remote_Key_Proc         0003C7C8        Channel_Data_Proc_PUCK (Channel)
                calls direct
                stack 1 = 00000000 ( 00000012 )
     -------------------------------------------------------------------------
@@ -18388,20 +18390,20 @@ NEAR_A
            OSMC                    000F00F3 
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003CAF6 - 0003CB76 (0x81 bytes), align: 0
+  Relative segment, address: 0003CB15 - 0003CB95 (0x81 bytes), align: 0
   Segment part 15.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Clock_Init              0003CAF6        SystemInit (systeminit)
+           Clock_Init              0003CB15        SystemInit (systeminit)
                calls direct
                stack 1 = 00000000 ( 00000008 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003CB77 - 0003CC21 (0xab bytes), align: 0
+  Relative segment, address: 0003CB96 - 0003CC40 (0xab bytes), align: 0
   Segment part 18.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           CG_ChangeClockMode      0003CB77        Switch_Main_Osc (CPUPub)
+           CG_ChangeClockMode      0003CB96        Switch_Main_Osc (CPUPub)
                stack 1 = 00000000 ( 00000002 )
 
     *************************************************************************
@@ -18550,65 +18552,65 @@ NEAR_A
            _A_TOM0                 000F01BE 
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003C589 - 0003C5DB (0x53 bytes), align: 0
+  Relative segment, address: 0003C5A8 - 0003C5FA (0x53 bytes), align: 0
   Segment part 34.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Set_Fast_Timer          0003C589        IR_Decode_Proc (InterrAbs)
+           Set_Fast_Timer          0003C5A8        IR_Decode_Proc (InterrAbs)
                                                    Irda_Wake_Up (InterrAbs)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003C5DC - 0003C6AE (0xd3 bytes), align: 0
+  Relative segment, address: 0003C5FB - 0003C6CD (0xd3 bytes), align: 0
   Segment part 35.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           TAU_Init                0003C5DC        SystemInit (systeminit)
+           TAU_Init                0003C5FB        SystemInit (systeminit)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003C6AF - 0003C6B8 (0xa bytes), align: 0
+  Relative segment, address: 0003C6CE - 0003C6D7 (0xa bytes), align: 0
   Segment part 38.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           TAU_Channel2_Start      0003C6AF        Channel_DataSend_PUCK (UartAbs)
+           TAU_Channel2_Start      0003C6CE        Channel_DataSend_PUCK (UartAbs)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003C6B9 - 0003C6C8 (0x10 bytes), align: 0
+  Relative segment, address: 0003C6D8 - 0003C6E7 (0x10 bytes), align: 0
   Segment part 39.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           TAU_Channel2_Stop       0003C6B9        Channel_DataSend_PUCK (UartAbs)
+           TAU_Channel2_Stop       0003C6D8        Channel_DataSend_PUCK (UartAbs)
                                                    Init_Inter_Abs (DeviceAbs)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003C6C9 - 0003C6D1 (0x9 bytes), align: 0
+  Relative segment, address: 0003C6E8 - 0003C6F0 (0x9 bytes), align: 0
   Segment part 40.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           TAU_Channel5_Start      0003C6C9        Init_Inter_Abs (DeviceAbs)
+           TAU_Channel5_Start      0003C6E8        Init_Inter_Abs (DeviceAbs)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003C6D2 - 0003C6DD (0xc bytes), align: 0
+  Relative segment, address: 0003C6F1 - 0003C6FC (0xc bytes), align: 0
   Segment part 41.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           TAU_Channel5_Stop       0003C6D2        Init_Hard_PUCK (DeviceAbs)
+           TAU_Channel5_Stop       0003C6F1        Init_Hard_PUCK (DeviceAbs)
                                                    Init_Inter_Abs (DeviceAbs)
                                                    PwrCtrl_ExtDevice_HigSpeed (DeviceAbs)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003C6DE - 0003C6E6 (0x9 bytes), align: 0
+  Relative segment, address: 0003C6FD - 0003C705 (0x9 bytes), align: 0
   Segment part 42.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           TAU_Channel6_Start      0003C6DE        IR_Decode_Proc (InterrAbs)
+           TAU_Channel6_Start      0003C6FD        IR_Decode_Proc (InterrAbs)
                                                    Irda_Wake_Up (InterrAbs)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003C6E7 - 0003C6F2 (0xc bytes), align: 0
+  Relative segment, address: 0003C706 - 0003C711 (0xc bytes), align: 0
   Segment part 43.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           TAU_Channel6_Stop       0003C6E7        Debug_Channel_Switch (Channel)
+           TAU_Channel6_Stop       0003C706        Debug_Channel_Switch (Channel)
                                                    Fast_Timer (InterrAbs)
                                                    IR_Decode_Proc (InterrAbs)
                                                    Init_Inter_Abs (DeviceAbs)
@@ -18616,22 +18618,22 @@ NEAR_A
                                                    PwrCtrl_ExtDevice_HigSpeed (DeviceAbs)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003C6F3 - 0003C6FB (0x9 bytes), align: 0
+  Relative segment, address: 0003C712 - 0003C71A (0x9 bytes), align: 0
   Segment part 44.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           TAU_Channel7_Start      0003C6F3        Init_Hard_PUCK (DeviceAbs)
+           TAU_Channel7_Start      0003C712        Init_Hard_PUCK (DeviceAbs)
                                                    Init_Inter_Abs (DeviceAbs)
                                                    Power_Down_Check (Low_Power)
                                                    Power_Down_Proc (Low_Power)
                                                    Save_PD_Data (Low_Power)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003C6FC - 0003C707 (0xc bytes), align: 0
+  Relative segment, address: 0003C71B - 0003C726 (0xc bytes), align: 0
   Segment part 45.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           TAU_Channel7_Stop       0003C6FC        Init_Inter_Abs (DeviceAbs)
+           TAU_Channel7_Stop       0003C71B        Init_Inter_Abs (DeviceAbs)
                                                    Power_Down_Check (Low_Power)
                                                    Power_Down_Proc (Low_Power)
                                                    Save_PD_Data (Low_Power)
@@ -18794,11 +18796,11 @@ INTVEC
            AppLCDTaskStk_LUCK      000FE53A 
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003A470 - 0003A47F (0x10 bytes), align: 0
+  Relative segment, address: 0003A48F - 0003A49E (0x10 bytes), align: 0
   Segment part 21.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Clr_Ext_Inter_Dog       0003A470        Check_Imp_Data_Storage (Data_Para)
+           Clr_Ext_Inter_Dog       0003A48F        Check_Imp_Data_Storage (Data_Para)
                                                    Clock_Init (System)
                                                    Debug_Print_Cur_Demand_Info (Demand)
                                                    Debug_Print_Cur_Energy_Info (Energy)
@@ -18818,65 +18820,65 @@ INTVEC
                                                    WR_Memory_Clear_Dog (Memory)
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003A480 - 0003A50A (0x8b bytes), align: 0
+  Relative segment, address: 0003A49F - 0003A529 (0x8b bytes), align: 0
   Segment part 23.            Intra module refs:   Main_Task_PUB
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Creat_AllSub_Tasks      0003A480 
+           Creat_AllSub_Tasks      0003A49F 
                calls direct
                stack 1 = 00000004 ( 0000000C )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003A50B - 0003A58B (0x81 bytes), align: 0
+  Relative segment, address: 0003A52A - 0003A5AA (0x81 bytes), align: 0
   Segment part 24.            Intra module refs:   Main_Task_PUB
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Main_Init_Print         0003A50B 
+           Main_Init_Print         0003A52A 
                calls direct
                stack 1 = 00000004 ( 0000000A )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003A58C - 0003A64F (0xc4 bytes), align: 0
+  Relative segment, address: 0003A5AB - 0003A66E (0xc4 bytes), align: 0
   Segment part 25.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Main_Task_PUB           0003A58C        main (Main_Proc)
+           Main_Task_PUB           0003A5AB        main (Main_Proc)
                calls direct
                stack 1 = 00000004 ( 00000010 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003A650 - 0003A66A (0x1b bytes), align: 0
+  Relative segment, address: 0003A66F - 0003A689 (0x1b bytes), align: 0
   Segment part 26.            Intra module refs:   Creat_AllSub_Tasks
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           AppMeasuTask_PUCK       0003A650 
+           AppMeasuTask_PUCK       0003A66F 
                calls direct
                stack 1 = 00000004 ( 0000000E )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003A66B - 0003A68A (0x20 bytes), align: 0
+  Relative segment, address: 0003A68A - 0003A6A9 (0x20 bytes), align: 0
   Segment part 27.            Intra module refs:   Creat_AllSub_Tasks
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           AppEventTask_PUCK       0003A66B 
+           AppEventTask_PUCK       0003A68A 
                calls direct
                stack 1 = 00000004 ( 0000000E )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003A68B - 0003A6AA (0x20 bytes), align: 0
+  Relative segment, address: 0003A6AA - 0003A6C9 (0x20 bytes), align: 0
   Segment part 28.            Intra module refs:   Creat_AllSub_Tasks
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           AppEnergeTask_HUCK      0003A68B 
+           AppEnergeTask_HUCK      0003A6AA 
                calls direct
                stack 1 = 00000004 ( 0000000E )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003A6AB - 0003A769 (0xbf bytes), align: 0
+  Relative segment, address: 0003A6CA - 0003A788 (0xbf bytes), align: 0
   Segment part 29.            Intra module refs:   Creat_AllSub_Tasks
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           AppLCDTask_LUCK         0003A6AB 
+           AppLCDTask_LUCK         0003A6CA 
                calls direct
                stack 1 = 00000004 ( 00000004 )
     -------------------------------------------------------------------------
@@ -18969,63 +18971,63 @@ FAR_Z
            Const_Uart_Attib        0000A928 
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00039A30 - 00039A3D (0xe bytes), align: 0
+  Relative segment, address: 00039A4F - 00039A5C (0xe bytes), align: 0
   Segment part 9.             Intra module refs:   Channel_DataSend_PUCK
                                                    Open_Channel_PUCK
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           IRDA_Rec_Enable         00039A30 
+           IRDA_Rec_Enable         00039A4F 
                calls direct
                stack 1 = 00000004 ( 00000000 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00039A3E - 00039A4B (0xe bytes), align: 0
+  Relative segment, address: 00039A5D - 00039A6A (0xe bytes), align: 0
   Segment part 10.            Intra module refs:   Channel_DataSend_PUCK
                                                    Close_Channel_PUCK
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           IRDA_Rec_Disable        00039A3E        PwrCtrl_ExtDevice_HigSpeed (DeviceAbs)
+           IRDA_Rec_Disable        00039A5D        PwrCtrl_ExtDevice_HigSpeed (DeviceAbs)
                calls direct
                stack 1 = 00000004 ( 00000000 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00039A4C - 00039AC5 (0x7a bytes), align: 0
+  Relative segment, address: 00039A6B - 00039AE4 (0x7a bytes), align: 0
   Segment part 11.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Open_Channel_PUCK       00039A4C        Debug_Channel_Switch (Channel)
+           Open_Channel_PUCK       00039A6B        Debug_Channel_Switch (Channel)
                                                    Init_All_Cannel (Channel)
                                                    Init_DebugChanel_PUCK (Channel)
                calls direct and indirect
                stack 1 = 00000004 ( 00000008 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00039AC6 - 00039AF4 (0x2f bytes), align: 0
+  Relative segment, address: 00039AE5 - 00039B13 (0x2f bytes), align: 0
   Segment part 12.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Close_Channel_PUCK      00039AC6        Close_DebugChanel_PUCK (Channel)
+           Close_Channel_PUCK      00039AE5        Close_DebugChanel_PUCK (Channel)
                                                    Init_All_UART (Channel)
                calls direct and indirect
                stack 1 = 00000000 ( 00000004 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00039AF5 - 00039B6B (0x77 bytes), align: 0
+  Relative segment, address: 00039B14 - 00039B8A (0x77 bytes), align: 0
   Segment part 13.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           Channel_DataSend_PUCK   00039AF5        Debug_Out_Public_Puck (Channel)
+           Channel_DataSend_PUCK   00039B14        Debug_Out_Public_Puck (Channel)
                                                    Send_HostData_Public_Puck (Channel)
                calls direct and indirect
                stack 1 = 00000004 ( 00000006 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 00039B6C - 00039DC0 (0x255 bytes), align: 0
+  Relative segment, address: 00039B8B - 00039DDF (0x255 bytes), align: 0
   Segment part 14.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            Channel_DataReceive_PUCK
-                                   00039B6C        Channel_Data_Proc_PUCK (Channel)
+                                   00039B8B        Channel_Data_Proc_PUCK (Channel)
                calls direct and indirect
                stack 1 = 00000004 ( 00000020 )
     -------------------------------------------------------------------------
@@ -20611,20 +20613,20 @@ FAR_ID
   SEGMENTS IN THE MODULE
   ======================
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D6A9 - 0003D6E3 (0x3b bytes), align: 0
+  Relative segment, address: 0003D6C8 - 0003D702 (0x3b bytes), align: 0
   Segment part 2.             Intra module refs:   hdwinit
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           SystemInit              0003D6A9 
+           SystemInit              0003D6C8 
                calls direct
                stack 1 = 00000000 ( 00000004 )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D6E4 - 0003D6EE (0xb bytes), align: 0
+  Relative segment, address: 0003D703 - 0003D70D (0xb bytes), align: 0
   Segment part 3.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           hdwinit                 0003D6E4        Init_CPU_PUCK (DeviceAbs)
+           hdwinit                 0003D703        Init_CPU_PUCK (DeviceAbs)
                                                    Init_Hard_PUCK (DeviceAbs)
                calls direct
 
@@ -20636,11 +20638,11 @@ FAR_ID
   SEGMENTS IN THE MODULE
   ======================
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D7BA - 0003D7DA (0x21 bytes), align: 0
+  Relative segment, address: 0003D7D9 - 0003D7F9 (0x21 bytes), align: 0
   Segment part 2.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           atan                    0003D7BA        GetAngle (MeasuLib)
+           atan                    0003D7D9        GetAngle (MeasuLib)
                calls direct
                stack 1 = 00000000 ( 00000006 )
 
@@ -20665,16 +20667,16 @@ FAR_Z
   SEGMENTS IN THE MODULE
   ======================
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003C3FC - 0003C57D (0x182 bytes), align: 0
+  Relative segment, address: 0003C41B - 0003C59C (0x182 bytes), align: 0
   Segment part 2.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           exp                     0003C3FC        pow (?pow)
+           exp                     0003C41B        pow (?pow)
                calls direct
                stack 1 = 00000000 ( 0000003A )
     -------------------------------------------------------------------------
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003C57E - 0003C588 (0xb bytes), align: 0
+  Relative segment, address: 0003C59D - 0003C5A7 (0xb bytes), align: 0
   Segment part 3.             Intra module refs:   exp
 
     -------------------------------------------------------------------------
@@ -20699,11 +20701,11 @@ FAR_Z
   SEGMENTS IN THE MODULE
   ======================
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D3DC - 0003D45A (0x7f bytes), align: 0
+  Relative segment, address: 0003D3FB - 0003D479 (0x7f bytes), align: 0
   Segment part 2.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           floor                   0003D3DC        pow (?pow)
+           floor                   0003D3FB        pow (?pow)
                calls direct
                stack 1 = 00000000 ( 00000010 )
 
@@ -20713,11 +20715,11 @@ FAR_Z
   SEGMENTS IN THE MODULE
   ======================
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D584 - 0003D5CE (0x4b bytes), align: 0
+  Relative segment, address: 0003D5A3 - 0003D5ED (0x4b bytes), align: 0
   Segment part 2.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           frexp                   0003D584        log (?log)
+           frexp                   0003D5A3        log (?log)
                                                    sqrt (?sqrt)
                stack 1 = 00000004 ( 0000000A )
 
@@ -20727,11 +20729,11 @@ FAR_Z
   SEGMENTS IN THE MODULE
   ======================
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003CC22 - 0003CD40 (0x11f bytes), align: 0
+  Relative segment, address: 0003CC41 - 0003CD5F (0x11f bytes), align: 0
   Segment part 2.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           log                     0003CC22        pow (?pow)
+           log                     0003CC41        pow (?pow)
                calls direct
                stack 1 = 00000000 ( 00000020 )
 
@@ -20741,11 +20743,11 @@ FAR_Z
   SEGMENTS IN THE MODULE
   ======================
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D662 - 0003D6A8 (0x47 bytes), align: 0
+  Relative segment, address: 0003D681 - 0003D6C7 (0x47 bytes), align: 0
   Segment part 2.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           memcmp                  0003D662        Check_Demand_Data (Demand)
+           memcmp                  0003D681        Check_Demand_Data (Demand)
                                                    Check_Frame_Meter_Addr (Data_Trans)
                                                    Get_User_Authority (Authority)
                                                    OS_Check_Sum (OS_Pub)
@@ -20758,11 +20760,11 @@ FAR_Z
   SEGMENTS IN THE MODULE
   ======================
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D6EF - 0003D727 (0x39 bytes), align: 0
+  Relative segment, address: 0003D70E - 0003D746 (0x39 bytes), align: 0
   Segment part 2.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           memset                  0003D6EF        Count_All_Loss_Proc (EventStatus)
+           memset                  0003D70E        Count_All_Loss_Proc (EventStatus)
                                                    OS_memset (OS_Pub)
                                                    UART0_RecData_pre_suck (Serial)
                                                    UART1_RecData_pre_suck (Serial)
@@ -20776,11 +20778,11 @@ FAR_Z
   SEGMENTS IN THE MODULE
   ======================
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003BC60 - 0003BE7D (0x21e bytes), align: 0
+  Relative segment, address: 0003BC7F - 0003BE9C (0x21e bytes), align: 0
   Segment part 2.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           pow                     0003BC60        GetCurrValue_PerOne (MeasuProc)
+           pow                     0003BC7F        GetCurrValue_PerOne (MeasuProc)
                                                    GetFreqValue_PUCK (MeasuProc)
                                                    GetPowerFactorValue_PerOne (MeasuProc)
                                                    GetVoltValue_PerOne (MeasuProc)
@@ -20794,11 +20796,11 @@ FAR_Z
   SEGMENTS IN THE MODULE
   ======================
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003CD41 - 0003CE38 (0xf8 bytes), align: 0
+  Relative segment, address: 0003CD60 - 0003CE57 (0xf8 bytes), align: 0
   Segment part 2.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           __satan                 0003CD41        atan (?atan)
+           __satan                 0003CD60        atan (?atan)
                calls direct
                stack 1 = 00000000 ( 00000030 )
 
@@ -20808,11 +20810,11 @@ FAR_Z
   SEGMENTS IN THE MODULE
   ======================
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003CE39 - 0003CF28 (0xf0 bytes), align: 0
+  Relative segment, address: 0003CE58 - 0003CF47 (0xf0 bytes), align: 0
   Segment part 2.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           sqrt                    0003CE39        Power_Volt_Curr_Modi_PUCK (MeasuProc)
+           sqrt                    0003CE58        Power_Volt_Curr_Modi_PUCK (MeasuProc)
                calls direct
                stack 1 = 00000000 ( 00000018 )
 
@@ -20822,11 +20824,11 @@ FAR_Z
   SEGMENTS IN THE MODULE
   ======================
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D52C - 0003D583 (0x58 bytes), align: 0
+  Relative segment, address: 0003D54B - 0003D5A2 (0x58 bytes), align: 0
   Segment part 2.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           strcmp                  0003D52C        OS_Assert (OS_Pub)
+           strcmp                  0003D54B        OS_Assert (OS_Pub)
                stack 1 = 00000008 ( 00000008 )
 
     -------------------------------------------------------------------------
@@ -20835,11 +20837,11 @@ FAR_Z
   SEGMENTS IN THE MODULE
   ======================
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D75C - 0003D78A (0x2f bytes), align: 0
+  Relative segment, address: 0003D77B - 0003D7A9 (0x2f bytes), align: 0
   Segment part 2.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           strlen                  0003D75C        Main_Dis_Info (HTLCD_LIB)
+           strlen                  0003D77B        Main_Dis_Info (HTLCD_LIB)
                                                    OS_Assert (OS_Pub)
                                                    lcd_data (interface)
                                                    lcd_units (interface)
@@ -20851,11 +20853,11 @@ FAR_Z
   SEGMENTS IN THE MODULE
   ======================
 <XCODE> 1 (was XCODE)
-  Relative segment, address: 0003D4CE - 0003D52B (0x5e bytes), align: 0
+  Relative segment, address: 0003D4ED - 0003D54A (0x5e bytes), align: 0
   Segment part 2.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           strstr                  0003D4CE        lcd_data (interface)
+           strstr                  0003D4ED        lcd_data (interface)
                stack 1 = 00000008 ( 00000004 )
 
     -------------------------------------------------------------------------
@@ -23868,7 +23870,7 @@ CODE                               000010A0 - 00001588         4E9   rel    0
 FAR_ID                             0000CF00 - 0000D331         432   rel    1
 <FAR_CONST,FSWITCH> 1
                                    0000D332 - 000117D7        44A6   rel    1
-<XCODE> 1                          000117D8 - 0003D7EB       2C014   rel    0
+<XCODE> 1                          000117D8 - 0003D80A       2C033   rel    0
 NEAR_A                             000F0017 - 000F0017           1   rel    0
                                    000F0030 - 000F0031           2 
                                    000F0033 - 000F0038           6 
@@ -23922,7 +23924,7 @@ NEAR_A                             000FFFE0 - 000FFFEF          10   rel    0
                 *                                      *
                 ****************************************
 
- 185 631 bytes of CODE  memory
+ 185 662 bytes of CODE  memory
   11 148 bytes of DATA  memory (+ 232 absolute )
   66 127 bytes of CONST memory
 

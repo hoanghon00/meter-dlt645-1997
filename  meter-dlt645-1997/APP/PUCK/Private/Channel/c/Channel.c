@@ -230,6 +230,8 @@ void Init_All_UART(INT32U Mode)
    //关闭所有串口
     for(i=CHANEL_MIN;i<=CHANEL_MAX;i++)
        Close_Channel_PUCK(i);   //关闭全部串口------------PUCK
+    Chanel_Para[CHANEL_IRDA].Baud=0;  //清除红外波特率，以便于唤醒后，该口的重新初始化
+    SET_STRUCT_SUM(Chanel_Para[CHANEL_IRDA]); 
     break;
     
   }

@@ -237,7 +237,7 @@ void Init_All_IO_Resume(void)
 1：原有输入脚还是输入脚，不变；
 2：未用的输入脚，已用的输出脚，强制输出为0；
 3：双向IO，
-4：注意的几个脚：IC_PWR，SECOND_PULSE，K1(干皇管)
+4：注意的几个脚：IC_PWR，SECOND_PULSE，PWM，K1(干皇管)
 ********************************************************************************/
 void Init_All_IO_Sleep(void)
 {    

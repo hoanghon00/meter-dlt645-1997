@@ -207,7 +207,7 @@ void Irda_Wake_Up(void)  //正常模式下，此中断关闭，只有在sleep和resume下中断打开
     Irda_Wake_Ctrl.PulseNum++;
   }
    
-  if((Fast_Timer_Reg<=IRDA_WAKE_UP_MS)&&(Irda_Wake_Ctrl.PulseNum>=IRDA_WAKE_UP_NUM))
+  if((Fast_Timer_Reg<IRDA_WAKE_UP_MS)&&(Irda_Wake_Ctrl.PulseNum>=IRDA_WAKE_UP_NUM))
   {
     Irda_Wake_Ctrl.Start=0;
     Irda_Wake_Ctrl.PulseNum=0;
