@@ -37,7 +37,7 @@ typedef struct
 
 
 INTER_ABS_PUCK_EXT volatile PULSE_NUM_STRUC  Pulse_Num_Temp;
-INTER_ABS_PUCK_EXT volatile INT32U Fast_Timer_Reg;
+INTER_ABS_PUCK_EXT volatile INT16U Fast_Timer_Reg;  //INT32U 改为 INT16U  09－04－05 RiseSun
 
 typedef struct
 {
@@ -50,6 +50,7 @@ typedef struct
   INT8U  B_Key:1;        //切换到B模式
   INT8U  PrgKey:1;       //编程按钮，中断置位
 }KeyBit;
+INTER_ABS_PUCK_EXT volatile INT32U  Key_WkUP_Ms_Timr;
 
 typedef union
 {
@@ -105,8 +106,8 @@ NO_INIT INTER_ABS_PUCK_EXT volatile ALL_LOSS_STRUC All_Loss_Var;
                               SET_VAR_CS_PUCK(Var);}
 
 #define IRDA_WAKE_UP_MS    15//80   //判定唤醒帧的超时时间：ms
-#define IRDA_WAKE_UP_NUM   2//7   //判定唤醒帧的脉冲数目：个数
-
+#define IRDA_WAKE_UP_NUM   1//7   //判定唤醒帧的脉冲数目：个数
+INTER_ABS_PUCK_EXT volatile INT32U  Irda_WkUP_Ms_Timr;
 
 typedef struct
 {

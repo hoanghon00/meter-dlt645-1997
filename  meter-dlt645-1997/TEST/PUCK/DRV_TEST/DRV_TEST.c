@@ -646,7 +646,7 @@ void Dis_Per_Item(INT8U Item)
     SetOnDevice_PUCK(S_BUTTON);
   if(UP_COVER_STATUS)
     SetOnDevice_PUCK(S_HOUSE);
-  if(DOWN_COVER_STATUS==0)
+  if(DOWN_COVER_STATUS)
     SetOnDevice_PUCK(S_SHOT);
   if(B_PRG_KEY_STATUS)
     SetOnDevice_PUCK(S_KEY);

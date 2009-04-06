@@ -13,8 +13,7 @@ void Init_Interr_Sram(void)
   mem_set((void *)(&Irda_Wake_Ctrl),0,sizeof(Irda_Wake_Ctrl),\
                (void *)(&Irda_Wake_Ctrl),sizeof(Irda_Wake_Ctrl));   
   INIT_STRUCT_VAR(Irda_Wake_Ctrl);
-  
-  
+
   mem_set((void *)(&Irda_Decode_Ctrl),0,sizeof(Irda_Decode_Ctrl),\
         (void *)(&Irda_Decode_Ctrl),sizeof(Irda_Decode_Ctrl));
   INIT_STRUCT_VAR(Irda_Decode_Ctrl);
@@ -22,6 +21,9 @@ void Init_Interr_Sram(void)
   mem_set((void *)(&Pulse_Num_Temp),0,sizeof(Pulse_Num_Temp),\
         (void *)(&Pulse_Num_Temp),sizeof(Pulse_Num_Temp));
   INIT_STRUCT_VAR(Pulse_Num_Temp); 
+  
+  Irda_WkUP_Ms_Timr=Ms_Timer_Pub;
+  Key_WkUP_Ms_Timr=Ms_Timer_Pub;
   
 }
 
@@ -111,6 +113,7 @@ void Inter_Up_Key(void)
 {
   EI();
   Resume_Src.Src_Flag|=KEY_RESUME;
+  Key_WkUP_Ms_Timr=Ms_Timer_Pub;
   Key_Value_Pub.Key.Bit.UpKey=1;
 }
 
@@ -207,7 +210,7 @@ void Irda_Wake_Up(void)  //正常模式下，此中断关闭，只有在sleep和resume下中断打开
     Irda_Wake_Ctrl.PulseNum++;
   }
    
-  if((Fast_Timer_Reg<IRDA_WAKE_UP_MS)&&(Irda_Wake_Ctrl.PulseNum>=IRDA_WAKE_UP_NUM))
+  if((Fast_Timer_Reg<=IRDA_WAKE_UP_MS)&&(Irda_Wake_Ctrl.PulseNum>=IRDA_WAKE_UP_NUM))
   {
     Irda_Wake_Ctrl.Start=0;
     Irda_Wake_Ctrl.PulseNum=0;
@@ -217,6 +220,7 @@ void Irda_Wake_Up(void)  //正常模式下，此中断关闭，只有在sleep和resume下中断打开
     STOP_IRDA_WAKE;           //确定已经唤醒，以后关闭唤醒脚的中断
     Fast_Timer_Reg=0;
     Resume_Src.Src_Flag|=IRAD_RESUME;
+    Irda_WkUP_Ms_Timr=Ms_Timer_Pub;
   }
 }
 
@@ -237,7 +241,7 @@ void Fast_Timer(void)
       return ;
     }
   
-    if(Fast_Timer_Reg>=IRDA_WAKE_UP_MS)   //时间超限,关闭定时器，由唤醒脚来启动
+    if(Fast_Timer_Reg>IRDA_WAKE_UP_MS)   //时间超限,关闭定时器，由唤醒脚来启动
     {
       Fast_Timer_Reg=0;
       STOP_FAST_TIMER;
@@ -267,29 +271,14 @@ void Fast_Timer(void)
 void IR_Decode_Proc(void)
 {
   EI();
-  if(CHECK_STRUCT_VAR(Irda_Decode_Ctrl))
-  {
-    if(Irda_Decode_Ctrl.Done)
-      return ;
-  }
-  else                              //头尾不对
-  {
-    Port_Out_Pub(INTER_ID_ALARM_BEEP,BEEP_MODE_500);
-    Fast_Timer_Reg=0;
-    Irda_Decode_Ctrl.Start=0;
-    Irda_Decode_Ctrl.Done=0;
-    Irda_Decode_Ctrl.Index=0;
-    Irda_Decode_Ctrl.TrigTimer=0; 
-    return;
-  }  
-  
   if(Irda_Decode_Ctrl.Start==0 && Irda_Decode_Ctrl.TrigTimer==0)  //启动快速Timer
-  {    
+  {
+    START_TIMER_10uS;
+    Fast_Timer_Reg=0;
+    
     Irda_Decode_Ctrl.TrigTimer=1;
     Irda_Decode_Ctrl.Done=0;
     Irda_Decode_Ctrl.Index=0; 
-    Fast_Timer_Reg=0;
-    START_TIMER_10uS;    
     return ;
   }
 
@@ -320,7 +309,7 @@ void IR_Decode_Proc(void)
           Fast_Timer_Reg=0;
         }
     }
-    else if(Fast_Timer_Reg>=80&&Fast_Timer_Reg<=130)
+    else if(Fast_Timer_Reg>=70&&Fast_Timer_Reg<=130)
     {
         if(Irda_Decode_Ctrl.Index<CODE_NUM*8)
         {
@@ -348,7 +337,6 @@ void IR_Decode_Proc(void)
     } 
   }      
 }
-
 //1秒脉冲,中断等级--------INTER_GRADE_LOWERST
 void INT_1HZ(void)
 {

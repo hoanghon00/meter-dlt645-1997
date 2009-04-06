@@ -138,14 +138,29 @@ void Debug_Channel_Switch(INT32U Mode)
         Chanel_Para[CHANEL_IRDA].Baud=BAUD_IRDA;
         Open_Channel_PUCK(CHANEL_IRDA,BAUD_IRDA,SAU_PARITY_EVEN);
         SET_STRUCT_SUM(Chanel_Para[CHANEL_IRDA]); 
+        return ;
       }
       if(SYS_RESUME==Mode &&Check_Resume_Source(IRAD_RESUME)) //红外唤醒模式
       {
         if(IRDA_READ_METER_EN)   //在key已经唤醒下，红外唤醒，HUCK不会调用 Init_ExtDevice_PUCK()，对红外口的初始化
         {          
+          if((Resume_Src.Src_Flag&(IRAD_RESUME|KEY_RESUME))==(IRAD_RESUME|KEY_RESUME))  //同时发生2个唤醒源
+          {
+            if((Key_WkUP_Ms_Timr-Irda_WkUP_Ms_Timr<=1000) || (Irda_WkUP_Ms_Timr-Key_WkUP_Ms_Timr<=1000))   //先按钮，后红外;或者先红外后按钮，气时间差在某一范围内，误判！
+            {
+              Resume_Src.Src_Flag&=(INT8U)(~IRAD_RESUME);  //清除红外唤醒源
+              mem_set((void *)(&Irda_Wake_Ctrl),0,sizeof(Irda_Wake_Ctrl),\
+               (void *)(&Irda_Wake_Ctrl),sizeof(Irda_Wake_Ctrl));   
+              STOP_IR_DECODE;       //与 START_IR_DECODE 互斥
+              START_IRDA_WAKE; 
+              return ;
+            }            
+          }  
+          /**/
           //Switch_Main_Osc(RUN_MODE);      //唤醒后由内部晶振切换至外部晶振
           //IRDA_FAR_REC_EN;              //红外接收开启
           BAK_POWER_FOR_IRDA;            //远红外电源由低功耗电池供给;
+          OS_TimeDly_Ms(100);   //100ms睡眠
           //Debug_Out_Public_Puck("\r\nPUCK:Switch To IRDA CHannel!",30);
           Chanel_Para[CHANEL_IRDA].Baud=BAUD_IRDA;
           SET_STRUCT_SUM(Chanel_Para[CHANEL_IRDA]); 
@@ -229,7 +244,7 @@ void Init_All_UART(INT32U Mode)
   case SYS_SLEEP:
    //关闭所有串口
     for(i=CHANEL_MIN;i<=CHANEL_MAX;i++)
-       Close_Channel_PUCK(i);   //关闭全部串口------------PUCK
+      Close_Channel_PUCK(i);   //关闭全部串口------------PUCK
     Chanel_Para[CHANEL_IRDA].Baud=0;  //清除红外波特率，以便于唤醒后，该口的重新初始化
     SET_STRUCT_SUM(Chanel_Para[CHANEL_IRDA]); 
     break;

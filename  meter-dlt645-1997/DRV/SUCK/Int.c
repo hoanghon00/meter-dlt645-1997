@@ -91,7 +91,7 @@ void INTP_Init( void )
 	PM14 |= 0x01;		/* INTP6 pin setting */
 	PM14 |= 0x02;		/* INTP7 pin setting */
 	PM7 |= 0x10;		/* INTP8 pin setting */
-	PM7 |= 0x20;		/* INTP9 pin setting */
+	/*PM7 |= 0x20;		 INTP9 pin setting */    //悬空，与key共用，设为输出－－－09－04－05
 	PM7 |= 0x40;		/* INTP10 pin setting */
 	PM7 |= 0x80;		/* INTP11 pin setting */
 

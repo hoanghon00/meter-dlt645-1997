@@ -972,7 +972,7 @@ void Monitor_Meter_System_Osc(void)
     if(CSC!=0x01 ||CKC!=0x38)
     {
       Beep_For_OSC_Alarm_PUCK();
-      DEBUG_PRINT(PUCK,1,"MCU Osc System Error:MSTOP=%d,MSTOP=%d,MSTOP=%d",MSTOP,HIOSTOP,XTSTOP);  
+      DEBUG_PRINT(PUCK,1,"MCU Osc System Error:MSTOP=%d,HIOSTOP=%d,XTSTOP=%d",MSTOP,HIOSTOP,XTSTOP);  
       Set_Event_Instant(ID_EVENT_OSC_ERR); 
       return ;
     }
@@ -980,10 +980,10 @@ void Monitor_Meter_System_Osc(void)
     return ;
   }
   
-  if(CSC!=0x01 ||CKC!=0x39)
+  if(CSC!=0x01 ||CKC!=(0x38|RSUME_CLOCK_DIV))
   {
     Beep_For_OSC_Alarm_PUCK();
-    DEBUG_PRINT(PUCK,1,"MCU Osc System Error:MSTOP=%d,MSTOP=%d,MSTOP=%d",MSTOP,HIOSTOP,XTSTOP);  
+    DEBUG_PRINT(PUCK,1,"MCU Osc System Error:MSTOP=%d,HIOSTOP=%d,XTSTOP=%d",MSTOP,HIOSTOP,XTSTOP);  
     Set_Event_Instant(ID_EVENT_OSC_ERR); 
     return ;
   }

@@ -78,7 +78,8 @@ void PORT_Init(INT32U Mode )
         PM2_bit.no0=0; PM2_bit.no2=0;  PM2_bit.no4=0; PM2_bit.no5=0; 
         PM3|=PM3_DEFAULT;
         PM4_bit.no2=0; PM4_bit.no3=0;  PM4_bit.no5=0;
-        PM5_bit.no3=0; PM5_bit.no4=0;        
+        PM5_bit.no3=0; PM5_bit.no4=0;
+        PM7_bit.no0=0; PM7_bit.no5=0;   //按钮共用，且为NC，设定为输出，09－04－05
         PM8_bit.no0=0; PM8_bit.no1=0; PM8_bit.no2=0; PM8_bit.no3=0; PM8_bit.no4=0;  PM8_bit.no6=0;       
         PM11_bit.no0=1;  //关闭远红外，防止灯光等误进入
         PM11|=PM11_DEFAULT;

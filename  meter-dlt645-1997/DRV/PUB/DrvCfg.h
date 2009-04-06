@@ -9,8 +9,8 @@
 #define DRV_CFG_EXT 
 #endif
 
-#define RSUME_CLOCK_DIV   CG_CPUCLK_MAIN1       //唤醒模式下，外部晶振的分频系数,目前只能是 CG_CPUCLK_MAIN0、CG_CPUCLK_MAIN1
-#define RSUME_REMOTER_EN   0                    //1-----唤醒下，红外遥控器开启；0------------唤醒下红外遥控器关闭
+#define RSUME_CLOCK_DIV   CG_CPUCLK_MAIN0       //唤醒模式下，外部晶振的分频系数,目前只能是 CG_CPUCLK_MAIN0、CG_CPUCLK_MAIN1
+#define RSUME_REMOTER_EN   1                    //1-----唤醒下，红外遥控器开启；0------------唤醒下红外遥控器关闭
 #define LVI_DETECT_EN           //宏开启，打开LVI功能
 
 #define ID_MEM_IIC_U10 0     //宏开启，打开该EPPROM的读写功能:

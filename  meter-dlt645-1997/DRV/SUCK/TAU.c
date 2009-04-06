@@ -183,8 +183,6 @@ void TAU_Init(void)
         /* TI00(P00) input */
 	PM0 |= 0x01;
 
-        /* TI01(P16) input */
-	PM1 |= 0x40;
         
 	/* TO02(P17) output */
 	PM1 &= (UCHAR)~0x80;

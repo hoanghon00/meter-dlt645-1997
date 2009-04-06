@@ -455,8 +455,8 @@ void Goto_Sleep_PUCK(void)
      } 
    }
      //醒来了，根据唤醒源马上切换高速晶振-----------PUCK 
-    Switch_Main_Osc(RUN_MODE);
-    Clear_CPU_Dog(); 
+   Switch_Main_Osc(RUN_MODE);
+   Clear_CPU_Dog(); 
 }  
 /********************************************************************************
 函数功能：对睡眠做了次数限制
@@ -471,19 +471,24 @@ void Cpu_Sleep_Proc(void)
   
   while(1)
   {
-    Goto_Sleep_PUCK();
-    
-    Get_Time_From_INTER_RTC((S_BCD_Time *)&(Cur_Time1));
-    if(Cur_Time1.Date!=Last_Date.Var)
+    Goto_Sleep_PUCK();      
+    if(DAY!=Last_Date.Var)
     {
-      Counts.Var=0;
+      Counts.Var=0;   //跨天，唤醒次数清0
       Last_Date.Var=Cur_Time1.Date;
     }
     else
       Counts.Var++;
     
+    Clear_CPU_Dog(); 
+    
     if(Counts.Var<3)
       break;
+    
+    //当天唤醒次数超过，清除本次按钮和红外唤醒源
+    if(Counts.Var==254)  //避免翻转
+      Counts.Var=3;
+    Resume_Src.Src_Flag&=(INT8U)(~(IRAD_RESUME|KEY_RESUME));  //清除按钮和红外唤醒源
   }
 }
 /********************************************************************************
@@ -664,7 +669,7 @@ void Init_CPU_PUCK(INT32U Mode)
         Init_Inter_Abs(SYS_SLEEP);
         Init_All_IO_Sleep();  //设IO
         Init_CPUDevice_Clock(SYS_SLEEP);        
-        Goto_Sleep_PUCK();           //将主时钟切换为 sub，关闭振荡器，进入halt模式
+        Cpu_Sleep_Proc();           //睡眠，并限制唤醒次数
     break;    
  }  
 }

@@ -85,16 +85,19 @@ void Clock_Init(INT32U SysMode)
 	
 	CSS = 0;
 
-        //PER0 = 0XFD;		/* RTCEN=DACEN=ADCEN=IIC0EN=SAU1EN=SAU0EN=TAU0EN=1: supplies input clock to RTC, DAC, ADC, IIC0, SAU0, SAU1 and TAU0 */
-        //PER1 = 0X00;
 	CKC &= (UCHAR)~CG_CPUCLK;         //将分频系数归0
         if(SYS_NORMAL==SysMode)
-	  CKC |= CG_CPUCLK_MAIN0;           //获取分频系数:fMAIN=晶振
+	{
+          CKC |= CG_CPUCLK_MAIN0;           //获取分频系数:fMAIN=晶振
+          OSMC = CG_FCLK_OVER10M;           //10M以上频率
+        }
         else
-          CKC |= RSUME_CLOCK_DIV;           //获取分频系数:fMAIN/2
-        
-	OSMC = CG_FCLK_OVER10M;           //10M以上频率
+        {
+          CKC |= RSUME_CLOCK_DIV;           //获取分频系数:fMAIN/n
+          OSMC = CG_FCLK_UNDER10M;           //10M以下频率
+        }	
 }
+
 void Clock_Init_1( void )
 {
 //	ULONG i;

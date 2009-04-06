@@ -134,7 +134,7 @@ void  Main_Task_PUB(void *p_arg)
     Clear_CPU_Dog();    //清CPU内部看门狗
     Get_Para_Modify(&DI);  //读取参数，每个任务都需要从参数修改队列中读取出来
     Power_Down_Check();
-    OS_TimeDly_Ms(100);   //400ms睡眠
+    OS_TimeDly_Ms(100);   //100ms睡眠
    }
 }
 /**********************************************************************************
