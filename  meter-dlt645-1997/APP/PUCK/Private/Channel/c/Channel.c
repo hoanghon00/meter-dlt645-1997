@@ -160,7 +160,7 @@ void Debug_Channel_Switch(INT32U Mode)
           //Switch_Main_Osc(RUN_MODE);      //唤醒后由内部晶振切换至外部晶振
           //IRDA_FAR_REC_EN;              //红外接收开启
           BAK_POWER_FOR_IRDA;            //远红外电源由低功耗电池供给;
-          OS_TimeDly_Ms(100);   //100ms睡眠
+          OS_TimeDly_Ms(200);   //200ms睡眠
           //Debug_Out_Public_Puck("\r\nPUCK:Switch To IRDA CHannel!",30);
           Chanel_Para[CHANEL_IRDA].Baud=BAUD_IRDA;
           SET_STRUCT_SUM(Chanel_Para[CHANEL_IRDA]); 
