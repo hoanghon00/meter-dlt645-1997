@@ -422,6 +422,8 @@ void Test_Measure(void)
     temp[i]/=UNIT_V;
     if(((FP32S)temp[i]>Get_Un()*0.2 && (FP32S)temp[i]<Get_Un()*0.5) ||((FP32S)temp[i]>Get_Un()*1.35))
       Flag=0;
+     if(!MEASU_SIG_STAT)      //异常
+      Flag=0;
   }
   
   Drv_Test_Buf[ID_TEST_MEASURE]=Flag;
@@ -839,6 +841,9 @@ void Test_HardWare_PUCK(void)
   Init_All_Port(SYS_NORMAL); 
   
   Test_RST_Pin();
+  Clr_Ext_Inter_Dog();
+  
+  Init_All_UART(SYS_NORMAL);      //正常模式下的串口初始化  
   Clr_Ext_Inter_Dog();
   
   Test_Lcd();
