@@ -11,7 +11,7 @@ INT8U Test_Temp_Buf[TEST_TEMP_LEN];
 
 static INT8U KeyNum=0;
 INT16U PD_Save_Data_Time;
-
+INT8U  Measu_Err_Code=0;
 CONST INT8U TEST_INFO[2][9]={"Failed ","Succeed"};
 volatile static INT32U Temp_Timer_Bak=0;
 volatile static INT32U Sec_One_Timer;
@@ -182,10 +182,10 @@ void Test_RST_Pin(void)
       Extern_Dog_Test.Status=0x48;
       SET_STRUCT_SUM(Extern_Dog_Test);
       Temp_Ms_Timer=Ms_Timer_Pub;
-      while(Ms_Timer_Pub-Temp_Ms_Timer<3000)     //3秒都不复位！
+      while(Ms_Timer_Pub-Temp_Ms_Timer<2400)     //3秒都不复位！
         Clear_CPU_Dog();    //清CPU内部看门狗
       
-      if(Ms_Timer_Pub-Temp_Ms_Timer>=3000)  //怕误取错
+      if(Ms_Timer_Pub-Temp_Ms_Timer>=2400)  //怕误取错
       {
         Drv_Test_Buf[ID_TEST_EXT_DOG]=0; 
         DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"|-----------------------Test Extern Dog-------------------------------|");
@@ -357,7 +357,8 @@ void Test_All_Port(void)
     Test_CPU_Output_IO();
     Test_CPU_Input_IO();
     Sec_One_Timer=Sec_Timer_Pub;    
-  }  
+  }
+  
     
 }
 /**********************************************************************************
@@ -401,33 +402,78 @@ void Test_Lcd(void)
 测试计量
 **********************************************************************************/
 #define MEASU_TEST_NUM 3
+
+#define MEASU_MODE_ERR    0x01  //模式脚与模式字不一致
+#define MEASU_SIG_ERR     0x02  //SIG信号不对
+#define MEASU_RW_ERR      0x04  //读写错误
+#define MEASU_LOGIC_ERR   0x08  //数据逻辑错
+
 void Test_Measure(void)
 {
-  INT32U temp[3];
-  INT8U i,Flag=1;
+  INT32U temp[3],Cs;
+  INT8U i,Flag;
   
-  Init_Para();           //计量相关参数初始化
+  GetSysModeProc();           //计量相关参数初始化
   
   OPEN_MEASU_PWR;//       LCD_POW_0         //LCD电源由主电源供给;
   Dlyn10MS_ClrDog(1);
   MEASU_RST_0;
   Dlyn10MS_ClrDog(1);
   MEASU_RST_1;
-  Dlyn10MS_ClrDog(100);
+  Dlyn10MS_ClrDog(100);  //for Cs Refresh
   
- 
-  for(i=0;i<3;i++)
+  //检测341参数配置与计量芯片是否一致
+  Flag=Measu_RdAndCompData_3Times(REG_R_SUM,(INT8U *)&Cs);     //读7022中校表参数的校验和
+  if(Flag)
   {
-    Flag&=Measu_RdAndCompData_3Times(REG_R_A_U+i,(INT8U *)&temp[i]);
-    temp[i]/=UNIT_V;
-    if(((FP32S)temp[i]>Get_Un()*0.2 && (FP32S)temp[i]<Get_Un()*0.5) ||((FP32S)temp[i]>Get_Un()*1.35))
+    if((Get_SysParse_Mode()==PARSE_341) && (Cs!=CHKSUM_INIT_341))  //不是上电时候的CS
+    {
+      DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"Measure_Info----->Measure_IC Para Data(341) !=Default Value!");
       Flag=0;
-     if(!MEASU_SIG_STAT)      //异常
+      Measu_Err_Code|=MEASU_MODE_ERR;
+    }
+    
+    if((Get_SysParse_Mode()==PARSE_331) && (Cs!=CHKSUM_INIT_331)) //不是上电时候的CS
+    {
+      DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"Measure_Info----->Measure_IC Para Data(331) !=Default Value!");
       Flag=0;
+      Measu_Err_Code|=MEASU_MODE_ERR;
+    } 
+    
+    EnMeasuCal();
+    ClrMeasuCal();     //将校表数据寄存器的内容恢复到上电初始值
+    temp[0]=0;
+    for(i=REG_W_UGAIN_A;i<=REG_W_UGAIN_C;i++)
+      Flag&=Measu_WrAndCompData_3Times(i,temp[0]);
+    DisMeasuCal();
+    
+    Dlyn10MS_ClrDog(10);
+    
+    Clr_Cal_Requst();
+    
+    for(i=0;i<3;i++)
+    {
+      Flag&=Measu_RdAndCompData_3Times(REG_R_A_U+i,(INT8U *)&temp[i]);
+      temp[i]/=UNIT_V;
+      if(((FP32S)temp[i]>Get_Un()*0.2 && (FP32S)temp[i]<Get_Un()*0.5) ||((FP32S)temp[i]>Get_Un()*1.35))
+      {
+        Flag=0;
+        Measu_Err_Code|=MEASU_LOGIC_ERR;
+      }
+      if(!MEASU_SIG_STAT)      //异常
+      {
+         Flag=0;
+         Measu_Err_Code|=MEASU_SIG_ERR;
+      }
+      *(&Measu_InstantData_ToPub_PUCK.Volt.A+i)=temp[i];
+    }    
   }
+  else
+   Measu_Err_Code|=MEASU_RW_ERR;  
   
-  Drv_Test_Buf[ID_TEST_MEASURE]=Flag;
-  
+  SET_STRUCT_SUM(Measu_InstantData_ToPub_PUCK);
+    
+  Drv_Test_Buf[ID_TEST_MEASURE]=Flag;  
   DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"|-----------------------Test Measure IC-------------------------------|");
   DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"| Total Times    Volt_A(V)       Volt_B(V)    Volt_C(V)     Result    |");
   DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"|         %3d          %3ld             %3ld          %3ld     %s   |",\
@@ -508,7 +554,6 @@ void Test_All_RTC(INT8U RtcFlag)
 /**********************************************************************************
 测试EPPROM
 **********************************************************************************/
-
 void Test_Memory(void)
 {
   INT8U j,Flag,RandBuf[TEST_MEM_BUF_LEN];
@@ -642,7 +687,20 @@ void Dis_Per_Item(INT8U Item)
       Temp_Buf_PUCK[2-i]=(temp%10)+'0';
       temp=(temp-(temp%10))/10;
     }
-  }  
+  }
+
+  if(ID_TEST_MEASURE==Item && Drv_Test_Buf[ID_TEST_MEASURE]==0)
+  {
+    temp=Measu_Err_Code; 
+    for(i=0;i<2;i++)
+    {
+      Temp_Buf_PUCK[1-i]=(temp%10)+'0';
+      temp=(temp-(temp%10))/10;
+    }
+  }
+  
+
+
    // GUMB_STATUS  UP_COVER_STATUS  DOWN_COVER_STATUS  B_PRG_KEY_STATUS
   if(GUMB_STATUS)
     SetOnDevice_PUCK(S_BUTTON);
@@ -652,7 +710,12 @@ void Dis_Per_Item(INT8U Item)
     SetOnDevice_PUCK(S_SHOT);
   if(B_PRG_KEY_STATUS)
     SetOnDevice_PUCK(S_KEY);
-
+  
+  if(B_BATLOWRTC_TEST_STATUS==0)
+    SetOnDevice_PUCK(S_BAT1);
+  
+  if(B_BATLOW_TEST_STATUS==0)
+    SetOnDevice_PUCK(S_BAT2);
   
   
   for(i=14;i<=21;i++)

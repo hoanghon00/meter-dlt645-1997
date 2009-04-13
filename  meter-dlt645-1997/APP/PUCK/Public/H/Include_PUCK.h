@@ -14,22 +14,49 @@
 
 //定义计量错误状态字
 #define MEASU_NO_ERR      	0
-#define MEASU_SIGN_ERR    	1
-#define MEASU_RD3TIMES_ERR    	2
-#define MEASU_CAL_ERR    	3
-#define MEASU_ASSERT_ERR    	4
-#define MEASU_PUL_SPEC_ERR     	5
-#define MEASU_ENERG_FLOW_ERR   	6
-#define MEASU_ACCU_FLOW_ERR   	7  //电能增量太大
-#define MEASU_ENR_REDUCE_ERR 	8  //电能倒走
-#define MEASU_DATA_LOGIC_ERR 	9  //逻辑错误
+#define MEASU_SIGN_ERR    	1  //SIG错误
+#define MEASU_RD3TIMES_ERR    	2  //读数据错
+#define MEASU_CAL_ERR    	3  //计量过程中，出现校表请求
+#define MEASU_RE_WR_PARA_ERR    4  //校表参数需要重写
+#define MEASU_PUL_SPEC_ERR     	5  //计量参数规格错误
+#define MEASU_FREQU_ERR   	6  //频率错误
+#define MEASU_VOLT_ERR  	7  //电压超限
+#define MEASU_CURR_ERR  	8  //电电流超限
+#define MEASU_POWER_ERR  	9  //功率超限
+#define MEASU_ACCU_FLOW_ERR   	10  //电能增量太大
+#define MEASU_ENR_REDUCE_ERR 	11  //电能倒走
+#define MEASU_ENR_LIMIT_ERR 	12  //计量范围超限
+#define MEASU_DATA_LOGIC_ERR 	13  //逻辑错误
+#define MEASU_RESET_ERR 	14  //复位过程错误
+#define MEASU_CS_ERR            15  //校验和错
+#define MEASU_ENERG_FLOW_ERR   	16  //电能溢出时，电能增量太大
 
+#define MAX_MEASU_ERR 	        MEASU_ENERG_FLOW_ERR
 
 #define NO_QUADRANT   0             //无效象限
 #define QUADRANT1     (NO_QUADRANT+1)
 #define QUADRANT2     (QUADRANT1+1)
 #define QUADRANT3     (QUADRANT2+1)
 #define QUADRANT4     (QUADRANT3+1)
+
+
+
+#ifdef MEASURE_ERROR_ALARM_EN
+  #define MEASURE_ERR_NUM  20
+  #if MAX_MEASU_ERR<=MEASURE_ERR_NUM
+    typedef struct
+    { 
+      INT16U        ResetNum;
+      INT8U         AcFlag;
+      INT32U        LastValue;
+      INT32U        CurrValue;
+      INT32U        ChangeValue;
+      INT8U         Num[MEASURE_ERR_NUM];
+      INT8U CS[CS_BYTES]; 
+    }MEASURE_ERROR;
+  NO_INIT PUB_PUCK_EXT MEASURE_ERROR Measure_Err_Info;  
+  #endif
+#endif
 
 
 typedef struct
@@ -206,7 +233,7 @@ FP32S Get_In(void);
 INT32U Get_Sys_Pulse(void);
 INT8U GetSysModeProc(void);
 void Load_Adj_OnePara_To_IC(INT16U);
-void Measure_Error_Alarm(void);
+void Measure_Error_Alarm(INT8U);
 void Init_Measure_Ram(void);
 INT8U Load_MeasureIC_Para(void);
 INT8U Load_Spec_Para_To_IC(void);
@@ -225,4 +252,6 @@ INT8U Init_Para(void);
 INT8U Judge_I_Start(void);
 INT8U CHeck_Same_Byte(INT8U *Src,INT8U Byte,INT16U Len);
 FP32S Get_Start_Current(void);
+void Print_Measure_Err_Info(void);
+void Clr_Energ_Accu(void);
 #endif

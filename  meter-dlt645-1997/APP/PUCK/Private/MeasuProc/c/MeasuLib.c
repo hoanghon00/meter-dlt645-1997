@@ -126,7 +126,7 @@ INT8U Load_MeasureIC_Para(void)
   }
   else
   {
-    Measure_Error_Alarm();
+    Measure_Error_Alarm(MEASU_RE_WR_PARA_ERR);
     MeasuStatusMode.Retry=1;   //¼ÆÁ¿Ğ¾Æ¬²ÎÊıĞ´´íÎóÖØÊÔ
     SET_STRUCT_SUM(MeasuStatusMode);
     DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"Write To IC Para Failed,Waiting For Retry!");
@@ -147,13 +147,14 @@ INT8U InitMeasuAfterPwrOn(void)
   Flag=MeasuIC_HardRst();
   if(!Flag)     //Ó²¼ş¸´Î»Ê§°Ü
   {
-    Measure_Error_Alarm();
+    Measure_Error_Alarm(MEASU_RESET_ERR);
     DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"Measure_Error----->Hard Reset Error After Power On!");
     return 0;
   }
   
   //Flag=Clr_Energ_Reg_PwrOn();    //Èç¹ûÓ²¼ş¿É¿¿¸´Î»£¬Ğ¾Æ¬ÄÚ²¿×ÔĞĞÇå³ı£¬´Ë¾ä¿ÉÒÔÆÁ±Î
   Flag=Load_MeasureIC_Para();
+  Clr_Energ_Accu();   //Çå³ıÓÃÓÚ¼ÆËãµçÄÜÔöÁ¿µÄ¼Ä´æÆ÷
   return Flag;
 }
 /**********************************************************************************
@@ -444,23 +445,18 @@ INT8U Get_User_All_ParaSum3(INT32U *Cs)
 /**********************************************************************************
 º¯Êı¹¦ÄÜ£º»ñÈ¡¸ßÆµÂö³åÊä³ö
 Èë¿Ú£ºÎŞ
-³ö¿Ú£ºTH_MODE/TF_MODEÄ£Ê½×Ö
+³ö¿Ú£º¸ßÆµÂö³å³£ÊìÉèÖÃ
 **********************************************************************************/
 INT32U Get_HighPulse_Const(void)
 {  
-  FP32S temp;
-  INT8U U_spec,I_spec,U_Gain;
+  INT32U temp;
+  INT8U U_spec,I_spec;
   
   U_spec=Get_SysVolt_Mode();
   I_spec=Get_SysCurr_Mode();
-  U_Gain=Get_Volt_Adj_Rate();  
   
-  temp=Get_Un()*Get_In()*Get_Sys_Pulse();
-  if(temp)
-  {
-    temp=(FP32S)2418647040*(FP32S)U_Gain*AD_V_CONST[U_spec]*AD_I_CONST[I_spec]/temp+0.5;
-  }
-  
+  temp=HighPulseConst[U_spec][I_spec];
+
   if((INT32U)temp<0x04 || (INT32U)temp>0x0D00)
   {
     DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"Measure_Error----->Hight Pulse Const < 0x04");
@@ -471,11 +467,11 @@ INT32U Get_HighPulse_Const(void)
   {
     DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"Measure_Error----->Hight Pulse Const > 0x0d00");
     temp=0x0D00;
-  }  
-
+  }
   
   return  (((INT32U)temp)&0xFFFFFF);
 }
+
 /**********************************************************************************
 º¯Êı¹¦ÄÜ£º»ñÈ¡Æô¶¯µçÁ÷³£Êı
 Èë¿Ú£ºÎŞ
@@ -839,8 +835,11 @@ INT8U Load_All_Para_To_IC(void)
     return 0;
   }
   
-  if(!((Cs==CHKSUM_INIT_341)||(Cs==CHKSUM_INIT_331))) //²»ÊÇÉÏµçÊ±ºòµÄCS
-     DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"Measure_Info----->Measure_IC Para Data !=Default Value!");
+  if((Get_SysParse_Mode()==PARSE_341) && (Cs!=CHKSUM_INIT_341))  //²»ÊÇÉÏµçÊ±ºòµÄCS
+    DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"Measure_Info----->Measure_IC Para Data(341) !=Default Value!");
+  
+  if((Get_SysParse_Mode()==PARSE_331) && (Cs!=CHKSUM_INIT_331)) //²»ÊÇÉÏµçÊ±ºòµÄCS
+    DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"Measure_Info----->Measure_IC Para Data(331) !=Default Value!");
      
   Flag=Load_Spec_Adj_Para_To_IC();
   
@@ -875,7 +874,7 @@ void Retry_WritePara_To_IC(void)   //ÔËĞĞ¹ı³ÌÖĞ£¬ICµÄCSºÍEPPROMµÄCS²»Ò»ÖÂ£¬»òÕßÄ
   if(MeasuStatusMode.Retry==1)
   {
     DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"Measure_Error----->Retry Write IC Para.........");
-    Measure_Error_Alarm();
+    Measure_Error_Alarm(MEASU_RE_WR_PARA_ERR);
     Flag=Load_Spec_Adj_Para_To_IC();
     SYS_TimeDly_Sec(5);
     if(Flag)

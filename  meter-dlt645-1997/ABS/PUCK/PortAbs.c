@@ -356,6 +356,7 @@ void Beep_For_Measu_Alarm_PUCK(void)
 void Beep_For_Measu_Alarm_PUCK(void)
 {
  Port_Out_Pub(INTER_ID_ALARM_BEEP,BEEP_MODE_100);
+ Port_Out_Pub(INTER_ID_ALARM_DIS,150); 
 }
 /********************************************************************************
 void Beep_For_OSC_Alarm_PUCK(void)
@@ -366,8 +367,7 @@ void Beep_For_OSC_Alarm_PUCK(void)
 ********************************************************************************/
 void Beep_For_OSC_Alarm_PUCK(void)
 {
- Port_Out_Pub(INTER_ID_ALARM_BEEP,BEEP_MODE_150);
- Port_Out_Pub(INTER_ID_ALARM_DIS,150); 
+ Port_Out_Pub(INTER_ID_ALARM_BEEP,BEEP_MODE_150); 
 }
 /********************************************************************************
 void Beep_For_Test_Alarm_PUCK(void)

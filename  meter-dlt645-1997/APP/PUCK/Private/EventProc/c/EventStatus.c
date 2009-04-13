@@ -854,30 +854,32 @@ void Get_Meter_Run_Status(void)
 void Get_Meter_Self_Test(void)
 {
   
+  Meter_Self_Test.High_Byte.Byte=0;
   Meter_Self_Test.Low_Byte.Byte=0;
-  Meter_Self_Test.Low_Byte.Bit.Bit0=Read_Event_Status(ID_EVENT_RTCERR_RUN)|Read_Event_Status(ID_EVENT_RTCERR_PWRON);  //时钟乱
-  Meter_Self_Test.Low_Byte.Bit.Bit4=Read_Event_Status(ID_EVENT_DEMAND_ALARM);    //超需量/功率
-  Meter_Self_Test.Low_Byte.Bit.Bit6=Read_Event_Status(ID_EVENT_A_LOSS_PARSE)| \
+  
+  Meter_Self_Test.High_Byte.Bit.Bit7=Read_Event_Status(ID_EVENT_RTCERR_RUN)|Read_Event_Status(ID_EVENT_RTCERR_PWRON);  //时钟乱
+  Meter_Self_Test.High_Byte.Bit.Bit3=Read_Event_Status(ID_EVENT_DEMAND_ALARM);    //超需量/功率
+  Meter_Self_Test.High_Byte.Bit.Bit1=Read_Event_Status(ID_EVENT_A_LOSS_PARSE)| \
                                     Read_Event_Status(ID_EVENT_B_LOSS_PARSE)| \
                                     Read_Event_Status(ID_EVENT_C_LOSS_PARSE);      //断相
 
 
   
-  Meter_Self_Test.High_Byte.Bit.Bit0=Meter_Run_Status.Meter_Stat3.Bit.Bit4|\
+  Meter_Self_Test.Low_Byte.Bit.Bit7=Meter_Run_Status.Meter_Stat3.Bit.Bit4|\
                                      Meter_Run_Status.Meter_Stat3.Bit.Bit5|\
                                      Meter_Run_Status.Meter_Stat3.Bit.Bit6;          //失流(含全失流)
-  Meter_Self_Test.High_Byte.Bit.Bit1=Meter_Run_Status.Grid_Stat.Bit.Bit4|\
+  Meter_Self_Test.Low_Byte.Bit.Bit6=Meter_Run_Status.Grid_Stat.Bit.Bit4|\
                                      Meter_Run_Status.Grid_Stat.Bit.Bit5|\
                                      Meter_Run_Status.Grid_Stat.Bit.Bit6;           //过压
-  Meter_Self_Test.High_Byte.Bit.Bit2=Meter_Run_Status.Volt_LossMiss.Bit.Bit4|\
+  Meter_Self_Test.Low_Byte.Bit.Bit5=Meter_Run_Status.Volt_LossMiss.Bit.Bit4|\
                                      Meter_Run_Status.Volt_LossMiss.Bit.Bit5|\
                                      Meter_Run_Status.Volt_LossMiss.Bit.Bit6;       //失压
   
-  Meter_Self_Test.High_Byte.Bit.Bit3=Meter_Run_Status.Meter_Stat3.Bit.Bit1;        //逆相序
-  Meter_Self_Test.High_Byte.Bit.Bit4=Read_Event_Status(ID_EVENT_LOWPWR_BAT_LOW);        //低功耗电池欠压
-  Meter_Self_Test.High_Byte.Bit.Bit5=Read_Event_Status(ID_EVENT_RTC_BAT_LOW);        //时钟电池欠压
-  Meter_Self_Test.High_Byte.Bit.Bit6=0;        //内卡数据错
-  Meter_Self_Test.High_Byte.Bit.Bit7=0;        //内卡故障
+  Meter_Self_Test.Low_Byte.Bit.Bit4=Meter_Run_Status.Meter_Stat3.Bit.Bit1;        //逆相序
+  Meter_Self_Test.Low_Byte.Bit.Bit3=Read_Event_Status(ID_EVENT_LOWPWR_BAT_LOW);        //低功耗电池欠压
+  Meter_Self_Test.Low_Byte.Bit.Bit2=Read_Event_Status(ID_EVENT_RTC_BAT_LOW);        //时钟电池欠压
+  Meter_Self_Test.Low_Byte.Bit.Bit1=0;        //内卡数据错
+  Meter_Self_Test.Low_Byte.Bit.Bit0=0;        //内卡故障
   
   SET_STRUCT_SUM(Meter_Self_Test);  
   

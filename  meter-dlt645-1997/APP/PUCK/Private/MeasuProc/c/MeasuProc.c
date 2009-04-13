@@ -44,6 +44,35 @@ FP32S Get_Start_Current(void)
   return ((FP32S)I_CONST[I_Spec]/I_START_RATIO);
 }
 /**********************************************************************************
+º¯Êý¹¦ÄÜ£ºÇå³ýÓÃÓÚ¼ÆËãµçÁ¿µÄÀÛ¼ÆÊý¾ÝµÄ¼Ä´æÆ÷
+Èë¿Ú£ºÎÞ
+³ö¿Ú£º
+**********************************************************************************/
+void Clr_Energ_Accu(void)
+{
+   mem_set((void *)(&Pri_TempMeasuVar),
+            0x00,
+            sizeof(Pri_TempMeasuVar),
+            (void *)(&Pri_TempMeasuVar),
+            sizeof(Pri_TempMeasuVar));
+    SET_STRUCT_SUM(Pri_TempMeasuVar);
+  
+    mem_set((void *)(&Pri_TempMeasuVarBak1),
+            0x00,
+            sizeof(Pri_TempMeasuVarBak1),
+            (void *)(&Pri_TempMeasuVarBak1),
+            sizeof(Pri_TempMeasuVarBak1));
+    SET_STRUCT_SUM(Pri_TempMeasuVarBak1);
+  
+      mem_set((void *)(&Pri_TempMeasuVarBak2),
+            0x00,
+            sizeof(Pri_TempMeasuVarBak2),
+            (void *)(&Pri_TempMeasuVarBak2),
+            sizeof(Pri_TempMeasuVarBak2));
+    SET_STRUCT_SUM(Pri_TempMeasuVarBak2); 
+
+}
+/**********************************************************************************
 º¯Êý¹¦ÄÜ£º³õÊ¼»¯ÄÚ´æ
 Èë¿Ú£ºÎÞ
 ³ö¿Ú£ºÎÞ
@@ -99,27 +128,7 @@ void Init_Private_Ram(void)
           sizeof(SpecChange_CurrFlag));
   SET_STRUCT_SUM(SpecChange_CurrFlag);
 
-  mem_set((void *)(&Pri_TempMeasuVar),
-          0x00,
-          sizeof(Pri_TempMeasuVar),
-          (void *)(&Pri_TempMeasuVar),
-          sizeof(Pri_TempMeasuVar));
-  SET_STRUCT_SUM(Pri_TempMeasuVar);
-
-  mem_set((void *)(&Pri_TempMeasuVarBak1),
-          0x00,
-          sizeof(Pri_TempMeasuVarBak1),
-          (void *)(&Pri_TempMeasuVarBak1),
-          sizeof(Pri_TempMeasuVarBak1));
-  SET_STRUCT_SUM(Pri_TempMeasuVarBak1);
-
-    mem_set((void *)(&Pri_TempMeasuVarBak2),
-          0x00,
-          sizeof(Pri_TempMeasuVarBak2),
-          (void *)(&Pri_TempMeasuVarBak2),
-          sizeof(Pri_TempMeasuVarBak2));
-  SET_STRUCT_SUM(Pri_TempMeasuVarBak2); 
-
+  Clr_Energ_Accu();
  
 
   mem_set(&Pri_MeasuStatVar,\
@@ -475,7 +484,7 @@ INT8U  GetEnergChangeValue_PerOne(INT8U EngReg,INT8U FlowFlag,volatile INT32U *C
     {
       *ChangEnerg=0;
        DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"Measure_Error----->CurData=0x%lx,RdData=0x%lx,Energ Change Over Limited!",CurData,RdData);       
-       return  MEASU_ACCU_FLOW_ERR;
+       return  MEASU_ENERG_FLOW_ERR;
     }
     else
       *ChangEnerg=ChangData;
@@ -489,13 +498,14 @@ INT8U  GetEnergChangeValue_PerOne(INT8U EngReg,INT8U FlowFlag,volatile INT32U *C
     ChangData=(INT32U)(CurData-LastData);  //µÃ³öµÝÔöµÄ²¿·Ö--------------PUCK
     
 #ifdef MEASU_LIMITED_EN 
-    if(ChangData>=MAX_ENG_RATE*Get_Un()*Get_In())   //µçÁ¿ÃÍÔö£¬´Ë´ÎµçÄÜÔöÁ¿¶ªÆú
+    if(ChangData>=MAX_ENG_RATE*Get_Un()*Get_In())   //µçÁ¿ÃÍÔö£¬´Ë´ÎµçÄÜÔöÁ¿¶ªÆú£¬ËùÓÐÊý¾Ý²»×ö¸üÐÂ
     {
-      *CurrEnerg=(INT32U)CurData;
+      /**CurrEnerg=(INT32U)CurData;
       *LastEnerg=(INT32U)CurData;
       *ChangEnerg=0;
        DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"Measure_Error----->CurData=0x%lx,RdData=0x%lx,Energ Change Over Limited!",CurData,RdData);  
-       return  MEASU_ACCU_FLOW_ERR;
+       */
+      return  MEASU_ACCU_FLOW_ERR;
     }
 #endif
 
@@ -504,9 +514,15 @@ INT8U  GetEnergChangeValue_PerOne(INT8U EngReg,INT8U FlowFlag,volatile INT32U *C
   else if(CurData<LastData) //µçÄÜµ¹×ß£¬»òÕß·­×ªÊ±³öÏÖ¶Á¼ÆÁ¿´í£¬µ¼ÖÂ½øÈë£¬´Ë´Î¶ªµô£¬------------PUCK
   {
     DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"Measure_Error----->Energ Reversed:Cur=%ld,Last=%ld",(INT32U)CurData,LastData);
-    *CurrEnerg=(INT32U)CurData;
-    *LastEnerg=(INT32U)CurData;   //¸üÐÂÉÏ´ÎµçÄÜÖµ,±ÜÃâ±¾´Î×Ü±ÈÉÏ´ÎÐ¡------------------PUCK
+    //*CurrEnerg=(INT32U)CurData;
+    //*LastEnerg=(INT32U)CurData;   //¸üÐÂÉÏ´ÎµçÄÜÖµ,±ÜÃâ±¾´Î×Ü±ÈÉÏ´ÎÐ¡------------------PUCK
+    
+    *CurrEnerg=0;
+    *LastEnerg=0;   //¸üÐÂÉÏ´ÎµçÄÜÖµ,±ÜÃâ±¾´Î×Ü±ÈÉÏ´ÎÐ¡------------------PUCK
     *ChangEnerg=0;
+    Measu_RdData(EngReg+0x13);
+    Measu_RdData(EngReg+0x13);
+    Measu_RdData(EngReg+0x13);
     return MEASU_ENR_REDUCE_ERR;
   }
   else                                   //±¾´Î¶Á³öµÄµçÄÜ£½ÉÏ´Î¶Á³öµÄµçÄÜ£¬ËµÃ÷µçÄÜµÝÔöÎª0------------PUCK
@@ -527,8 +543,12 @@ INT8U  GetEnergChangeValue_PerOne(INT8U EngReg,INT8U FlowFlag,volatile INT32U *C
 INT8U GetParseEnergChangeValue_PUCK(void)
 {
   INT8U Flag,i;
-  INT32U EnergFlow;
-   
+  INT32U EnergFlow;  
+  
+#ifdef MEASURE_ERROR_ALARM_EN
+    INT32U LastValue;
+#endif
+    
   if(CHECK_STRUCT_SUM(Pri_TempMeasuVar)==0)
   ASSERT(A_WARNING,0); 
   
@@ -551,8 +571,20 @@ INT8U GetParseEnergChangeValue_PUCK(void)
   //ÒÔÏÂ3Ïî»ñÈ¡·ÖÏàÓÐ¹¦ÔöÁ¿£º´¦ÀíÒç³ö
   for(i=0;i<4;i++)
   {
+    LastValue=*((&Pri_TempMeasuVar.AcEnerg.A)+i);
     Flag=GetEnergChangeValue_PerOne(REG_R_A_PENERG+i,GET_BIT(EnergFlow,i),(&Pri_TempMeasuVar.AcEnerg.A)+i,(&Pri_TempMeasuVar.Last_AcEnerg.A)+i,\
                                    (&Pri_TempMeasuVar.Change_AcEnerg.A)+i);
+#ifdef MEASURE_ERROR_ALARM_EN
+    if(*((&Pri_TempMeasuVar.Change_AcEnerg.A)+i)!=0)
+    {
+      Measure_Err_Info.AcFlag=Flag;
+      Measure_Err_Info.LastValue=LastValue;
+      Measure_Err_Info.CurrValue=*((&Pri_TempMeasuVar.AcEnerg.A)+i);
+      Measure_Err_Info.ChangeValue=*((&Pri_TempMeasuVar.Change_AcEnerg.A)+i);
+      SET_STRUCT_SUM(Measure_Err_Info);
+    }
+#endif
+    
     if(Flag!=MEASU_NO_ERR)
     {
       DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"Measure_Error----->Get Ac_Energe Change Error,Index=%d",i);  
@@ -611,7 +643,7 @@ INT8U GetVoltValue_PerOne(INT8U Reg,volatile INT32U *VoltData)
   if(RdData>=0x00800000)
   {
     DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"Measure_Error----->Get Volt Error,RdData=0x%lx",RdData);  
-    return MEASU_DATA_LOGIC_ERR;
+    return MEASU_VOLT_ERR;
   }
 
   ResultData=(FP32S)RdData*(FP32S)UNIT_V/pow(2,13);
@@ -644,7 +676,7 @@ INT8U GetCurrValue_PerOne(INT8U Reg,volatile INT32U *LastCur,volatile INT32U *Cu
    if(RdData>=0x00800000)
    {
      DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"Measure_Error----->Get Curr Error,RdData=0x%lx",RdData);  
-     return MEASU_DATA_LOGIC_ERR;
+     return MEASU_CURR_ERR;
    }
       
    ResultData=(FP32S)RdData*(FP32S)UNIT_A/pow(2,13);
@@ -752,7 +784,7 @@ INT8U GetPowerValue_PerOne(INT8U PowerReg,INT8U SumFlag,volatile INT32U *CurrPow
     if(SFlag)  //ÊÓÔÚ¹¦ÂÊ²»¿ÉÄÜÎª¸º
     {
       DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"Measure_Error----->App Power Is Negative,ReadValue=0x%lx",RdData);  
-      return MEASU_DATA_LOGIC_ERR;
+      return MEASU_POWER_ERR;
     }
     Result=(FP32S)(0x1000000-RdData)*temp;
     Result/=(FP32S)PulseConst;
@@ -902,7 +934,7 @@ INT8U GetFreqValue_PUCK(void)
   if(RdData>=0x00800000)
   {
       DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"Measure_Error----->Get Frequecy Err,Value too much(Value=0x%lx)",RdData);  
-      return MEASU_DATA_LOGIC_ERR;
+      return MEASU_FREQU_ERR;
   }
   
   if(CHECK_STRUCT_SUM(Pri_TempIntantVar)==0)
@@ -941,8 +973,17 @@ INT8U GetSeqErrFlagValue_PUCK(void)
   if(RdData>=0x00800000)
     return 0;
   */  
+  
+  if(GET_BIT(RdData,7))  //SIGÐÅºÅÎª¸ß£¬Òì³£
+    return MEASU_SIGN_ERR;
+  
   Pri_MeasuStatVar.V_SeqErr=(GET_BIT(RdData,3))?1:0;
   Pri_MeasuStatVar.I_SeqErr=(GET_BIT(RdData,4))?1:0;
+  
+  Pri_MeasuStatVar.A_Creep=(GET_BIT(RdData,9))?1:0;
+  Pri_MeasuStatVar.B_Creep=(GET_BIT(RdData,10))?1:0;
+  Pri_MeasuStatVar.C_Creep=(GET_BIT(RdData,11))?1:0;
+  
   SET_STRUCT_SUM(Pri_MeasuStatVar);
   return MEASU_NO_ERR;
 }
@@ -1491,15 +1532,26 @@ void GetMeasInstantData_PerSec(void)
 
   Flag=ChkPowerLimitAndConvertData();
   if(Flag!=MEASU_NO_ERR)
-  {
-    Measure_Error_Alarm();
+  {   
     Pri_MeasuStatVar.DataRecFlg=0;
     SET_STRUCT_SUM(Pri_MeasuStatVar);
     RstCtrlStatus.RstLimiCountr++;
     RstCtrlStatus.LimitErrCountr++;
     DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"Measure_Error----->In GetAppInstant(),ErrCode=%d,LimitErrCountr=%d,MeasErrCountrs=%d,Rst=%d",Flag,RstCtrlStatus.LimitErrCountr,RstCtrlStatus.MeasErrCountr,RstCtrlStatus.RstLimiCountr);
+#ifdef MEASU_RUN_ERR_EN
+    Measure_Error_Alarm(Flag);
+#endif
     if(RstCtrlStatus.RstLimiCountr>=MAX_RST_MEASU_IC_TIMES)
     {
+#ifdef MEASURE_ERROR_ALARM_EN
+      Measure_Err_Info.ResetNum++;
+      SET_STRUCT_SUM(Measure_Err_Info);     
+#endif  
+      
+#ifndef MEASU_RUN_ERR_EN     
+      Measure_Error_Alarm(Flag);
+#endif    
+
       DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"Measure_Error----->MeasuIC Error Count OverLimited,Reset Measure IC..........");
       InitMeasuAfterPwrOn();
       RstCtrlStatus.RstLimiCountr=0;
@@ -1532,7 +1584,8 @@ void	GetMeasAccmuData_PerSec(void)
   if(!temp1)
     ASSERT(A_WARNING,0); 
   
-  
+ //Clr_Energ_Accu();   //Çå³ýÓÃÓÚ¼ÆËãµçÄÜÔöÁ¿µÄ¼Ä´æÆ÷,²âÊÔÔö¼Ó 0.006µÄÊµÑé¡£
+ 
   //»ñÈ¡A/B/C/×ÜÕý·´ÓÐ¹¦×ÜÔöÁ¿
   Ptr=&(Measu_InstantData_ToPub_PUCK.Quadrant.A);
   Ptr1=&(Pri_TempMeasuVar.Change_AcEnerg.A);
@@ -1729,16 +1782,27 @@ void Deal_PerSec_Main(void)
   if(Flag!=MEASU_NO_ERR)
   {
     Pri_MeasuStatVar.DataRecFlg=0;
-    SET_STRUCT_SUM(Pri_MeasuStatVar);
-    Measure_Error_Alarm();
+    SET_STRUCT_SUM(Pri_MeasuStatVar);    
     RstCtrlStatus.RstMeasCountr++;
     RstCtrlStatus.MeasErrCountr++;
     DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"Measure_Error----->In Deal_PerSec_Main(),ErrCode=%d,LimitErrCountr=%d,MeasErrCountrs=%d,Rst=%d",Flag,RstCtrlStatus.LimitErrCountr,RstCtrlStatus.MeasErrCountr,RstCtrlStatus.RstMeasCountr);
+#ifdef MEASU_RUN_ERR_EN
+    Measure_Error_Alarm(Flag);
+#endif
+    
     if(RstCtrlStatus.RstMeasCountr>=MAX_RST_MEASU_IC_TIMES)
     {
+#ifdef MEASURE_ERROR_ALARM_EN
+      Measure_Err_Info.ResetNum++;
+      SET_STRUCT_SUM(Measure_Err_Info);     
+#endif  
+      
+#ifndef MEASU_RUN_ERR_EN     
+      Measure_Error_Alarm(Flag);
+#endif     
+      
       DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"Measure_Error----->MeasuIC Error Count OverLimited,Reset Measure IC..........");
       InitMeasuAfterPwrOn(); 
-      
       RstCtrlStatus.RstMeasCountr=0;      
     }
   }
@@ -1908,7 +1972,6 @@ void Measure_IC_Cal(void)                //ÔËÐÐ¹ý³ÌÖÐ£¬¸ù¾Ý¶Á³öÐ¾Æ¬µÄÐ£±íÇëÇóÎ»£
   {
     if(1==MeasuStatusMode.CalReqstErr)   //Ð£±íÇëÇó
     { 
-      Measure_Error_Alarm();
       DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"Measure_Error----->Cal Request,Reload Cal Para.....");
       Load_MeasureIC_Para();
       MeasuStatusMode.CalReqstErr=0;
@@ -2025,14 +2088,11 @@ void DebugOutMeasuData(void)
   OS_TimeDly_Ms(10);
   DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"|      AcEnerg_Value   %9ld,%9ld,%9ld,%9ld       |",Pri_TempMeasuVar.AcEnerg.A,Pri_TempMeasuVar.AcEnerg.B,Pri_TempMeasuVar.AcEnerg.C,Pri_TempMeasuVar.AcEnerg.Sum);
   OS_TimeDly_Ms(10);
-  DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"|        AcEnerg_Reg   %9ld,%9ld,%9ld,%9ld       |",Pri_TempMeasuVar.AcEnReg.A,Pri_TempMeasuVar.AcEnReg.B,Pri_TempMeasuVar.AcEnReg.C,Pri_TempMeasuVar.AcEnReg.Sum);
-  OS_TimeDly_Ms(10);
   DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"|    ReacEnerg_Value   %9ld,%9ld,%9ld,%9ld       |",Pri_TempMeasuVar.ReacEnerg.A,Pri_TempMeasuVar.ReacEnerg.B,Pri_TempMeasuVar.ReacEnerg.C,Pri_TempMeasuVar.ReacEnerg.Sum);
-  OS_TimeDly_Ms(10);
-  DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"|      ReacEnerg_Reg   %9ld,%9ld,%9ld,%9ld       |",Pri_TempMeasuVar.ReacEnReg.A,Pri_TempMeasuVar.ReacEnReg.B,Pri_TempMeasuVar.ReacEnReg.C,Pri_TempMeasuVar.ReacEnReg.Sum);
   OS_TimeDly_Ms(10);
   DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"|--------------------------------------------------------------------|"); 
   
+  Print_Measure_Err_Info();
   /*
   DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"AcPower(0.001w):%ld,%ld,%ld,%ld",Measu_InstantData_ToPub_PUCK.AcPower.A,Measu_InstantData_ToPub_PUCK.AcPower.B,Measu_InstantData_ToPub_PUCK.AcPower.C,Measu_InstantData_ToPub_PUCK.AcPower.Sum);
   DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"ReacPower(0.001var):%ld,%ld,%ld,%ld",Measu_InstantData_ToPub_PUCK.ReacPower.A,Measu_InstantData_ToPub_PUCK.ReacPower.B,Measu_InstantData_ToPub_PUCK.ReacPower.C,Measu_InstantData_ToPub_PUCK.ReacPower.Sum);
@@ -2056,15 +2116,72 @@ void DebugOutMeasuData(void)
  */
 }
 /**********************************************************************************
+º¯Êý¹¦ÄÜ£º´òÓ¡¼ÆÁ¿³ö´íÍ³¼ÆÐÅÏ¢
+Èë¿Ú£ºÎÞ
+³ö¿Ú£ºÎÞ
+**********************************************************************************/	
+void Print_Measure_Err_Info(void)
+{
+#ifdef  MEASURE_ERROR_ALARM_EN
+  
+  INT16U i;
+  
+  if(CHECK_STRUCT_SUM(Measure_Err_Info)==0)
+  {
+    mem_set(&Measure_Err_Info,0x00,sizeof(Measure_Err_Info),&Measure_Err_Info,sizeof(Measure_Err_Info));
+    SET_STRUCT_SUM(Measure_Err_Info);
+    return ;
+  }
+  
+
+  DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"|---------------------Measure_Error_Statis_Info----------------------|");
+  DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"|          Error_Code              Error_Num        ResetNum         |");
+  DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"|                 %3d                                    %3d         |",Measure_Err_Info.AcFlag,Measure_Err_Info.ResetNum);
+  DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"|           %9ld(Last)       %9ld(Curr)  %9ld(Change) |",Measure_Err_Info.LastValue,Measure_Err_Info.CurrValue,Measure_Err_Info.ChangeValue);
+  
+  for(i=MEASU_NO_ERR+1;i<=MAX_MEASU_ERR;i++)
+  {
+  DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"|                 %3d                   %3d                          |",i,Measure_Err_Info.Num[i]);
+  } 
+  OS_TimeDly_Ms(10);
+  DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"|--------------------------------------------------------------------|"); 
+  
+  DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"|-------------------------Measure_Status_Data------------------------|");
+  DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"|               Item           A         B         C     Total       |");
+  OS_TimeDly_Ms(10);
+  DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"|      AcEnerg_Value   %9ld,%9ld,%9ld,%9ld       |",Pri_TempMeasuVar.AcEnerg.A,Pri_TempMeasuVar.AcEnerg.B,Pri_TempMeasuVar.AcEnerg.C,Pri_TempMeasuVar.AcEnerg.Sum);
+  OS_TimeDly_Ms(10);
+  DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"|    ReacEnerg_Value   %9ld,%9ld,%9ld,%9ld       |",Pri_TempMeasuVar.ReacEnerg.A,Pri_TempMeasuVar.ReacEnerg.B,Pri_TempMeasuVar.ReacEnerg.C,Pri_TempMeasuVar.ReacEnerg.Sum);
+
+  DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"|--------------------------------------------------------------------|"); 
+  
+#endif
+}
+/**********************************************************************************
 º¯Êý¹¦ÄÜ£º¼ÆÁ¿´íÎó±¨¾¯Êä³ö
 Èë¿Ú£ºÎÞ
 ³ö¿Ú£ºÎÞ
 **********************************************************************************/	
-void Measure_Error_Alarm(void)
+void Measure_Error_Alarm(INT8U Code)
 {
 #ifdef  MEASURE_ERROR_ALARM_EN
+  
   Beep_For_Measu_Alarm_PUCK();
   Set_Event_Instant(ID_MEASURE_ERROR);
+  
+  if(CHECK_STRUCT_SUM(Measure_Err_Info)==0)
+  {
+    mem_set(&Measure_Err_Info,0x00,sizeof(Measure_Err_Info),&Measure_Err_Info,sizeof(Measure_Err_Info)); 
+    SET_STRUCT_SUM(Measure_Err_Info);
+  }
+  
+  if(MEASU_NO_ERR==Code || Code>MAX_MEASU_ERR)  //ÎÞ´íÎó,»òÕß´íÎó´úÂë³¬ÏÞ
+    return ;
+  
+  Measure_Err_Info.Num[Code]++;
+
+  SET_STRUCT_SUM(Measure_Err_Info);
+  Print_Measure_Err_Info();
 #endif
 }
 /**********************************************************************************
@@ -2084,12 +2201,12 @@ INT8U CheckBothCs(void)
   if(!Flag)      //È¡Ð£ÑéºÍ´íÎó£¬ÔÙÈ¡Ò»´Î
   {
     Flag=Get_IC_ParaSum3(&CS_IC);
-    if(!Flag)
+    if(!Flag)     //È¡Ð£ÑéºÍ´íÎó£¬ÔÙÈ¡Ò»´Î
     {
       ASSERT(A_WARNING,0);  
       MeasuStatusMode.Retry=1;   //¼ÆÁ¿Ð¾Æ¬²ÎÊýÐ´´íÎóÖØÊÔ
       SET_STRUCT_SUM(MeasuStatusMode);
-      return MEASU_CAL_ERR;
+      return MEASU_CS_ERR;
     }
   }
   
@@ -2098,7 +2215,7 @@ INT8U CheckBothCs(void)
     MeasuStatusMode.Retry=1;   //¼ÆÁ¿Ð¾Æ¬²ÎÊýÐ´´íÎóÖØÊÔ
     SET_STRUCT_SUM(MeasuStatusMode);
     ASSERT(A_WARNING,0); 
-    return MEASU_CAL_ERR;    
+    return MEASU_CS_ERR;    
   }  
   return   MEASU_NO_ERR;
 }
@@ -2151,8 +2268,11 @@ void Measu_Main_Puck(INT8U Flag)
     Deal_PerSec_Main();                //Ïò¼ÆÁ¿Ð¾Æ¬È¡Êý¾Ý
     //Modi_StartCurr_TinyCurr();
     Deal_MeasAppData_PerSec_Main();   //½«¼ÆÁ¿Êý¾Ý×ª»»²¢·¢²¼,ÆÚ¼äÊý¾Ý¸üÐÂ£¬²»ÔÊÐíÈÃ³öµ÷¶È
-    Measure_IC_Cal();                //ÔËÐÐ¹ý³ÌÖÐ£¬¸ù¾Ý¶Á³öÐ¾Æ¬µÄÐ£±íÇëÇóÎ»£¬ÐèÒªÖØÐÂÐ´½Æ±ç²ÎÊý
+    
+    /*Measure_IC_Cal();                //ÔËÐÐ¹ý³ÌÖÐ£¬¸ù¾Ý¶Á³öÐ¾Æ¬µÄÐ£±íÇëÇóÎ»£¬ÐèÒªÖØÐÂÐ´½Æ±ç²ÎÊý
     Retry_WritePara_To_IC();         //ÔËÐÐ¹ý³ÌÖÐ£¬ICµÄCSºÍEPPROMµÄCS²»Ò»ÖÂ£¬»òÕßÄ³´ÎÐ´¼ÆÁ¿²ÎÊý´íÎó£¬ÐèÒªÖØÐÂÐ´½Æ±ç²ÎÊý
+    */
+    
     MeasuPara_Modi_PUCK();
     DebugOutMeasuData();
     Sec_Bak=Sec_Timer_Pub;

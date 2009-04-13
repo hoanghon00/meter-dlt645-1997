@@ -57,10 +57,10 @@ MeasuProc_PUCK_EXT volatile MEASU_RAM  SpecChange_CurrFlag;     //小电流情况下电
 typedef struct
 {
    MEASU_DATA AcEnerg;            //本次有功电能：A/B/C/SUM:单位:0.01wh
-   MEASU_DATA AcEnReg;
+   //MEASU_DATA AcEnReg;            //当前读出的有功电能寄存器值
    
    MEASU_DATA ReacEnerg;          //本次 无功电能：A/B/C/SUM;
-   MEASU_DATA ReacEnReg;
+   //MEASU_DATA ReacEnReg;          //当前读出的无功电能寄存器值
    
    MEASU_DATA Last_AcEnerg;       //上次有功电能：A/B/C/SUM;
    MEASU_DATA Last_ReacEnerg;     //上次无功电能：A/B/C/SUM；

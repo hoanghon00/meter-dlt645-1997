@@ -142,7 +142,8 @@ MEASULIB_PUCK_EXT const MEASU_ADJ_PARA InitMeasuPara[IC_PARA_NUM] =
 //0x0016bd03,                                      //check sum:331,地址0x3E-----------PUCK
 //0x00043d03,                                      //check sum:341,地址0x3E-----------PUCK
 
-/*
+//行：电压规格：331,3×100V  3×220V 3×57.7V 3×380V
+//列：电流规格：1.5(6)A	1(2)A	5(10)A	10(40)A	0.3(1.2)A 5(6)	15(60)	20(80)	5(20)A	30(100) A
 MEASULIB_PUCK_EXT const INT32U HighPulseConst[4][10]=
 {
       //11,  11,  14,  13,  14,  11,  13,  13,  08,  13,
@@ -152,12 +153,13 @@ MEASULIB_PUCK_EXT const INT32U HighPulseConst[4][10]=
       //10,  10,  10,  18,  20,  10,  18,  18,  15,  18
         0x0a,0x0a,0x0a,0x12,0x14,0x0a,0x12,0x12,0x0f,0x12,
       //15,  15,  15,  13,  15,  15,  13,  13,  11,  13
-        0x0f,0x0f,0x0f,0x0d,0x0f,0x0f,0x0d,0x0d,0x0b,0x0d,
+        0x0f,0x0f,0x0f,0x0d,0x0f,0x0f,0x0d,0x0d,0x0b,0x0d
 };
-*/
+
 
 MEASULIB_PUCK_EXT const INT32U Startup_Current[10]={0x0146,0x00d9,0x022a,0x00c3,0x0146,0x043f,0x0124,0x0187,0x0146,0x024a};
 
+/*
 //电压端采样电压(V): 331,3×100V	;   341，3×220V;  341，3×57.7V;     331,3×380V
 MEASULIB_PUCK_EXT const FP32S AD_V_CONST[4]=
 {
@@ -170,6 +172,7 @@ MEASULIB_PUCK_EXT const FP32S AD_I_CONST[10]=
 {
       0.1,0.07,5,10,0.3,5,15,20,5,30    //只有前2项是确定的，其他不确定
 };
+*/
 
 
 #endif

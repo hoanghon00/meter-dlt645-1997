@@ -6,7 +6,8 @@
 
 
 #define SHOW_ENERG_BIT     3   //显示的电能小数位
-#define MEASURE_ERROR_ALARM_EN //开启，打开计量错误报警
+#define MEASU_RUN_ERR_EN       //开宏启：计量运行中错一次，报警一次，不可屏蔽；宏关闭：连续 MAX_RST_MEASU_IC_TIMES 次出错，声光报警
+#define MEASURE_ERROR_ALARM_EN //开启，打开计量错误报警，同时开辟相应的 Sram资源和Flash资源
 #define OS_DEBG_EN       //OS功能打开 ！
 
 #define PRINT_PUCK_MEA_EN  1        //1:使能PUCK的计量调试信息，0:禁止

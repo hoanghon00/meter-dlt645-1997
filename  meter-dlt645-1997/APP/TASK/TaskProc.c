@@ -148,6 +148,7 @@ void  AppMeasuTask_PUCK (void *p_arg)
        
     (void)p_arg;
      //Measu_Main_Puck(1);
+    Print_Measure_Err_Info();
 for(;;)	
   {  
       Measu_Main_Puck(0);
