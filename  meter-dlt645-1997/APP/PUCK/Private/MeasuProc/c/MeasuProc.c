@@ -7,6 +7,18 @@
 
 
 /**********************************************************************************
+函数功能：判定是否发生了校表事件
+入口：无
+出口：0/1
+**********************************************************************************/
+INT8U Get_Cal_Exsit(void)
+{
+  if(MODE_RUN!=Get_Meter_Hard_Mode() && Read_Event_Status(ID_EVENT_ADJUST_MEASU))   //确实需要校表或者未校完，且处于非出厂模式
+    return 1;
+  
+  return 0;
+}
+/**********************************************************************************
 函数功能：获取额定电压
 入口：无
 出口：TH_MODE/TF_MODE模式字
@@ -1460,7 +1472,7 @@ INT8U ChkPowerLimitAndConvertData(void)      //test if power value is in the cor
       temp=3;
     else
       temp=1;
-    if(PtrSrc[i]<temp*MAX_POWER_RATE*Get_Un()*Get_In())
+    if(PtrSrc[i]<temp*MAX_POWER_RATE*Get_Un()*Get_In() || Get_Cal_Exsit())  //校表状态下，不判数据逻辑性
       PtrDst[i]=PtrSrc[i];
     else 
       Flag=MEASU_DATA_LOGIC_ERR;
@@ -1476,7 +1488,7 @@ INT8U ChkPowerLimitAndConvertData(void)      //test if power value is in the cor
       PtrDst[i]=PtrSrc[i];
       break;
     }      
-    if(PtrSrc[i]<MAX_U_RATE*Get_Un())
+    if(PtrSrc[i]<MAX_U_RATE*Get_Un()|| Get_Cal_Exsit())  //校表状态下，不判数据逻辑性
       PtrDst[i]=PtrSrc[i];
     else 
       Flag=MEASU_DATA_LOGIC_ERR;
@@ -1489,7 +1501,7 @@ INT8U ChkPowerLimitAndConvertData(void)      //test if power value is in the cor
   PtrDst=&(Measu_InstantData_ToPub_PUCK.Curr.A);
   for(i=0;i<4;i++)
   {
-    if(PtrSrc[i]<MAX_I_RATE*Get_In())
+    if(PtrSrc[i]<MAX_I_RATE*Get_In() || Get_Cal_Exsit())  //校表状态下，不判数据逻辑性
       PtrDst[i]=PtrSrc[i];
     else 
       Flag=MEASU_DATA_LOGIC_ERR;
@@ -2194,7 +2206,7 @@ INT8U CheckBothCs(void)
   INT32U CS_IC;
   INT8U Flag;
   
-  if(MODE_RUN!=Get_Meter_Hard_Mode() && Read_Event_Status(ID_EVENT_ADJUST_MEASU))   //发生较表事件时，不部判定2者的检验和
+  if(Get_Cal_Exsit())   //发生较表事件时，不部判定2者的检验和
     return MEASU_NO_ERR;
   
   Flag=Get_IC_ParaSum3(&CS_IC);

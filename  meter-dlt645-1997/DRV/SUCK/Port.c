@@ -73,14 +73,21 @@ void PORT_Init(INT32U Mode )
         P15_bit.no0=1; P15_bit.no1=1; P15_bit.no3=0;P15_bit.no4=0; P15_bit.no5=0; P15_bit.no6=0;
         
         //模式寄存器初始化
-        PM0_bit.no5=0; PM0|=PM0_DEFAULT;
+        PM0_bit.no5=0; 
+        //PM0_bit.no2=0;PM0_bit.no3=0;   //P0_2~P0_3 UART1  －－－09－04－16，因版本不同，可能悬空，在串口中初始化
+        PM0|=PM0_DEFAULT;
+        
+        
         PM1_bit.no0=0; PM1_bit.no5=0;        
         PM2_bit.no0=0; PM2_bit.no2=0;  PM2_bit.no4=0; PM2_bit.no5=0; 
+        
         PM3|=PM3_DEFAULT;
+        PM3_bit.no0=0;             //P3_0  IC_FAIL －－－09－04－16
+        
         PM4_bit.no2=0; PM4_bit.no3=0;  PM4_bit.no5=0;
-        PM5_bit.no3=0; PM5_bit.no4=0;
+        PM5_bit.no0=0; PM5_bit.no1=0;PM5_bit.no2=0;PM5_bit.no3=0; PM5_bit.no4=0;  //P5_0~P5_3 IC卡  －－－09－04－16，因版本不同，可能悬空，在IC卡使能中打开
         PM7_bit.no0=0; PM7_bit.no5=0;   //按钮共用，且为NC，设定为输出，09－04－05
-        PM8_bit.no0=0; PM8_bit.no1=0; PM8_bit.no2=0; PM8_bit.no3=0; PM8_bit.no4=0;  PM8_bit.no6=0;       
+        PM8_bit.no0=0; PM8_bit.no1=0; PM8_bit.no2=0; PM8_bit.no3=0; PM8_bit.no4=0;  PM8_bit.no6=0; PM8_bit.no7=0;    //P8_7 IC_CLK -----09－04－16 ，因版本不同，可能悬空，在IC卡使能中打开  
         PM11_bit.no0=1;  //关闭远红外，防止灯光等误进入
         PM11|=PM11_DEFAULT;
         PM12|=PM12_DEFAULT; 

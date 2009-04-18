@@ -91,6 +91,6 @@ LogFile=_ ""
 Enabled=0
 ShowSource=1
 [Breakpoints]
-Bp0=_ "STD_CODE" "{$PROJ_DIR$\APP\PUCK\Private\MeasuProc\c\MeasuProc.c}.2129.3@1" 0 0 0 0 "" 0 ""
-Bp1=_ "STD_CODE" "{$PROJ_DIR$\APP\PUCK\Private\MeasuProc\c\MeasuProc.c}.1536.5@1" 1 0 0 0 "" 0 ""
+Bp0=_ "STD_CODE" "{$PROJ_DIR$\APP\PUCK\Private\MeasuProc\c\MeasuProc.c}.2129.1@1" 0 0 0 0 "" 0 ""
+Bp1=_ "STD_CODE" "{$PROJ_DIR$\ABS\PUCK\UartAbs.c}.174.5@1" 1 0 0 0 "" 0 ""
 Count=2

@@ -69,13 +69,13 @@
 
 //表计属性配置宏
 #define PARSE_METER_3   0               //通用三相多功能
-#define NETMETER_METER  1               //网络表基表
-#define IC_METER        2               //IC卡预付费表
-#define MWRWE_HARD_TYPE PARSE_METER_3
+#define IC_METER        1               //IC卡预付费表
+#define NETMETER_METER  2               //网络表基表
+#define MWRWE_HARD_TYPE NETMETER_METER
 
 
 //串口属性
-#ifdef NETMETER_METER
+#if MWRWE_HARD_TYPE>=NETMETER_METER
   #define UART1_EN                         //串口1使能
 #else
   #undef UART1_EN                          //串口1禁止

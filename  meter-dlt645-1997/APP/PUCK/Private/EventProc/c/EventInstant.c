@@ -171,6 +171,48 @@ INT8U Check_Power_Grid_Event(void)
   
   return 0;
 }
+
+/***********************************************************************
+函数功能：331判B相失压处理
+入口：无
+出口：
+***********************************************************************/
+INT8U B_331_LossVolt(void)
+{
+  INT8U Result=0;
+  FP32S temp;
+  
+  if((FP32S)Measu_InstantData_ToPub_PUCK.Volt.A/UNIT_V<=10 || \
+     (FP32S)Measu_InstantData_ToPub_PUCK.Volt.B/UNIT_V<=10)
+    Result=0;
+       
+  if((FP32S)Measu_InstantData_ToPub_PUCK.Volt.A/UNIT_V!=0 && \
+     (FP32S)Measu_InstantData_ToPub_PUCK.Volt.B/UNIT_V!=0 &&(FP32S)Measu_InstantData_ToPub_PUCK.Volt.C/UNIT_V!=0)
+  {
+    Result=0;  
+    //(Ua＋Uc)/Ub
+    temp=((FP32S)Measu_InstantData_ToPub_PUCK.Volt.A/UNIT_V+(FP32S)Measu_InstantData_ToPub_PUCK.Volt.C/UNIT_V)/(FP32S)Measu_InstantData_ToPub_PUCK.Volt.B/UNIT_V;
+    if(temp>=0.9 && temp<=1.1)
+    {
+      temp=(FP32S)Measu_InstantData_ToPub_PUCK.Volt.A/(FP32S)Measu_InstantData_ToPub_PUCK.Volt.B; //Ua/Ub
+      if(temp>0.1)
+      {
+        temp=(FP32S)Measu_InstantData_ToPub_PUCK.Volt.C/(FP32S)Measu_InstantData_ToPub_PUCK.Volt.B; //Uc/Ub
+        if(temp>0.1)
+          Result=1;        
+      }      
+    }
+  }
+  
+  if( (Result||(FP32S)Measu_InstantData_ToPub_PUCK.Angle.B/UNIT_DEGREE>=74) && \
+      ((FP32S)Measu_InstantData_ToPub_PUCK.Curr.A/UNIT_A >EventInsParaVar.LossVolt_I ||
+       (FP32S)Measu_InstantData_ToPub_PUCK.Curr.C/UNIT_A >EventInsParaVar.LossVolt_I) )
+    return 1;
+  
+  return 0;
+  
+  
+}
 /***********************************************************************
 函数功能：获取失压瞬时状态字
 入口：无
@@ -226,20 +268,15 @@ void Check_Loss_Volt(void)
   Flag=Get_SysParse_Mode();
   if(Flag==PARSE_331)  
   {
-    if(Get_Event_Instant(ID_EVENT_B_LOSS_PARSE))   //B相失压判据：//331 B相断相，且A或者C相电流>XX.XXXX A;A/C中任何一相电压小于10V
+    if(B_331_LossVolt())
     {
-      if(((FP32S)Measu_InstantData_ToPub_PUCK.Curr.A/UNIT_A>=EventInsParaVar.LossVolt_I)||\
-         ((FP32S)Measu_InstantData_ToPub_PUCK.Curr.C/UNIT_A>=EventInsParaVar.LossVolt_I)||\
-         ((FP32S)Measu_InstantData_ToPub_PUCK.Volt.A/UNIT_V)<10||((FP32S)Measu_InstantData_ToPub_PUCK.Volt.C/UNIT_V)<10)
-      {
-        Set_Event_Instant(ID_EVENT_B_LOSS_VOLT);  //B相失压
-        Clr_Event_Instant(ID_EVENT_A_LOSS_VOLT);  //A相不判断失压
-        Clr_Event_Instant(ID_EVENT_C_LOSS_VOLT);  //C相不判断失压        
-      }
-      else
-      {
-        Clr_Event_Instant(ID_EVENT_B_LOSS_VOLT);  //B相没有失压      
-      }
+      Set_Event_Instant(ID_EVENT_B_LOSS_VOLT);  //B相失压
+      Clr_Event_Instant(ID_EVENT_A_LOSS_VOLT);  //A相不判断失压
+      Clr_Event_Instant(ID_EVENT_C_LOSS_VOLT);  //C相不判断失压        
+    }
+    else
+    {
+      Clr_Event_Instant(ID_EVENT_B_LOSS_VOLT);  //B相没有失压      
     }
 #ifdef MULTI_LOSS_VOLT_EN   //判定合相失压
     if(Get_Event_Instant(ID_EVENT_A_LOSS_VOLT)&&(Get_Event_Instant(ID_EVENT_C_LOSS_VOLT)))   //A和C失压
@@ -638,13 +675,20 @@ void Check_Volt_Curr_Seq(void)
   else
     Clr_Event_Instant(ID_EVENT_VOLT_NEG_SEQ); //电压相序正确
  
+    
   //断相，不判逆相序
   if((FP32S)Get_Min_Num(Measu_InstantData_ToPub_PUCK.Volt.A,Measu_InstantData_ToPub_PUCK.Volt.B,Measu_InstantData_ToPub_PUCK.Volt.C)<UNIT_V*60.0)
      Clr_Event_Instant(ID_EVENT_VOLT_NEG_SEQ); //电压相序清除
   
-  /*if(Get_SysParse_Mode()==PARSE_331)  //331不判逆相序
-     Clr_Event_Instant(ID_EVENT_VOLT_NEG_SEQ); //电压相序清除
-  */
+  //331表ABC失压时，不判逆相序
+  if(Get_SysParse_Mode()==PARSE_331)  //331不判逆相序
+  {
+     if(((FP32S)Measu_InstantData_ToPub_PUCK.Volt.A/UNIT_V)<=65  || \
+                         Get_Event_Instant(ID_EVENT_B_LOSS_VOLT) || \
+        ((FP32S)Measu_InstantData_ToPub_PUCK.Volt.C/UNIT_V)<=65)
+      Clr_Event_Instant(ID_EVENT_VOLT_NEG_SEQ); //电压相序清除
+  }
+  
   if(Measu_Status_Mode_ToPub_PUCK.I_SeqErr)
     Set_Event_Instant(ID_EVENT_CUR_NEG_SEQ);  //电流相序错
   else

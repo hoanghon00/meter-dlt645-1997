@@ -267,7 +267,7 @@ void Test_CPU_Output_IO(void)
     BAK_POWER_FOR_MEM;        //        EEPOWER_1         //内卡电源由低功耗电池供给;
     
     
-    EXT_ALARM_SET;            //端子排报警
+    
     EXT_SWITCH_SET;
     IRDA_SEND_EN;   //红外发送使能
     IRDA_SEND_DIS;  ///红外发送禁止
@@ -309,7 +309,7 @@ void Test_CPU_Output_IO(void)
     MAIN_POWER_FOR_LCD;     //       LCD_POW_0         //LCD电源由主电源供给;
     MAIN_POWER_FOR_MEM;     //       EEPOWER_0         //内卡电源由主电源供给;
    
-    EXT_ALARM_CLR;
+    
     EXT_SWITCH_CLR;
     IRDA_FAR_REC_EN;//          B_ird_chose_0      //远红外开启，吸附红外关闭
     
@@ -339,27 +339,30 @@ void Test_CPU_Output_IO(void)
 }
 
 /**********************************************************************************
-测试液晶
+测试IO
 **********************************************************************************/
-void Test_CPU_Input_IO(void)
-{
- 
-   DEBUG_PRINT(PUCK,1,"GUMB IO=%d",GUMB_STATUS);
-   // UP_COVER_STATUS  DOWN_COVER_STATUS  B_PRG_KEY_STATUS
-   DEBUG_PRINT(PUCK,1,"Power_Down IO=%d",POWER_OFF_STATUS); 
-}
-
+#define TOGGLE_ON 3   //刀铡开时间：秒
+#define TOGGLE_OFF 7   //刀铡关时间：秒
 
 void Test_All_Port(void)
 {
-  if(Sec_One_Timer!=Sec_Timer_Pub)
-  {
-    Test_CPU_Output_IO();
-    Test_CPU_Input_IO();
-    Sec_One_Timer=Sec_Timer_Pub;    
-  }
+  static INT8U counts=0;
   
+  if(Sec_Timer_Pub!=Sec_One_Timer)  
+  {
+    counts++;
+    Test_CPU_Output_IO();    //端子排输出        
+    if(counts<=TOGGLE_ON)            //刀铡开
+    {    
+      EXT_ALARM_SET;            //端子排报警    
+    }
+    if(counts>TOGGLE_ON && counts<TOGGLE_ON+TOGGLE_OFF)  //刀铡关
+     EXT_ALARM_CLR;           //端子排报警  
     
+    if(counts>=(TOGGLE_ON+TOGGLE_OFF))
+      counts=0;
+    } 
+    Sec_One_Timer=Sec_Timer_Pub;
 }
 /**********************************************************************************
 测试UART
@@ -922,8 +925,7 @@ void Test_HardWare_PUCK(void)
   Clr_Ext_Inter_Dog();
   
   Test_All_RTC(ID_TEST_INTER_RTC);
-  Test_CPU_Output_IO();
-  
+
   Clr_Ext_Inter_Dog();   
   Get_Power_Save_Time();
   Chk_Table_Conflict();
