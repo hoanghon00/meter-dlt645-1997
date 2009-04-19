@@ -690,7 +690,7 @@ void Init_Clock(INT32U Mode)
   if(Resume_Clock_Update()==0)//外部时钟出错的情况下，形成一次事件记录
   {
     Set_Err_Time((S_BCD_Time *)&Def_BCD_Time);//默认时间作为纠错前时间，因为这里外部时钟读不出来，不知道出错前时间
-    Event_MultiTimes_Proc(ID_EVENT_RTCERR_RUN,EVENT_OCCUR,EVENT_REAL);
+    Event_MultiTimes_Proc(ID_EVENT_RTCERR_PWRON,EVENT_OCCUR,EVENT_REAL);
   }
 /*  
   if(SYS_SLEEP==Mode)//当前为睡眠态,是由正常态掉电复位而来，为了省电，从内存中取时间数据设置到内部RTC
