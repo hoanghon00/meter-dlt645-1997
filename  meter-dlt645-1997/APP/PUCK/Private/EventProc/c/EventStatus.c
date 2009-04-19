@@ -962,10 +962,13 @@ INT8U Check_AB_Switch(void)
 void Check_Event_StruCS(void)
 {
   INT8U i,Flag;
+  ASSERT(A_WARNING,1);  //留下该函数的轨迹
+    
   for(i=0;i<MAX_EVENT_NUM;i++)
   {
     Flag=CHECK_STRUCT_SUM(EventProcStatusVar[i]);
-    ASSERT(A_WARNING,1==Flag);  
+    if(Flag)
+      ASSERT(A_WARNING,0);  
   }
   
   Flag=CHECK_STRUCT_SUM(Meter_Instant_Status);

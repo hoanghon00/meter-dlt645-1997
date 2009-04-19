@@ -44,9 +44,9 @@ MeasuProc_PUCK_EXT volatile MEASU_RAM  Setup_CurrFlag;          //位于小电流区间
 MeasuProc_PUCK_EXT volatile MEASU_RAM  Change_CurrFlag;         //进入或者退出小电流区间标志:如[6,13.5]mA
 */
 
-MeasuProc_PUCK_EXT volatile MEASU_RAM  Curr_1_Per_1000;       //位入小电流区(0.1%In)
-MeasuProc_PUCK_EXT volatile MEASU_RAM  Curr_1_Per_100;       //位入小电流区(1%In)：如15mA以内,需要对功率因素校正
-MeasuProc_PUCK_EXT volatile MEASU_RAM  Curr_1P100_Bad;       //[1%In,6)：如15mA以内,需要对功率因素校正
+MeasuProc_PUCK_EXT volatile MEASU_RAM  Curr_Under_Istart;     //位入小电流区(0,0.1%In)
+MeasuProc_PUCK_EXT volatile MEASU_RAM  Curr_1_Per_100;       //位入小电流区[0,1%In)：如15mA以内,需要对功率因素校正
+MeasuProc_PUCK_EXT volatile MEASU_RAM  Curr_1P100_Bad;       //[0.1%In,6)：如15mA以内,需要对功率因素校正
 MeasuProc_PUCK_EXT volatile MEASU_RAM  Curr_In_6_13x5;       //位于小电流区间标志:如[6,13.5]mA区间标志
 MeasuProc_PUCK_EXT volatile MEASU_RAM  Curr_6_13x5_Slipe;    //进入或者退出小电流区间标志:如[6,13.5]mA
 

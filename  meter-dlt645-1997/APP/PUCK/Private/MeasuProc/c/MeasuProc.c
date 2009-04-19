@@ -111,7 +111,16 @@ void Init_Private_Ram(void)
          (void *)(&Pri_TempIntantVar),\
           sizeof(Pri_TempIntantVar));
   SET_STRUCT_SUM(Pri_TempIntantVar);
-
+  
+  
+  mem_set((void *)(&Curr_Under_Istart),
+          0x00,\
+          sizeof(Curr_Under_Istart),\
+         (void *)(&Curr_Under_Istart),\
+          sizeof(Curr_Under_Istart));
+  SET_STRUCT_SUM(Curr_Under_Istart);  
+    
+    
   mem_set((void *)(&Curr_1_Per_100),
           0x00,\
           sizeof(Curr_1_Per_100),\
@@ -1057,12 +1066,12 @@ void Set_Little_Cur_Flag(void)
     {
        *(&Curr_1_Per_100.A+i)=1;
        
-       if(*Ptr32<=(Get_Start_Current()*UNIT_A/2.0))          //小于启动电流的一半：[0,1.5/2)mA，即[0，0.75mA]
-         *(&Curr_1_Per_1000.A+i)=1;
+       if(*Ptr32<=(Get_Start_Current()*UNIT_A))          //小于启动电流的：[0,0.1%In)mA，即[0，0.75mA]
+         *(&Curr_Under_Istart.A+i)=1;
        else
-         *(&Curr_1_Per_1000.A+i)=0; 
+         *(&Curr_Under_Istart.A+i)=0; 
        
-       if((*Ptr32>=(Get_Start_Current()*UNIT_A))&&(*Ptr32<=Current_down_setup[I_Spec]))   //[1.5,6]mA
+       if((*Ptr32>=(Get_Start_Current()*UNIT_A))&&(*Ptr32<=Current_down_setup[I_Spec]))   //[0.1%In,6]mA
          *(&Curr_1P100_Bad.A+i)=1;
        else
          *(&Curr_1P100_Bad.A+i)=0;
@@ -1086,7 +1095,7 @@ void Set_Little_Cur_Flag(void)
     }
     else                                                                
     {
-      *(&Curr_1_Per_1000.A+i)=0; 
+      *(&Curr_Under_Istart.A+i)=0; 
       *(&Curr_1_Per_100.A+i)=0;   //(15,max]mA
       *(&Curr_1P100_Bad.A+i)=0;
       *(&Curr_In_6_13x5.A+i)=0;
@@ -1131,20 +1140,20 @@ void Power_Volt_Curr_Modi_PUCK(void)
   U_Spec=Get_SysVolt_Mode();
   I_Spec=Get_SysCurr_Mode();
   
-  
+  /*
   for(i=0;i<4;i++)  //包括零序电流的处理
   {
-    if(*(&Curr_1_Per_100.A+i)==1 && *(&Curr_1_Per_1000.A+i)==1)   //小电流，且处于 0.1Ib以下
+    if(*(&Curr_1_Per_100.A+i)==1 && *(&Curr_Under_Istart.A+i)==1)   //小电流，且处于 0.1Ib以下
     {
-      *(&(Pri_TempIntantVar.Curr.A)+i)=0;   //小于启动电流，强制将电流置0
+      ;//  *(&(Pri_TempIntantVar.Curr.A)+i)=0;   //小于启动电流，强制将电流置0
     }
   }
   
   for(i=0;i<4;i++)  //包括零序电流的处理
   {
-    if(*(&Curr_1_Per_100.A+i)==1 && *(&Curr_1P100_Bad.A+i)==1)   //小电流，且处于[1Ib，6]mA区间
+    if(*(&Curr_1_Per_100.A+i)==1 && *(&Curr_1P100_Bad.A+i)==1)   //小电流，且处于[0.1%In,6]mA区间
     {
-      ;//*(&(Pri_TempIntantVar.Curr.A)+i)=0;   //小于启动电流，强制将电流置0
+      ;//  *(&(Pri_TempIntantVar.Curr.A)+i)=0;   //小于启动电流，强制将电流置0
     }
   }
   
@@ -1154,11 +1163,11 @@ void Power_Volt_Curr_Modi_PUCK(void)
   {
     if(*(&Curr_1_Per_100.A+i)==1 && *(&Curr_In_6_13x5.A+i)==1  && *(&Curr_6_13x5_Slipe.A+i)==1)   //小电流，刚进入 [6,13.5]mA区间
     {
-      ;//*(&(Pri_TempIntantVar.Curr.A)+i)=8;   //
+      ;//  *(&(Pri_TempIntantVar.Curr.A)+i)=8;   //
     }
   }
   
-  
+  */
     
   for(i=0;i<3;i++)
   {
@@ -1176,7 +1185,8 @@ void Power_Volt_Curr_Modi_PUCK(void)
         tempPQS=tempPQS/1000;    //转成单位：w 
         TempCurr=(INT32U)((tempPQS/((FP32S)(*(&Pri_TempIntantVar.Volt.A+i))/(FP32S)UNIT_V))*(FP32S)UNIT_A);     //算出电流
         if(TempCurr>Current_threshold_reset[I_Spec])   //算出的电流超过计量出的电流，置0
-        TempCurr=0;
+          TempCurr=0;
+        *(&(Pri_TempIntantVar.Curr.A)+i)=TempCurr; //更新电流 -----09-04-19  PUCK      
       }
       if(*(&Curr_In_6_13x5.A+i)==1)
       ;     
