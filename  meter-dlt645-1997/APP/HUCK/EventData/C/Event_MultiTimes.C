@@ -44,7 +44,7 @@ CONST S_Event_DI Event_DI[]=
 //    7位：设置电表模式字
 {.Occur_Mask=0x01,.End_Mask=0x06,.Diff_Mask=0x00,.Data_Num=3,.Data_Len=7+1,.DI={DI_PROG_TIME,DI_PROG_FLAG0,DI_PROG_FLAG1}},
 //12 注12 ：运行时钟乱和上电时钟乱事件记录的数据格式为：后时间(年月日时分)，原时间(年月日时分)，标识字(暂时无定义,保留)。数据长度为：5＋5＋1。
-{.Occur_Mask=0x02,.End_Mask=0x00,.Diff_Mask=0x00,.Data_Num=3,.Data_Len=11+1,.DI={DI_CUR_TIME,DI_ERR_TIME,DI_NULL_1BYTE}},
+{.Occur_Mask=0x07,.End_Mask=0x00,.Diff_Mask=0x00,.Data_Num=3,.Data_Len=11+1,.DI={DI_CUR_TIME,DI_ERR_TIME,DI_NULL_1BYTE}},
 //13 注13 ：EEPROM坏事件记录的数据格式为：起始时间(年月日时分)，标识字。数据长度为：5＋1
 {.Occur_Mask=0x02,.End_Mask=0x00,.Diff_Mask=0x00,.Data_Num=2,.Data_Len=6+1,.DI={DI_EVENT_TIME,DI_ERR_ROM}},
 //14,注17 ：总清零事件记录的数据格式为：时间(年月日时分)，清前总及8费率的正有功电量、组合无功1电量、反有功电量、组合无功2电量。数据长度为：5＋4×9×4。
@@ -824,8 +824,8 @@ void Set_Def_Event_MultiTimes_Data()
   mem_set((void *)Pub_Buf0,0,sizeof(Pub_Buf0),(void *)Pub_Buf0,sizeof(Pub_Buf0));
   for(i=0;i<S_NUM(Event_Data_Info);i++)
   {
-    if(ID_EVENT_PROG==Event_Data_Info[i].Event_ID)//编程记录不清除
-      continue;
+    //if(ID_EVENT_PROG==Event_Data_Info[i].Event_ID)//编程记录不清除
+      //continue;
     
     //Write_Storage_Data(Event_Data_Info[i].Last_Storage_DI,(void *)&Event_Data_Info[i].Storage_DI,sizeof(Event_Data_Info[i].Storage_DI));
     //对每条分次记录清除

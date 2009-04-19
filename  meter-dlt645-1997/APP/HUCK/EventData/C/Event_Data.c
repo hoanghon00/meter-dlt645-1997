@@ -10,6 +10,10 @@ INT8U Check_Event_Occuring(INT8U Event_ID)
     return 0;
 }
 
+// 事件处理函数
+//注意：该函数调用Read_Event_Status查询某个事件状态时，是该事件发生前的状态
+//例如 某事件发生，调用该函数处理，则该函数内调用Read_Event_Status时返回0
+// 相反，某事件结束，调用该函数处理，则该函数内调用Read_Event_Status时返回1
 void Event_Data_Proc(INT8U Event_ID,INT8U Occur_Or_End)
 {
   INT8U Total_Event_ID;

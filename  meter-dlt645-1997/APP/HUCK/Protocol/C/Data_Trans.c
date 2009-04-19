@@ -1957,6 +1957,8 @@ INT8U Set_MeterAddr_Proc(INT8U Ch,INT8U *pSrc,INT8U SrcLen)
 {
   INT8U Re;
   
+  Re=SET_ADDR_ERR;
+  
   if(Check_Set_ADDR_Key()==0)
     return SET_ADDR_ERR;
   
@@ -2162,24 +2164,26 @@ INT8U Check_Frame_Meter_Addr(INT8U Ch,INT8U Addr[],INT8U Ctrl_Code)
   else
   {
     //高位为0xAA,低位为表地址，同样可以设置表参数等，低地址至少要有3字节匹配
+    //先计算AA个数
     for(i=0;i<6;i++)
     {
-     if(Addr[5-i]!=0xAA)
-     {
-        if(i<=3)//最多3个
-        {
-          if(CH_RS485_1==Ch || CH_IRAD==Ch)
-          {
-            if(memcmp(Addr,(void *)Meter_Addr.Addr[0],6-i)==0)
-              return 1;
-          }
-          else
-          {
-            if(memcmp(Addr,(void *)Meter_Addr.Addr[1],6-i)==0)
-              return 1;             
-          }
-        }
-     }
+      if(Addr[5-i]!=0xAA)
+        break;
+    }
+    
+    //i表示AA个数
+    if(i<=3)//最多3个
+    {
+      if(CH_RS485_1==Ch || CH_IRAD==Ch)
+      {
+        if(memcmp(Addr,(void *)Meter_Addr.Addr[0],6-i)==0)
+          return 1;
+      }
+      else
+      {
+        if(memcmp(Addr,(void *)Meter_Addr.Addr[1],6-i)==0)
+          return 1;             
+      }
     }
   }
   return 0;

@@ -89,7 +89,7 @@ EXT INT8U Get_Time_From_INTER_RTC(S_BCD_Time *pBCD_Time);
 //将时间设置到内部RTC
 EXT INT8U Set_Time_To_INTER_RTC(S_BCD_Time *pBCD_Time);
 
-EXT void Resume_Clock_Update();
+EXT INT8U Resume_Clock_Update();
 EXT void Get_Timer_From_CPU_Inter(S_BCD_Time *pBCD_Time);
 
 EXT void Save_PD_Time();

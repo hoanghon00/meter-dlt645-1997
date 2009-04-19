@@ -36,6 +36,7 @@ void Power_Down_Proc()
 void Power_Down_Int_Proc()
 {
   Assert_Info.Flag=0;//防止重入报错
+  Assert_Info.Index=0;
   
   Sys_Status.Last_Status=Sys_Status.Status;//先保存上次状态
   Sys_Status.Status=SYS_SLEEP;
@@ -510,7 +511,7 @@ void Low_Power_Proc()
     while(1)//此While(1)不能退出，只能CPU复位才能退出该循环
     {
       //当前的中断源只有全失压则继续睡眠,否则应该唤醒各任务执行
-      Resume_Clock_Update();//唤醒后时钟更新
+      Resume_Clock_Update(SYS_RESUME);//唤醒后时钟更新
       Resume_Tasks();//HUCK完成,唤醒各个子任务
       Wait_Tasks_Sleep(300000);//最多等待300s
       Set_Sys_Status(SYS_SLEEP);//设置系统状态为睡眠态

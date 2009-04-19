@@ -16,7 +16,7 @@ unsigned char Write_DS3231(unsigned char *src);
 */
 
 //在唤醒的情况下更新时钟
-void Resume_Clock_Update()
+INT8U Resume_Clock_Update()
 {
   INT8U Re;
   S_BCD_Time Temp_Time;
@@ -57,7 +57,8 @@ void Resume_Clock_Update()
   Convert_BCD_2_HEX_Time((S_BCD_Time *)&Cur_Time1,(S_HEX_Time *)&Cur_Time0);
   
   Clock_Info.Clock_Ready_Flag=1;
-  SET_STRUCT_SUM(Clock_Info);//函数出口处设置校验和  
+  SET_STRUCT_SUM(Clock_Info);//函数出口处设置校验和 
+  return Re;
 }
 
 
@@ -333,6 +334,7 @@ void Clock_Proc()
 INT8U Get_Time_From_Ram_Rom(S_BCD_Time *pBCD_Time)
 {
   INT8U Re,Err;
+  INT8U i;
   
   Re=0;
   if(1==CHECK_STRUCT_SUM(Cur_Time1) &&\
@@ -363,9 +365,28 @@ INT8U Get_Time_From_Ram_Rom(S_BCD_Time *pBCD_Time)
   }
   else//没有任何时间数据是正确的，彻底玩完了~~
   {
-    DEBUG_PRINT(HUCK,DEBUG_0,"No Correct Time Find,Use Def start Time");
-    mem_cpy(pBCD_Time,(void *)&Def_BCD_Time,sizeof(Def_BCD_Time),pBCD_Time,sizeof(S_BCD_Time));
-    Re=0;
+    for(i=0; i<3; i++)//重新从Rom中读取时间数据，读3次，防止干扰原因导致读取出错
+    {
+      if(Read_Storage_Data(TIME_PD,pBCD_Time,pBCD_Time,sizeof(S_BCD_Time),&Err))//读取存储时间
+      {
+        Re = 1;
+        break;
+      }
+      OS_TimeDly_Ms(100);//延时100ms
+      if(Read_Storage_Data(TIME_BAK_PD,pBCD_Time,pBCD_Time,sizeof(pBCD_Time),&Err))//读取存储备份时间
+      {
+        Re = 1;
+        break;
+      } 
+      OS_TimeDly_Ms(100);//延时100ms
+    } 
+    
+    if(Re == 0)
+    {
+      DEBUG_PRINT(HUCK,DEBUG_0,"No Correct Time Find,Use Def start Time");
+      mem_cpy(pBCD_Time,(void *)&Def_BCD_Time,sizeof(Def_BCD_Time),pBCD_Time,sizeof(S_BCD_Time));
+      Re=0;
+    }
   }
   
   Set_STRUCT_Sum(pBCD_Time,sizeof(S_BCD_Time),pBCD_Time->CS,sizeof(pBCD_Time->CS));  
@@ -446,6 +467,7 @@ void Clock_Update()
   static S_BCD_Time Temp_Time0;
   static S_BCD_Time Temp_Time1;
   
+  EXT_RTC_Status_Err_Flag=0;
   Re=CHECK_STRUCT_SUM(Clock_Info);
   if(ASSERT(A_WARNING,1==Re))//校验正确
   {
@@ -462,11 +484,14 @@ void Clock_Update()
   {
     DEBUG_PRINT(HUCK,DEBUG_0,"Read_Ext_RTC_Status Error!");
     ASSERT(A_WARNING,0);
-    Re=0;
     
-    Set_Err_Time(&Temp_Time);
-    Set_Event_Instant(ID_EVENT_RTCERR_RUN);//时钟乱事件记录
+    if(Re==1)//在能够读回外部时钟数据的情况下才置时钟错，否则一旦外部时钟有硬件错误，则可能导致1分钟写一次事件记录
+    {
+      Set_Err_Time((S_BCD_Time *)&Cur_Time1);
+      Set_Event_Instant(ID_EVENT_RTCERR_RUN);//时钟乱事件记录
+    }
     
+    Re=0;    
     EXT_RTC_Status_Err_Flag=1;//读取外部RTC状态出错!
   }
   
@@ -504,8 +529,8 @@ void Clock_Update()
          Check_Time_Diff((S_BCD_Time *)&Temp_Time0,(S_BCD_Time *)&Cur_Time_Bak,5)==1 &&\
          Check_Time_Diff((S_BCD_Time *)&Temp_Time0,(S_BCD_Time *)&Temp_Time1,5)==1)
       {
-        Set_Err_Time(&Temp_Time);
-        Set_Event_Instant(ID_EVENT_RTCERR_RUN);//时钟乱事件记录
+        //Set_Err_Time(&Temp_Time);
+        //Set_Event_Instant(ID_EVENT_RTCERR_RUN);//时钟乱事件记录
         mem_cpy(&Temp_Time,(S_BCD_Time *)&Temp_Time0,sizeof(Temp_Time0),(S_BCD_Time *)&Temp_Time,sizeof(Temp_Time));
         EXT_RTC_Status_Err_Flag=1; 
       }
@@ -520,6 +545,7 @@ void Clock_Update()
   {
     DEBUG_PRINT(HUCK,DEBUG_0,"Reset EXT RTC!!!!!!!!!!!!");
     Set_Time_To_EXT_RTC((S_BCD_Time *)&Temp_Time);//重置外部时钟
+    //Set_Event_Instant(ID_EVENT_RTCERR_RUN);//时钟乱事件记录
     Clock_Info.EXT_RTC_Err_Counts=0;
   }   
  
@@ -661,7 +687,11 @@ void Init_Clock(INT32U Mode)
   SET_STRUCT_SUM(Clock_Info);
    
   DEBUG_PRINT(HUCK,DEBUG_0,"Init Clock!!");
-  Resume_Clock_Update();
+  if(Resume_Clock_Update()==0)//外部时钟出错的情况下，形成一次事件记录
+  {
+    Set_Err_Time((S_BCD_Time *)&Def_BCD_Time);//默认时间作为纠错前时间，因为这里外部时钟读不出来，不知道出错前时间
+    Event_MultiTimes_Proc(ID_EVENT_RTCERR_RUN,EVENT_OCCUR,EVENT_REAL);
+  }
 /*  
   if(SYS_SLEEP==Mode)//当前为睡眠态,是由正常态掉电复位而来，为了省电，从内存中取时间数据设置到内部RTC
   {
