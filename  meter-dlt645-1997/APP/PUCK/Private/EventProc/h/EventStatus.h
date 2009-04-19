@@ -182,12 +182,12 @@ EVENTSTATUS_C_EXT const EventProperty EventPropertyVar[MAX_EVENT_NUM]={
   #endif  
   
 #ifdef ID_EVENT_RTCERR_RUN                          //运行时钟乱-----------29----HUCK Will do
-  {.DoubleFlag=1,.StartSave=1,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.DisEvent=1,.StartCount=1,.EndCount=1,.GetInstStatus=0,.EventName="RTC Error During Running",\
+  {.DoubleFlag=0,.StartSave=1,.EndSave=0,.StartUnit=0,.EndUnit=1,.ForbitEnd=0,.EndIndex=0,.DisEvent=1,.StartCount=1,.EndCount=5,.GetInstStatus=0,.EventName="RTC Error During Running",\
   },
 #endif  
   
 #ifdef ID_EVENT_RTCERR_PWRON                        //上电时钟乱-----------30----HUCK Will do
-  {.DoubleFlag=1,.StartSave=1,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.DisEvent=1,.StartCount=1,.EndCount=1,.GetInstStatus=0,.EventName="RTC Error With Power On",\
+  {.DoubleFlag=0,.StartSave=1,.EndSave=0,.StartUnit=0,.EndUnit=1,.ForbitEnd=0,.EndIndex=0,.DisEvent=1,.StartCount=1,.EndCount=5,.GetInstStatus=0,.EventName="RTC Error With Power On",\
   },
 #endif
 

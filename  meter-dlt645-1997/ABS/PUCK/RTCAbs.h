@@ -14,7 +14,7 @@
 #define EXT_RTC_FIRST_PWRON   1
 #define EXT_RTC_COUNT_STOP    2
 #define EXT_RTC_BUSY          4  //RTC 忙
-
+#define EXT_RTC_I2C_ERR       8  //RTC I2c错
 
 
 #define ID_EXT_RTC    0     //外部硬件时钟

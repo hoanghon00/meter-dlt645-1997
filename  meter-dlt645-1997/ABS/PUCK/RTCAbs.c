@@ -11,9 +11,13 @@ INT8U Read_Ext_RTC_Status(void)
   INT8U temp,Re;  
   Re=DS3231_Read_Buf(0xf,1,&temp);
   if(0==Re)
+  {
     ASSERT(A_WARNING,0);
-
-  Re=EXT_RTC_OK;
+    Re=EXT_RTC_I2C_ERR;
+  }
+  else
+    Re=EXT_RTC_OK;
+  
   if(GET_BIT(temp,7))    //OSFֹͣ
   {
     CLR_BIT(temp,7);
