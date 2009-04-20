@@ -55,6 +55,25 @@ FP32S Get_Start_Current(void)
   I_Spec=Get_SysCurr_Mode();
   return ((FP32S)I_CONST[I_Spec]/I_START_RATIO);
 }
+
+/**********************************************************************************
+函数功能：获取启动功率
+入口：无
+出口：启动电流
+**********************************************************************************/
+FP32S Get_Start_Power(void)
+{  
+  INT8U U_Spec,I_Spec;
+  FP32S P;
+  
+  U_Spec=Get_SysVolt_Mode();
+  I_Spec=Get_SysCurr_Mode();  
+  
+  P=(U_CONST[U_Spec]*I_CONST[I_Spec]*I_START_RATIO)/1000; //转换成 0.000001kW=0.001w
+  
+  return P;
+}
+
 /**********************************************************************************
 函数功能：清除用于计算电量的累计数据的寄存器
 入口：无
@@ -474,7 +493,7 @@ INT32U GetSumEngeOrPowerValue(INT8U PowerFlag,INT8U ParseFlag,MEASU_DATA Data,IN
 入口：无
 出口：0------------获取增量成功；1--------------获取失败
 **********************************************************************************/	
-INT8U  GetEnergChangeValue_PerOne(INT8U EngReg,INT8U FlowFlag,volatile INT32U *CurrEnerg,volatile INT32U *LastEnerg,volatile INT32U *ChangEnerg)
+INT8U  GetEnergChangeValue_PerOne(INT8U EngReg,INT8U FlowFlag,volatile INT32U *CurrEnerg,volatile INT32U *LastEnerg,volatile INT32U *ChangEnerg,INT32U Power,INT32U Curr)
 {
   INT8U Flag;
   INT32U LastData,ChangData,RdData;
@@ -550,6 +569,25 @@ INT8U  GetEnergChangeValue_PerOne(INT8U EngReg,INT8U FlowFlag,volatile INT32U *C
   {
     ChangData=0;
   }
+  
+  if(EngReg>=REG_R_A_PENERG && EngReg<=REG_R_SUM_PENERG)  //有功
+  {
+    if(ChangData>0)
+    {
+      if(Power<(INT32U)Get_Start_Power()/2 && Curr <(INT32U)Get_Start_Current()/2)  //功率和电流同时小于启动的一半
+      {        
+        *CurrEnerg=0;
+        *LastEnerg=0;
+        *ChangEnerg=0;
+        Measu_RdData(EngReg+0x13);
+        Measu_RdData(EngReg+0x13);
+        Measu_RdData(EngReg+0x13);
+        return MEASU_CREEP_ENERG_ADD;
+      }
+    }
+    
+  }
+  
   *CurrEnerg=(INT32U)CurData;
   *LastEnerg=LastData;
   *ChangEnerg=ChangData;
@@ -571,7 +609,7 @@ INT8U GetParseEnergChangeValue_PUCK(void)
 #endif
     
   if(CHECK_STRUCT_SUM(Pri_TempMeasuVar)==0)
-  ASSERT(A_WARNING,0); 
+    ASSERT(A_WARNING,0); 
   
   Flag=Measu_RdAndCompData_3Times(REG_R_ENFLAG,(INT8U *)&EnergFlow);  //读取电能寄存器工作状态:溢出标志
   if((!Flag)||(EnergFlow==0xffffff)) //避免状态寄存器读错后，对电能的影响，此值不可能都为0xffffff
@@ -594,15 +632,18 @@ INT8U GetParseEnergChangeValue_PUCK(void)
   {
     LastValue=*((&Pri_TempMeasuVar.AcEnerg.A)+i);
     Flag=GetEnergChangeValue_PerOne(REG_R_A_PENERG+i,GET_BIT(EnergFlow,i),(&Pri_TempMeasuVar.AcEnerg.A)+i,(&Pri_TempMeasuVar.Last_AcEnerg.A)+i,\
-                                   (&Pri_TempMeasuVar.Change_AcEnerg.A)+i);
+                                   (&Pri_TempMeasuVar.Change_AcEnerg.A)+i,*((&Pri_TempIntantVar.AcPower.A)+i),*((&Pri_TempIntantVar.Curr.A)+i));
 #ifdef MEASURE_ERROR_ALARM_EN
     if(*((&Pri_TempMeasuVar.Change_AcEnerg.A)+i)!=0)
     {
-      Measure_Err_Info.AcFlag=Flag;
-      Measure_Err_Info.LastValue=LastValue;
-      Measure_Err_Info.CurrValue=*((&Pri_TempMeasuVar.AcEnerg.A)+i);
-      Measure_Err_Info.ChangeValue=*((&Pri_TempMeasuVar.Change_AcEnerg.A)+i);
-      SET_STRUCT_SUM(Measure_Err_Info);
+      if(*((&Pri_TempIntantVar.AcPower.A)+i)<(INT32U)Get_Start_Power()/2 && *((&Pri_TempIntantVar.Curr.A)+i) <(INT32U)Get_Start_Current()/2)  //功率和电流同时小于启动的一半
+      {
+        Measure_Err_Info.AcFlag=Flag;
+        Measure_Err_Info.LastValue=LastValue;
+        Measure_Err_Info.CurrValue=*((&Pri_TempMeasuVar.AcEnerg.A)+i);
+        Measure_Err_Info.ChangeValue=*((&Pri_TempMeasuVar.Change_AcEnerg.A)+i);
+        SET_STRUCT_SUM(Measure_Err_Info);
+      }
     }
 #endif
     
@@ -617,7 +658,7 @@ INT8U GetParseEnergChangeValue_PUCK(void)
   for(i=0;i<4;i++)
   {
     Flag=GetEnergChangeValue_PerOne(REG_R_A_QENERG+i,GET_BIT(EnergFlow,4+i),(&Pri_TempMeasuVar.ReacEnerg.A)+i,(&Pri_TempMeasuVar.Last_ReacEnerg.A)+i,\
-                                   (&Pri_TempMeasuVar.Change_ReacEnerg.A)+i);
+                                   (&Pri_TempMeasuVar.Change_ReacEnerg.A)+i,*((&Pri_TempIntantVar.ReacPower.A)+i),*((&Pri_TempIntantVar.Curr.A)+i));
     if(Flag!=MEASU_NO_ERR)
     {
       DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"Measure_Error----->Get Reac_Energe Change Error,Index=%d",i);  
@@ -1183,7 +1224,7 @@ void Power_Volt_Curr_Modi_PUCK(void)
       if(*(&Pri_TempIntantVar.Volt.A+i)>=LITTLE_VOLT[U_Spec])  //有电压，有小电流
       {
         tempPQS=tempPQS/1000;    //转成单位：w 
-        TempCurr=(INT32U)((tempPQS/((FP32S)(*(&Pri_TempIntantVar.Volt.A+i))/(FP32S)UNIT_V))*(FP32S)UNIT_A);     //算出电流
+        TempCurr=(INT32U)((tempPQS/((FP32S)(*(&Pri_TempIntantVar.Volt.A+i))/(FP32S)UNIT_V))*(FP32S)UNIT_A);     //电压已经确保>0,算出电流
         if(TempCurr>Current_threshold_reset[I_Spec])   //算出的电流超过计量出的电流，置0
           TempCurr=0;
         *(&(Pri_TempIntantVar.Curr.A)+i)=TempCurr; //更新电流 -----09-04-19  PUCK      
@@ -1237,17 +1278,15 @@ void Power_Volt_Curr_Modi_PUCK(void)
 **********************************************************************************/										 											 
 void Power_Direc_Modi_PUCK(void)
 {
+  INT8U ParseMode;
   FP32S P,Q;
-  INT8U ParseMode,U_Spec,I_Spec;
-  
-  ParseMode=Get_SysParse_Mode();
-  U_Spec=Get_SysVolt_Mode();
-  I_Spec=Get_SysCurr_Mode();
   
   if(CHECK_STRUCT_SUM(Pri_MeasuStatVar)==0)
     ASSERT(A_WARNING,0);
   
-  P=(U_CONST[U_Spec]*I_CONST[I_Spec]*I_START_RATIO)/1000; //转换成 0.000001kW=0.001w
+  ParseMode=Get_SysParse_Mode();
+  
+  P=Get_Start_Power();
   Q=P;
 
   if(ParseMode==PARSE_331)        //331

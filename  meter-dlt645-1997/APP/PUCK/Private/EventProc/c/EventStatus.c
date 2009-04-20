@@ -967,7 +967,7 @@ void Check_Event_StruCS(void)
   for(i=0;i<MAX_EVENT_NUM;i++)
   {
     Flag=CHECK_STRUCT_SUM(EventProcStatusVar[i]);
-    if(Flag)
+    if(!Flag)
       ASSERT(A_WARNING,0);  
   }
   

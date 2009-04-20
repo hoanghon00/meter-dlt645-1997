@@ -30,6 +30,7 @@
 #define MEASU_RESET_ERR 	14  //复位过程错误
 #define MEASU_CS_ERR            15  //校验和错
 #define MEASU_ENERG_FLOW_ERR   	16  //电能溢出时，电能增量太大
+#define MEASU_CREEP_ENERG_ADD  	17  //潜动时，电能增量了
 
 #define MAX_MEASU_ERR 	        MEASU_ENERG_FLOW_ERR
 
