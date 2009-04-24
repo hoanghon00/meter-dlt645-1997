@@ -411,6 +411,8 @@ void Init_Low_Power_Proc()
   }
   else
   {
+    Set_Sys_Status(SYS_NORMAL);//初始化时钟前需要先初始化好EEROM等设备
+    
     if(SYS_SLEEP==Status)//上次掉电后设置系统状态为SYS_SLEEP然后复位
     {
       Init_Clock(SYS_SLEEP);

@@ -25,7 +25,8 @@
 #define STORA_EXTEND  //存储的扩展
 #define DEF_PARA_EXTEND
 
-#define COMM_PROTO_VERSION "1.00-1.00-090325-0948-General-XXXXXXX"
+//版本号定义-->日期-硬件号-软件号-规约版本号-地点-厂家
+#define COMM_PROTO_VERSION "090424-1.00-1.00-1.00-General-DongRui"
 
 EXT void Extend_Init();
 EXT INT8U Extend_Set_Data_Proc(PROTO_DI DI,INT8U *pSrc, INT16U SrcLen);
