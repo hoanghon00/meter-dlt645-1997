@@ -235,56 +235,50 @@
 
 
 
-#define UART2_RECEIVE_DIVISOR_SUCK	0x8000
-#define UART2_TRANSMIT_DIVISOR_SUCK	0x8000
-#define UART3_RECEIVE_DIVISOR_SUCK	0x8000
-#define UART3_TRANSMIT_DIVISOR_SUCK	0x8000//64*2
-
-
 #ifndef USER_DEFINE_C
-#define SUCK_EXT extern
+#define USER_EXT extern
 #else
-#define SUCK_EXT 
+#define USER_EXT 
 #endif
 
 
 
 #define UART0_RX_BUFF_MAXSIZE 60
-SUCK_EXT INT16U Uart0_Rx_Count; //当前串口收到的数据长度----PUCK
-SUCK_EXT INT8U Uart0_RecBuf[UART0_RX_BUFF_MAXSIZE];
+USER_EXT INT16U Uart0_Rx_Count; //当前串口收到的数据长度----PUCK
+USER_EXT INT8U Uart0_RecBuf[UART0_RX_BUFF_MAXSIZE];
 
 #ifdef UART1
-  #define UART1_RX_BUFF_MAXSIZE 36
-  SUCK_EXT INT16U Uart1_Rx_Count; //当前串口收到的数据长度----PUCK
-  SUCK_EXT INT8U Uart1_RecBuf[UART1_RX_BUFF_MAXSIZE];
+  #define UART1_RX_BUFF_MAXSIZE 70
+  USER_EXT INT16U Uart1_Rx_Count; //当前串口收到的数据长度----PUCK
+  USER_EXT INT8U Uart1_RecBuf[UART1_RX_BUFF_MAXSIZE];
 #endif
   
 #define UART2_RX_BUFF_MAXSIZE 70
-SUCK_EXT INT16U Uart2_Rx_Count;   //当前串口收到的数据长度----PUCK
-SUCK_EXT INT8U Uart2_RecBuf[UART2_RX_BUFF_MAXSIZE];
+USER_EXT INT16U Uart2_Rx_Count;   //当前串口收到的数据长度----PUCK
+USER_EXT INT8U Uart2_RecBuf[UART2_RX_BUFF_MAXSIZE];
 
 #define UART3_RX_BUFF_MAXSIZE 70
-SUCK_EXT INT16U Uart3_Rx_Count;  //当前串口收到的数据长度----PUCK
-SUCK_EXT INT8U Uart3_RecBuf[UART3_RX_BUFF_MAXSIZE];
+USER_EXT INT16U Uart3_Rx_Count;  //当前串口收到的数据长度----PUCK
+USER_EXT INT8U Uart3_RecBuf[UART3_RX_BUFF_MAXSIZE];
 
 
-void UART0_Init_suck(ULONG baud_rate,INT16U CheckBit);
-INT8U UART0_RecData_pre_suck(void);
-INT8U UART0_SendData_suck(UCHAR* txbuf, USHORT txnum);
+void UART0_Init_PUCK(ULONG baud_rate,INT16U CheckBit);
+INT8U UART0_RecData_pre_PUCK(void);
+INT8U UART0_SendData_PUCK(UCHAR* txbuf, USHORT txnum);
 
-void UART1_Init_suck(ULONG baud_rate,INT16U CheckBit);
-INT8U UART1_SendData_suck(UCHAR* txbuf, USHORT txnum);
-INT8U UART1_RecData_pre_suck(void);
-
-
-void UART2_Init_suck(ULONG baud_rate,INT16U CheckBit);
-INT8U UART2_SendData_suck(UCHAR* txbuf, USHORT txnum);
-INT8U UART2_RecData_pre_suck(void);
+void UART1_Init_PUCK(ULONG baud_rate,INT16U CheckBit);
+INT8U UART1_SendData_PUCK(UCHAR* txbuf, USHORT txnum);
+INT8U UART1_RecData_pre_PUCK(void);
 
 
-void UART3_Init_suck(ULONG baud_rate,INT16U CheckBit);
-INT8U UART3_SendData_suck(UCHAR* txbuf, USHORT txnum);
-INT8U UART3_RecData_pre_suck(void);
+void UART2_Init_PUCK(ULONG baud_rate,INT16U CheckBit);
+INT8U UART2_SendData_PUCK(UCHAR* txbuf, USHORT txnum);
+INT8U UART2_RecData_pre_PUCK(void);
+
+
+void UART3_Init_PUCK(ULONG baud_rate,INT16U CheckBit);
+INT8U UART3_SendData_PUCK(UCHAR* txbuf, USHORT txnum);
+INT8U UART3_RecData_pre_PUCK(void);
 
 
 

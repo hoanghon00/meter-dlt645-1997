@@ -17,22 +17,21 @@
 #define MEASU_SIGN_ERR    	1  //SIG错误
 #define MEASU_RD3TIMES_ERR    	2  //读数据错
 #define MEASU_CAL_ERR    	3  //计量过程中，出现校表请求
-#define MEASU_RE_WR_PARA_ERR    4  //校表参数需要重写
-#define MEASU_PUL_SPEC_ERR     	5  //计量参数规格错误
-#define MEASU_FREQU_ERR   	6  //频率错误
-#define MEASU_VOLT_ERR  	7  //电压超限
-#define MEASU_CURR_ERR  	8  //电电流超限
-#define MEASU_POWER_ERR  	9  //功率超限
-#define MEASU_ACCU_FLOW_ERR   	10  //电能增量太大
-#define MEASU_ENR_REDUCE_ERR 	11  //电能倒走
-#define MEASU_ENR_LIMIT_ERR 	12  //计量范围超限
-#define MEASU_DATA_LOGIC_ERR 	13  //逻辑错误
-#define MEASU_RESET_ERR 	14  //复位过程错误
-#define MEASU_CS_ERR            15  //校验和错
-#define MEASU_ENERG_FLOW_ERR   	16  //电能溢出时，电能增量太大
-#define MEASU_CREEP_ENERG_ADD  	17  //潜动时，电能增量了
+#define MEASU_PUL_SPEC_ERR     	4  //计量参数规格错误
+#define MEASU_FREQU_ERR   	5  //频率错误
+#define MEASU_VOLT_ERR  	6  //电压超限
+#define MEASU_CURR_ERR  	7  //电电流超限
+#define MEASU_POWER_ERR  	8  //功率超限
+#define MEASU_ACCU_FLOW_ERR   	9  //电能增量太大
+#define MEASU_ENR_REDUCE_ERR 	10  //电能倒走
+#define MEASU_ENR_LIMIT_ERR 	11  //计量范围超限
+#define MEASU_DATA_LOGIC_ERR 	12  //逻辑错误
+#define MEASU_RESET_ERR 	13  //复位过程错误
+#define MEASU_CS_ERR            14  //校验和错
+#define MEASU_ENERG_FLOW_ERR   	15  //电能溢出时，电能增量太大
+#define MEASU_CREEP_ENERG_ADD  	16  //潜动时，电能增量了
 
-#define MAX_MEASU_ERR 	        MEASU_ENERG_FLOW_ERR
+#define MAX_MEASU_ERR 	        MEASU_CREEP_ENERG_ADD
 
 #define NO_QUADRANT   0             //无效象限
 #define QUADRANT1     (NO_QUADRANT+1)
@@ -42,21 +41,19 @@
 
 
 
-#ifdef MEASURE_ERROR_ALARM_EN
-  #define MEASURE_ERR_NUM  20
-  #if MAX_MEASU_ERR<=MEASURE_ERR_NUM
-    typedef struct
-    { 
-      INT16U        ResetNum;
-      INT8U         AcFlag;
-      INT32U        LastValue;
-      INT32U        CurrValue;
-      INT32U        ChangeValue;
-      INT8U         Num[MEASURE_ERR_NUM];
-      INT8U CS[CS_BYTES]; 
-    }MEASURE_ERROR;
-  NO_INIT PUB_PUCK_EXT MEASURE_ERROR Measure_Err_Info;  
-  #endif
+#ifdef MEASURE_ERROR_STATICS_EN
+  #define MEASURE_ERR_NUM  (MAX_MEASU_ERR+1)
+  typedef struct
+  { 
+    INT16U        ResetNum;
+    INT8U         AcFlag;
+    INT32U        LastValue;
+    INT32U        CurrValue;
+    INT32U        ChangeValue;
+    INT8U         Num[MEASURE_ERR_NUM];
+    INT8U CS[CS_BYTES]; 
+  }MEASURE_ERROR;
+NO_INIT PUB_PUCK_EXT MEASURE_ERROR Measure_Err_Info;  
 #endif
 
 
@@ -234,7 +231,7 @@ FP32S Get_In(void);
 INT32U Get_Sys_Pulse(void);
 INT8U GetSysModeProc(void);
 void Load_Adj_OnePara_To_IC(INT16U);
-void Measure_Error_Alarm(INT8U);
+void Measure_Error_Statics(INT8U Code,INT8U RstFlag);
 void Init_Measure_Ram(void);
 INT8U Load_MeasureIC_Para(void);
 INT8U Load_Spec_Para_To_IC(void);

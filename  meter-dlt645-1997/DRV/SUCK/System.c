@@ -63,18 +63,18 @@ void Clock_Init(INT32U SysMode)
         Clr_Ext_Inter_Dog();
         
 	UCHAR temp_stabset, temp_stabwait;
-	OSTS = CG_OSCSTAB_SEL18;        //振荡稳定时间选择寄存器
+	OSTS = CG_OSCSTAB_SEL18;        //振荡稳定时间选择寄存器------------PUCK
 	CMC = CG_HISYS_OSC | CG_SYSOSC_OVER10M | CG_SUB_OSC;
 	MSTOP = 0;  //开启fx，等待稳定
-	temp_stabset = CG_OSCSTAB_STA18;   //振荡稳定时间计数器
+	temp_stabset = CG_OSCSTAB_STA18;   //振荡稳定时间计数器------------PUCK
 	do{
 		temp_stabwait = OSTC;
 		temp_stabwait &= temp_stabset;
 	}while(temp_stabwait != temp_stabset);
               
-        MCM0 = 1;   while (MCS == 0) Clr_Ext_Inter_Dog();  //主时钟系统振荡处于fih？//主系统时钟由 fih 切换至 外部 fMX
+        MCM0 = 1;   while (MCS == 0) Clr_Ext_Inter_Dog();  //主时钟系统振荡处于fih？//主系统时钟由 fih 切换至 外部 fMX------------PUCK
 	        
-	HIOSTOP = 1; //关闭fih，前，必须确认 MCS=1，或者CLS=1
+	HIOSTOP = 1; //关闭fih，前，必须确认 MCS=1，或者CLS=1------------PUCK
 	
 	XTSTOP = 0; //开启fxt
 	
@@ -85,15 +85,15 @@ void Clock_Init(INT32U SysMode)
 	
 	CSS = 0;
 
-	CKC &= (UCHAR)~CG_CPUCLK;         //将分频系数归0
+	CKC &= (UCHAR)~CG_CPUCLK;         //将分频系数归0------------PUCK
         if(SYS_NORMAL==SysMode)
 	{
-          CKC |= CG_CPUCLK_MAIN0;           //获取分频系数:fMAIN=晶振
+          CKC |= CG_CPUCLK_MAIN0;           //获取分频系数:fMAIN=晶振------------PUCK
           OSMC = CG_FCLK_OVER10M;           //10M以上频率
         }
         else
         {
-          CKC |= RSUME_CLOCK_DIV;           //获取分频系数:fMAIN/n
+          CKC |= RSUME_CLOCK_DIV;           //获取分频系数:fMAIN/n------------PUCK
           OSMC = CG_FCLK_UNDER10M;           //10M以下频率
         }	
 }

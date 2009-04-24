@@ -182,7 +182,7 @@ EVENTSTATUS_C_EXT const EventProperty EventPropertyVar[MAX_EVENT_NUM]={
   #endif  
   
 #ifdef ID_EVENT_RTCERR_RUN                          //运行时钟乱-----------29----HUCK Will do
-  {.DoubleFlag=0,.StartSave=1,.EndSave=0,.StartUnit=0,.EndUnit=1,.ForbitEnd=0,.EndIndex=0,.DisEvent=1,.StartCount=1,.EndCount=5,.GetInstStatus=0,.EventName="RTC Error During Running",\
+  {.DoubleFlag=0,.StartSave=1,.EndSave=0,.StartUnit=0,.EndUnit=1,.ForbitEnd=0,.EndIndex=0,.DisEvent=1,.StartCount=1,.EndCount=15,.GetInstStatus=0,.EventName="RTC Error During Running",\
   },
 #endif  
   
@@ -341,7 +341,7 @@ EVENTSTATUS_C_EXT const EventProperty EventPropertyVar[MAX_EVENT_NUM]={
 #endif
 
 #ifdef ID_MEASURE_ERROR                               //计量错误(瞬态字)--------61
-  {.DoubleFlag=0,.StartSave=0,.EndSave=0,.StartUnit=0,.EndUnit=0,.ForbitEnd=0,.EndIndex=0,.DisEvent=1,.StartCount=20,.EndCount=0,.GetInstStatus=0,.EventName="Measure Error Event",\
+  {.DoubleFlag=0,.StartSave=0,.EndSave=0,.StartUnit=0,.EndUnit=1,.ForbitEnd=0,.EndIndex=0,.DisEvent=1,.StartCount=1,.EndCount=15,.GetInstStatus=0,.EventName="Measure Error Event",\
   },
 #endif
 

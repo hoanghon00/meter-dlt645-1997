@@ -126,7 +126,6 @@ INT8U Load_MeasureIC_Para(void)
   }
   else
   {
-    Measure_Error_Alarm(MEASU_RE_WR_PARA_ERR);
     MeasuStatusMode.Retry=1;   //¼ÆÁ¿Ð¾Æ¬²ÎÊýÐ´´íÎóÖØÊÔ
     SET_STRUCT_SUM(MeasuStatusMode);
     DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"Write To IC Para Failed,Waiting For Retry!");
@@ -147,7 +146,6 @@ INT8U InitMeasuAfterPwrOn(void)
   Flag=MeasuIC_HardRst();
   if(!Flag)     //Ó²¼þ¸´Î»Ê§°Ü
   {
-    Measure_Error_Alarm(MEASU_RESET_ERR);
     DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"Measure_Error----->Hard Reset Error After Power On!");
     return 0;
   }
@@ -874,7 +872,6 @@ void Retry_WritePara_To_IC(void)   //ÔËÐÐ¹ý³ÌÖÐ£¬ICµÄCSºÍEPPROMµÄCS²»Ò»ÖÂ£¬»òÕßÄ
   if(MeasuStatusMode.Retry==1)
   {
     DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"Measure_Error----->Retry Write IC Para.........");
-    Measure_Error_Alarm(MEASU_RE_WR_PARA_ERR);
     Flag=Load_Spec_Adj_Para_To_IC();
     SYS_TimeDly_Sec(5);
     if(Flag)

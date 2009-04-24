@@ -4325,7 +4325,7 @@ static const scrn_t table[] = {
     {0x070000, 0xB660, "X#.##|Hz",        {.total     = 0,}}, // 当前频率
     {0x070001, BAUDR0, "XXXXX#|",         {.total     = 0,}}, // 第1个RS485当前通讯波特率
     {0x170001, BAUDR1, "XXXXX#|",         {.total     = 0,}}, // 第2个RS485当前通讯波特率
-    {0x070002, DIVERS, "########|",       {.total     = 0,}}, // 电表版本号(共10位YYMMDDIIVV)
+    {0x070002, DIVERS, "##########|",       {.total     = 0,}}, // 电表版本号(共10位YYMMDDIIVV)
     
     
     {0x070003, DI_METER_SPECIFI, "##########|",       {.total     = 0,}}, // 计量参数，00 00 01 01 01 (331或者341方式/脉冲常数规格/电压规格/电流规格/T_FH)

@@ -80,17 +80,19 @@ UseTrigger=1
 TriggerName=main
 LimitSize=0
 ByteLimit=50
+[TermIOLog]
+LoggingEnabled=_ 0
+LogFile=_ ""
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""
 Category=_ 0
-[TermIOLog]
-LoggingEnabled=_ 0
-LogFile=_ ""
 [TraceHelper]
 Enabled=0
 ShowSource=1
 [Breakpoints]
-Bp0=_ "STD_CODE" "{$PROJ_DIR$\APP\PUCK\Private\MeasuProc\c\MeasuProc.c}.2151.3@1" 0 0 0 0 "" 0 ""
-Bp1=_ "STD_CODE" "{$PROJ_DIR$\ABS\PUCK\UartAbs.c}.174.5@1" 1 0 0 0 "" 0 ""
-Count=2
+Bp0=_ "STD_CODE" "{$PROJ_DIR$\APP\PUCK\Private\MeasuProc\c\MeasuProc.c}.2177.3@1" 0 0 0 0 "" 0 ""
+Bp1=_ "STD_CODE" "{$PROJ_DIR$\DRV\PUCK\UART\Serial.c}.770.7@1" 1 0 0 0 "" 0 ""
+Bp2=_ "STD_CODE" "{$PROJ_DIR$\ABS\PUCK\UartAbs.c}.202.9@1" 1 0 0 0 "" 0 ""
+Bp3=_ "STD_CODE" "{$PROJ_DIR$\DRV\PUCK\UART\Serial.c}.273.2@1" 1 0 0 0 "" 0 ""
+Count=4

@@ -45,8 +45,8 @@ INT8U Close_Channel_PUCK(INT8U Type);
 void Channel_DataReceive_PUCK(INT8U Type,INT32U Status);
 INT8U Channel_DataSend_PUCK(INT8U Type,INT8U *DataSrc,INT16U DataLen);
 
-INT8U UART0_SendData_suck(INT8U *txbuf, unsigned short txnum);
-INT8U UART0_RecData_pre_suck(void);
+INT8U UART0_SendData_PUCK(INT8U *txbuf, unsigned short txnum);
+INT8U UART0_RecData_pre_PUCK(void);
 
 INT8U Channel_BufReady_PUCK(INT8U Type);
 void IRDA_Rec_Select(void);

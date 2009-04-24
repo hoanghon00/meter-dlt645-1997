@@ -6,8 +6,7 @@
 
 
 #define SHOW_ENERG_BIT     3   //显示的电能小数位
-//#define MEASU_RUN_ERR_EN       //开宏启：计量运行中错一次，报警一次，不可屏蔽；宏关闭：连续 MAX_RST_MEASU_IC_TIMES 次出错，声光报警
-#define MEASURE_ERROR_ALARM_EN //开启，打开计量错误报警，同时开辟相应的 Sram资源和Flash资源
+#define MEASURE_ERROR_STATICS_EN //开启，打开计量错误统计，同时开辟相应的 Sram资源和Flash资源
 #define OS_DEBG_EN       //OS功能打开 ！
 
 #define PRINT_PUCK_MEA_EN  1        //1:使能PUCK的计量调试信息，0:禁止
@@ -59,7 +58,7 @@
 #define HARD_TYPE_20081005     1   //第一版驱动：
 #define HARD_TYPE_20090224     2   //第二版驱动：最终版，中间的乱七八糟版本废除！！！
 
-#define METER_HARD_TYPE   HARD_TYPE_20090224
+#define METER_HARD_TYPE   HARD_TYPE_20090224   //-------PUCK
 
 //硬件协议版本配置
 #define PROC_645_1997     0

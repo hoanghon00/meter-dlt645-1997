@@ -82,7 +82,7 @@
 #define ID_OVER_LOAD        (ID_DEMAND_ARRIVE+1)            //负荷控制报警--------58
 #define ID_NOT_CHARGE        (ID_OVER_LOAD+1)              //欠费报警--------59
 #define ID_PARSE_SWITCH      (ID_NOT_CHARGE+1)             //时段切换--------60
-#define ID_MEASURE_ERROR     (ID_PARSE_SWITCH+1)           //时段切换--------61
+#define ID_MEASURE_ERROR     (ID_PARSE_SWITCH+1)           //计量错误--------61
 #define ID_METER_ADDR_EN     (ID_MEASURE_ERROR+1)          //设置表地址按钮-------62
 #define ID_EVENT_ALL_LOSS_VOLT (ID_METER_ADDR_EN+1)        //设置表地址按钮-------63
 

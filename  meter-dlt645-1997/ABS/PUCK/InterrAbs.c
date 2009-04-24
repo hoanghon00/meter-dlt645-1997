@@ -47,7 +47,7 @@ void Inter_CF1(void)
   }
   else                            //头尾不对
   {
-    Port_Out_Pub(INTER_ID_ALARM_BEEP,BEEP_MODE_200);
+    //Port_Out_Pub(INTER_ID_ALARM_BEEP,BEEP_MODE_200);
     Pulse_Num_Temp.Ac_Pulse_Num=0;
     INIT_STRUCT_VAR(Pulse_Num_Temp);  //把头尾填齐
   }
@@ -71,7 +71,7 @@ void Inter_CF2(void)
   }
   else                            //头尾不对
   {
-    Port_Out_Pub(INTER_ID_ALARM_BEEP,BEEP_MODE_300);
+    //Port_Out_Pub(INTER_ID_ALARM_BEEP,BEEP_MODE_300);
     Pulse_Num_Temp.Rea_Pulse_Num=0;
     INIT_STRUCT_VAR(Pulse_Num_Temp);  //把头尾填齐    
   }

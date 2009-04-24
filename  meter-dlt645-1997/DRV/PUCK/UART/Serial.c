@@ -122,7 +122,7 @@ PUCK:
 入口：
 返回：
 ********************************************************************************/
-void UART0_Init_sub_suck( INT16U divisor,INT16U CheckBit)
+void UART0_Init_sub_PUCK( INT16U divisor,INT16U CheckBit)
 {
     /* UART0 initial setting */
     ST0 |= SAU_CH1_STOP_TRG_ON;	/* UART0 receive disable */
@@ -136,7 +136,7 @@ void UART0_Init_sub_suck( INT16U divisor,INT16U CheckBit)
     SIR01 = SAU_SIRMN_FECTMN | SAU_SIRMN_PECTMN | SAU_SIRMN_OVCTMN;
     NFEN0 |= SAU_RXD0_FILTER_ON;
     SMR01 = SAU_SMRMN_INITIALVALUE | SAU_CLOCK_SELECT_CK01 | SAU_TRIGGER_RXD | SAU_UART | SAU_TRANSFER_END;
-    SCR01 = SAU_RECEPTION | SAU_INTSRE_ENABLE | SAU_PARITY_NONE | SAU_LSB | SAU_STOP_1 | SAU_LENGTH_8;
+    SCR01 = SAU_RECEPTION | SAU_INTSRE_ENABLE | CheckBit | SAU_LSB | SAU_STOP_1 | SAU_LENGTH_8;
     SDR01 = divisor<<9;
     SOL0 |= SAU_CHANNEL0_NORMAL;
     SMR00 = SAU_SMRMN_INITIALVALUE | SAU_CLOCK_SELECT_CK01 | SAU_TRIGGER_SOFTWARE | SAU_UART | SAU_TRANSFER_END;
@@ -267,7 +267,7 @@ PUCK:
 入口：
 返回：
 ********************************************************************************/
-void UART1_Init_sub_suck( INT16U divisor,INT16U CheckBit)
+void UART1_Init_sub_PUCK( INT16U divisor,INT16U CheckBit)
 {
 	/* UART1 initial setting */
 	ST0 |= SAU_CH3_STOP_TRG_ON;	/* UART1 receive disable */
@@ -281,11 +281,11 @@ void UART1_Init_sub_suck( INT16U divisor,INT16U CheckBit)
 	SIR03 = SAU_SIRMN_FECTMN | SAU_SIRMN_PECTMN | SAU_SIRMN_OVCTMN;
 	NFEN0 |= SAU_RXD1_FILTER_ON;
 	SMR03 = SAU_SMRMN_INITIALVALUE | SAU_CLOCK_SELECT_CK00 | SAU_TRIGGER_RXD | SAU_UART | SAU_TRANSFER_END;
-	SCR03 = SAU_RECEPTION | SAU_INTSRE_ENABLE | SAU_PARITY_EVEN | SAU_LSB | SAU_STOP_1 | SAU_LENGTH_8;
+	SCR03 = SAU_RECEPTION | SAU_INTSRE_ENABLE | CheckBit | SAU_LSB | SAU_STOP_1 | SAU_LENGTH_8;
 	SDR03 = divisor<<9;
 	SOL0 |= SAU_CHANNEL1_NORMAL;
 	SMR02 = SAU_SMRMN_INITIALVALUE | SAU_CLOCK_SELECT_CK00 | SAU_TRIGGER_SOFTWARE | SAU_UART | SAU_TRANSFER_END;
-	SCR02 = SAU_TRANSMISSION | SAU_INTSRE_MASK | SAU_PARITY_EVEN | SAU_LSB | SAU_STOP_1 | SAU_LENGTH_8;
+	SCR02 = SAU_TRANSMISSION | SAU_INTSRE_MASK | CheckBit | SAU_LSB | SAU_STOP_1 | SAU_LENGTH_8;
 	SDR02 = divisor<<9;
 	SOL0 |= SAU_CHANNEL1_NORMAL;
 	SO0 |= SAU_CH2_DATA_OUTPUT_1;	/* output level */
@@ -589,7 +589,7 @@ PUCK:
 ********************************************************************************/
 
 /* Start adding user code. Do not edit comment generated here */
-UART2_Init_sub_suck(INT8U divisor,INT16U CheckBit)
+UART2_Init_sub_PUCK(INT8U divisor,INT16U CheckBit)
 {
   /* UART2 initial setting */
     ST1 |= SAU_CH1_STOP_TRG_ON;	/* UART2 receive disable */
@@ -603,7 +603,7 @@ UART2_Init_sub_suck(INT8U divisor,INT16U CheckBit)
     SIR11 = SAU_SIRMN_FECTMN | SAU_SIRMN_PECTMN | SAU_SIRMN_OVCTMN;
     NFEN0 |= SAU_RXD2_FILTER_ON;
     SMR11 = SAU_SMRMN_INITIALVALUE | SAU_CLOCK_SELECT_CK00 | SAU_TRIGGER_RXD | SAU_UART | SAU_TRANSFER_END;
-    SCR11 = SAU_RECEPTION | SAU_INTSRE_ENABLE | SAU_PARITY_EVEN | SAU_LSB | SAU_STOP_1 | SAU_LENGTH_8;
+    SCR11 = SAU_RECEPTION | SAU_INTSRE_ENABLE | CheckBit | SAU_LSB | SAU_STOP_1 | SAU_LENGTH_8;
     SDR11 = divisor<<9;
     SOL1 |= SAU_CHANNEL2_NORMAL;
     SMR10 = SAU_SMRMN_INITIALVALUE | SAU_CLOCK_SELECT_CK00 | SAU_TRIGGER_SOFTWARE | SAU_UART | SAU_TRANSFER_END;
@@ -632,7 +632,7 @@ PUCK:
 入口：
 返回：
 ********************************************************************************/
-UART3_Init_sub_suck(INT8U divisor,INT16U CheckBit)
+UART3_Init_sub_PUCK(INT8U divisor,INT16U CheckBit)
 {
     /* UART3 initial setting */
     ST1 |= SAU_CH3_STOP_TRG_ON;	/* UART3 receive disable */
@@ -646,8 +646,7 @@ UART3_Init_sub_suck(INT8U divisor,INT16U CheckBit)
     SIR13 = SAU_SIRMN_FECTMN | SAU_SIRMN_PECTMN | SAU_SIRMN_OVCTMN;
     NFEN0 |= SAU_RXD3_FILTER_ON;
     SMR13 = SAU_SMRMN_INITIALVALUE | SAU_CLOCK_SELECT_CK01 | SAU_TRIGGER_RXD | SAU_UART | SAU_TRANSFER_END;
-    SCR13 = SAU_RECEPTION | SAU_INTSRE_ENABLE | SAU_PARITY_EVEN | SAU_LSB | SAU_STOP_1 | SAU_LENGTH_8;
-    //SDR13 = UART3_RECEIVE_DIVISOR_SUCK;
+    SCR13 = SAU_RECEPTION | SAU_INTSRE_ENABLE | CheckBit | SAU_LSB | SAU_STOP_1 | SAU_LENGTH_8;
     SDR13 = divisor<<9;
     SOL1 |= SAU_CHANNEL3_NORMAL;
     SMR12 = SAU_SMRMN_INITIALVALUE | SAU_CLOCK_SELECT_CK01 | SAU_TRIGGER_SOFTWARE | SAU_UART | SAU_TRANSFER_END;
@@ -677,7 +676,7 @@ PUCK:
 入口：
 返回：
 ********************************************************************************/
-void UART2_Init_suck(ULONG baud_rate,INT16U CheckBit)
+void UART2_Init_PUCK(ULONG baud_rate,INT16U CheckBit)
 {
   INT8U Pos;  
   Pos=Get_Baud_Pos(baud_rate);
@@ -688,14 +687,14 @@ void UART2_Init_suck(ULONG baud_rate,INT16U CheckBit)
   SAU1EN = 1;	/* SAU1 clock supply */
   WAITFOR_DRV_CYCLE_TIMEOUT(4);
   SPS1=Const_Uart_PUCK[Pos].FclkDiv|(SPS1&0xf0); //CK10提供给UART2,如115200，第一次分频：11059200/2^2=2764800，第二次分频：2764800/(2n+2)=2764800/24=115200
-  UART2_Init_sub_suck(Const_Uart_PUCK[Pos].Divisor,CheckBit);
+  UART2_Init_sub_PUCK(Const_Uart_PUCK[Pos].Divisor,CheckBit);
 }
 /********************************************************************************
 PUCK:
 入口：
 返回：
 ********************************************************************************/
-void UART3_Init_suck(ULONG baud_rate,INT16U CheckBit)
+void UART3_Init_PUCK(ULONG baud_rate,INT16U CheckBit)
 {
   INT8U Pos;  
   Pos=Get_Baud_Pos(baud_rate);
@@ -708,7 +707,7 @@ void UART3_Init_suck(ULONG baud_rate,INT16U CheckBit)
   SAU1EN = 1;	/* SAU1 clock supply */
   WAITFOR_DRV_CYCLE_TIMEOUT(4);
   SPS1=(Const_Uart_PUCK[Pos].FclkDiv<<4)|(SPS1&0x0f);   //CK11提供给UART2和UART3；
-  UART3_Init_sub_suck(Const_Uart_PUCK[Pos].Divisor,CheckBit);  
+  UART3_Init_sub_PUCK(Const_Uart_PUCK[Pos].Divisor,CheckBit);  
 }
 
 /********************************************************************************
@@ -716,7 +715,7 @@ PUCK:
 入口：
 返回：
 ********************************************************************************/
-void UART0_Init_suck(ULONG baud_rate,INT16U CheckBit)
+void UART0_Init_PUCK(ULONG baud_rate,INT16U CheckBit)
 {
   INT8U Pos; 
   INT8U temp;
@@ -734,14 +733,14 @@ void UART0_Init_suck(ULONG baud_rate,INT16U CheckBit)
     temp=Const_Uart_PUCK[Pos].FclkDiv-1;
   
   SPS0 = (SPS0&0x0f)|(temp<<4); //CK01提供给UART0
-  UART0_Init_sub_suck(Const_Uart_PUCK[Pos].Divisor,CheckBit);  
+  UART0_Init_sub_PUCK(Const_Uart_PUCK[Pos].Divisor,CheckBit);  
 }
 /********************************************************************************
 PUCK:
 入口：
 返回：
 ********************************************************************************/
-INT8U UART0_SendData_suck(UCHAR* txbuf, USHORT txnum)
+INT8U UART0_SendData_PUCK(UCHAR* txbuf, USHORT txnum)
 {
     UART0_SendData(txbuf, txnum );
     return SUCESS;
@@ -751,7 +750,7 @@ PUCK:
 入口：
 返回：
 ********************************************************************************/
-INT8U UART0_RecData_pre_suck(void)
+INT8U UART0_RecData_pre_PUCK(void)
 {
   Uart0_Rx_Count=0;//清除计数标志
   memset(Uart0_RecBuf,0x00,sizeof(Uart0_RecBuf));
@@ -764,7 +763,7 @@ PUCK:
 返回：
 ********************************************************************************/
 
-void UART1_Init_suck(ULONG baud_rate,INT16U CheckBit)
+void UART1_Init_PUCK(ULONG baud_rate,INT16U CheckBit)
 {
   INT8U Pos;  
   Pos=Get_Baud_Pos(baud_rate);
@@ -775,14 +774,14 @@ void UART1_Init_suck(ULONG baud_rate,INT16U CheckBit)
   SAU0EN = 1;
   WAITFOR_DRV_CYCLE_TIMEOUT(4);
   SPS0 = (SPS0&0xf0)|Const_Uart_PUCK[Pos].FclkDiv;        //CK00提供给UART0和UART1；
-  UART1_Init_sub_suck(Const_Uart_PUCK[Pos].Divisor,CheckBit);  
+  UART1_Init_sub_PUCK(Const_Uart_PUCK[Pos].Divisor,CheckBit);  
 }
 /********************************************************************************
 PUCK:
 入口：
 返回：
 ********************************************************************************/
-INT8U UART1_SendData_suck(UCHAR* txbuf, USHORT txnum)
+INT8U UART1_SendData_PUCK(UCHAR* txbuf, USHORT txnum)
 {
     UART1_SendData(txbuf, txnum );    
     return SUCESS;
@@ -793,7 +792,7 @@ PUCK:
 入口：
 返回：
 ********************************************************************************/
-INT8U UART1_RecData_pre_suck(void)
+INT8U UART1_RecData_pre_PUCK(void)
 {
 #ifdef UART1
   Uart1_Rx_Count=0;//清除计数标志
@@ -806,7 +805,7 @@ PUCK:
 入口：
 返回：
 ********************************************************************************/
-INT8U UART2_SendData_suck(UCHAR* txbuf, USHORT txnum)
+INT8U UART2_SendData_PUCK(UCHAR* txbuf, USHORT txnum)
 {
     //UART2_send_finish_flag =0;
     B_1_485_0;
@@ -822,7 +821,7 @@ PUCK:
 入口：
 返回：
 ********************************************************************************/
-INT8U UART2_RecData_pre_suck(void)
+INT8U UART2_RecData_pre_PUCK(void)
 {
 
   Uart2_Rx_Count=0;//清除计数标志
@@ -835,7 +834,7 @@ PUCK:
 入口：
 返回：
 ********************************************************************************/
-INT8U UART3_SendData_suck(UCHAR* txbuf, USHORT txnum)
+INT8U UART3_SendData_PUCK(UCHAR* txbuf, USHORT txnum)
 {    
      B_2_485_0;
     UART3_SendData(txbuf, txnum );    
@@ -850,7 +849,7 @@ PUCK:
 入口：
 返回：
 ********************************************************************************/
-INT8U UART3_RecData_pre_suck(void)
+INT8U UART3_RecData_pre_PUCK(void)
 {
   
   Uart3_Rx_Count=0;//清除计数标志

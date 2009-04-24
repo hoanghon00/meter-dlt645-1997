@@ -574,8 +574,9 @@ INT8U  GetEnergChangeValue_PerOne(INT8U EngReg,INT8U FlowFlag,volatile INT32U *C
   {
     if(ChangData>0)
     {
-      if(Power<(INT32U)Get_Start_Power()/2 && Curr <(INT32U)Get_Start_Current()/2)  //功率和电流同时小于启动的一半
+      if(Power<(INT32U)Get_Start_Power()/2)
       {        
+        if((EngReg!=REG_R_SUM_PENERG && Curr <(INT32U)Get_Start_Current()/2) ||(EngReg==REG_R_SUM_PENERG)) //功率和电流同时小于启动的一半,合相无电流
         *CurrEnerg=0;
         *LastEnerg=0;
         *ChangEnerg=0;
@@ -604,7 +605,7 @@ INT8U GetParseEnergChangeValue_PUCK(void)
   INT8U Flag,i;
   INT32U EnergFlow;  
   
-#ifdef MEASURE_ERROR_ALARM_EN
+#ifdef MEASURE_ERROR_STATICS_EN
     INT32U LastValue;
 #endif
     
@@ -633,16 +634,19 @@ INT8U GetParseEnergChangeValue_PUCK(void)
     LastValue=*((&Pri_TempMeasuVar.AcEnerg.A)+i);
     Flag=GetEnergChangeValue_PerOne(REG_R_A_PENERG+i,GET_BIT(EnergFlow,i),(&Pri_TempMeasuVar.AcEnerg.A)+i,(&Pri_TempMeasuVar.Last_AcEnerg.A)+i,\
                                    (&Pri_TempMeasuVar.Change_AcEnerg.A)+i,*((&Pri_TempIntantVar.AcPower.A)+i),*((&Pri_TempIntantVar.Curr.A)+i));
-#ifdef MEASURE_ERROR_ALARM_EN
+#ifdef MEASURE_ERROR_STATICS_EN
     if(*((&Pri_TempMeasuVar.Change_AcEnerg.A)+i)!=0)
     {
-      if(*((&Pri_TempIntantVar.AcPower.A)+i)<(INT32U)Get_Start_Power()/2 && *((&Pri_TempIntantVar.Curr.A)+i) <(INT32U)Get_Start_Current()/2)  //功率和电流同时小于启动的一半
+      if(*((&Pri_TempIntantVar.AcPower.A)+i)<(INT32U)Get_Start_Power()/2)
       {
-        Measure_Err_Info.AcFlag=Flag;
-        Measure_Err_Info.LastValue=LastValue;
-        Measure_Err_Info.CurrValue=*((&Pri_TempMeasuVar.AcEnerg.A)+i);
-        Measure_Err_Info.ChangeValue=*((&Pri_TempMeasuVar.Change_AcEnerg.A)+i);
-        SET_STRUCT_SUM(Measure_Err_Info);
+        if((i!=3 && *((&Pri_TempIntantVar.Curr.A)+i) <(INT32U)Get_Start_Current()/2) ||(i==3)) //功率和电流同时小于启动的一半,合相无电流
+        {
+          Measure_Err_Info.AcFlag=Flag;
+          Measure_Err_Info.LastValue=LastValue;
+          Measure_Err_Info.CurrValue=*((&Pri_TempMeasuVar.AcEnerg.A)+i);
+          Measure_Err_Info.ChangeValue=*((&Pri_TempMeasuVar.Change_AcEnerg.A)+i);
+          SET_STRUCT_SUM(Measure_Err_Info);
+        }
       }
     }
 #endif
@@ -1599,20 +1603,12 @@ void GetMeasInstantData_PerSec(void)
     RstCtrlStatus.RstLimiCountr++;
     RstCtrlStatus.LimitErrCountr++;
     DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"Measure_Error----->In GetAppInstant(),ErrCode=%d,LimitErrCountr=%d,MeasErrCountrs=%d,Rst=%d",Flag,RstCtrlStatus.LimitErrCountr,RstCtrlStatus.MeasErrCountr,RstCtrlStatus.RstLimiCountr);
-#ifdef MEASU_RUN_ERR_EN
-    Measure_Error_Alarm(Flag);
-#endif
-    if(RstCtrlStatus.RstLimiCountr>=MAX_RST_MEASU_IC_TIMES)
-    {
-#ifdef MEASURE_ERROR_ALARM_EN
-      Measure_Err_Info.ResetNum++;
-      SET_STRUCT_SUM(Measure_Err_Info);     
-#endif  
-      
-#ifndef MEASU_RUN_ERR_EN     
-      Measure_Error_Alarm(Flag);
-#endif    
+    Measure_Error_Statics(Flag,0);
 
+    if(RstCtrlStatus.RstLimiCountr>=MAX_RST_MEASU_IC_TIMES)
+    { 
+      Measure_Error_Statics(Flag,1);  
+      Beep_For_Measu_Alarm_PUCK();    
       DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"Measure_Error----->MeasuIC Error Count OverLimited,Reset Measure IC..........");
       InitMeasuAfterPwrOn();
       RstCtrlStatus.RstLimiCountr=0;
@@ -1847,21 +1843,12 @@ void Deal_PerSec_Main(void)
     RstCtrlStatus.RstMeasCountr++;
     RstCtrlStatus.MeasErrCountr++;
     DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"Measure_Error----->In Deal_PerSec_Main(),ErrCode=%d,LimitErrCountr=%d,MeasErrCountrs=%d,Rst=%d",Flag,RstCtrlStatus.LimitErrCountr,RstCtrlStatus.MeasErrCountr,RstCtrlStatus.RstMeasCountr);
-#ifdef MEASU_RUN_ERR_EN
-    Measure_Error_Alarm(Flag);
-#endif
+    Measure_Error_Statics(Flag,0);
     
     if(RstCtrlStatus.RstMeasCountr>=MAX_RST_MEASU_IC_TIMES)
-    {
-#ifdef MEASURE_ERROR_ALARM_EN
-      Measure_Err_Info.ResetNum++;
-      SET_STRUCT_SUM(Measure_Err_Info);     
-#endif  
-      
-#ifndef MEASU_RUN_ERR_EN     
-      Measure_Error_Alarm(Flag);
-#endif     
-      
+    { 
+      Measure_Error_Statics(Flag,1);
+      Beep_For_Measu_Alarm_PUCK();
       DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"Measure_Error----->MeasuIC Error Count OverLimited,Reset Measure IC..........");
       InitMeasuAfterPwrOn(); 
       RstCtrlStatus.RstMeasCountr=0;      
@@ -2183,7 +2170,7 @@ void DebugOutMeasuData(void)
 **********************************************************************************/	
 void Print_Measure_Err_Info(void)
 {
-#ifdef  MEASURE_ERROR_ALARM_EN
+#ifdef  MEASURE_ERROR_STATICS_EN
   
   INT16U i;
   
@@ -2219,16 +2206,13 @@ void Print_Measure_Err_Info(void)
 #endif
 }
 /**********************************************************************************
-函数功能：计量错误报警输出
+函数功能：计量错误统计
 入口：无
 出口：无
 **********************************************************************************/	
-void Measure_Error_Alarm(INT8U Code)
+void Measure_Error_Statics(INT8U Code,INT8U RstFlag)
 {
-#ifdef  MEASURE_ERROR_ALARM_EN
-  
-  Beep_For_Measu_Alarm_PUCK();
-  Set_Event_Instant(ID_MEASURE_ERROR);
+#ifdef  MEASURE_ERROR_STATICS_EN
   
   if(CHECK_STRUCT_SUM(Measure_Err_Info)==0)
   {
@@ -2238,6 +2222,12 @@ void Measure_Error_Alarm(INT8U Code)
   
   if(MEASU_NO_ERR==Code || Code>MAX_MEASU_ERR)  //无错误,或者错误代码超限
     return ;
+  
+  if(RstFlag)
+  {
+    Measure_Err_Info.ResetNum++;
+    Set_Event_Instant(ID_MEASURE_ERROR);  //对计量芯片要复位，算作一次计量错误！
+  }
   
   Measure_Err_Info.Num[Code]++;
 
@@ -2325,6 +2315,7 @@ void Measu_Main_Puck(INT8U Flag)
     if(Sec_Bak==Sec_Timer_Pub)//时间过了一秒
       return ;
     
+    //Read_Ext_RTC_Status();          //测试时钟的稳定性
     Check_ALL_Sram_Sum();             //检查计量私/公有校验和
     Deal_PerSec_Main();                //向计量芯片取数据
     //Modi_StartCurr_TinyCurr();

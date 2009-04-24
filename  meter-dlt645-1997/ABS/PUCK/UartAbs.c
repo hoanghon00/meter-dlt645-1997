@@ -18,18 +18,18 @@ typedef struct
 
 //以下按channel.h中定义的通道顺序，描述与UART的应用
 const CONST_UART_ATTRIB  Const_Uart_Attib[MAX_UART_NUM]={
-  {UART0_RX_BUFF_MAXSIZE,&Uart0_Rx_Count,Uart0_RecBuf,&UART0_Init_suck,\
-    &UART0_Start,&UART0_Stop,&UART0_RecData_pre_suck,&UART0_SendData_suck},
+  {UART0_RX_BUFF_MAXSIZE,&Uart0_Rx_Count,Uart0_RecBuf,&UART0_Init_PUCK,\
+    &UART0_Start,&UART0_Stop,&UART0_RecData_pre_PUCK,&UART0_SendData_PUCK},
    
-  {UART2_RX_BUFF_MAXSIZE,&Uart2_Rx_Count,Uart2_RecBuf,&UART2_Init_suck,\
-    &UART2_Start,&UART2_Stop,&UART2_RecData_pre_suck,&UART2_SendData_suck},
+  {UART2_RX_BUFF_MAXSIZE,&Uart2_Rx_Count,Uart2_RecBuf,&UART2_Init_PUCK,\
+    &UART2_Start,&UART2_Stop,&UART2_RecData_pre_PUCK,&UART2_SendData_PUCK},
     
-  {UART3_RX_BUFF_MAXSIZE,&Uart3_Rx_Count,Uart3_RecBuf,&UART3_Init_suck,\
-    &UART3_Start,&UART3_Stop,&UART3_RecData_pre_suck,&UART3_SendData_suck},
+  {UART3_RX_BUFF_MAXSIZE,&Uart3_Rx_Count,Uart3_RecBuf,&UART3_Init_PUCK,\
+    &UART3_Start,&UART3_Stop,&UART3_RecData_pre_PUCK,&UART3_SendData_PUCK},
     
 #ifdef UART1    
-  {UART1_RX_BUFF_MAXSIZE,&Uart1_Rx_Count,Uart1_RecBuf,&UART1_Init_suck,\
-    &UART1_Start,&UART1_Stop,&UART1_RecData_pre_suck,&UART1_SendData_suck},
+  {UART1_RX_BUFF_MAXSIZE,&Uart1_Rx_Count,Uart1_RecBuf,&UART1_Init_PUCK,\
+    &UART1_Start,&UART1_Stop,&UART1_RecData_pre_PUCK,&UART1_SendData_PUCK},
 #endif 
 };
 

@@ -46,7 +46,7 @@ void Set_Fast_Timer(INT8U  Mode)
 {
   if(RUN_MODE==Mode)
   {
-   //FX1,10us中断一次，实际9.94647
+   //FX1,10us中断一次，实际9.94647------------PUCK
     TMR06 = TAU_TMR0_INITIALVALUE | TAU_CLOCK_SELECT_CK00 | TAU_CLOCK_MODE_CKS | TAU_MODE_INTERVAL_TIMER | TAU_START_INT_USED;
     TIS0 &= ~TAU_CH6_INPUT_FXT;
     if(Get_Main_Clock_Div()==0)
@@ -60,7 +60,7 @@ void Set_Fast_Timer(INT8U  Mode)
   }
   if(FXT_RUN_MODE==Mode)
   {
-    //FXT/4,1000us中断一次，实际976.5625us
+    //FXT/4,1000us中断一次，实际976.5625us------------PUCK
     TMR06 = TAU_TMR0_INITIALVALUE | TAU_CLOCK_SELECT_CK00 | TAU_CLOCK_MODE_TI0N | TAU_MODE_INTERVAL_TIMER | TAU_START_INT_USED;
     TIS0 |= TAU_CH6_INPUT_FXT;
     TDR06 = 0x7;	
