@@ -306,11 +306,13 @@ void Set_Event_Occur_Status(INT8U i)
   if(i>MAX_ID_EVENT)
     return ;
   
-  mem_set((void *)(EventProcStatusVar+i),1,sizeof(EventProcStatusVar+i),\
-                 (void *)(EventProcStatusVar+i),sizeof(EventProcStatusVar+i));
+  mem_set((void *)(EventProcStatusVar+i),0xFF,sizeof(EventProcStatus),\
+                 (void *)(EventProcStatusVar),sizeof(EventProcStatusVar));
   
+  //置结束计时器单位及计数值
+  EventProcStatusVar[i].Mins=1;  
   EventProcStatusVar[i].EndCount=EventPropertyVar[i].EndCount+1;
-  SET_STRUCT_SUM(EventProcStatusVar[i]);    
+  SET_STRUCT_SUM(EventProcStatusVar[i]); 
 }
 /***********************************************************************
 函数功能：将事件模拟为结束后的状态,为发生做准备
