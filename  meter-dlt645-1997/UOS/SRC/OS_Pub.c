@@ -332,6 +332,8 @@ OS_INT8U OS_Assert(OS_INT8U Condition,CONST OS_INT8U File[],OS_INT16U Line)
   }
   else
   {
+    if(Assert_Info.Index>=OS_ASSERT_NUM)
+      Assert_Info.Index=0;    
     Assert_Info.Counts[Assert_Info.Index]++;//认为在反复调用同一个函数，增加调用次数的记录
   }
   
