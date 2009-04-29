@@ -12,7 +12,6 @@
 
 
 #include "includes.h"
-#include "APP_LCD_Pub.h"
 
 #include "DrvCfg.h"
 #include "TAU.h"

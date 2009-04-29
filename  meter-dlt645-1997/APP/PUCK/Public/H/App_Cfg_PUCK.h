@@ -72,6 +72,12 @@
 #define NETMETER_METER  2               //网络表基表
 #define MWRWE_HARD_TYPE NETMETER_METER
 
+//LCD属性
+#define LCD_NORMAL           0         //通用液晶
+#define LCD_NORMAL_JS        1          //江苏液晶
+
+#define LCD_PROPERTY  LCD_NORMAL_JS
+
 
 //串口属性
 #if MWRWE_HARD_TYPE>=NETMETER_METER

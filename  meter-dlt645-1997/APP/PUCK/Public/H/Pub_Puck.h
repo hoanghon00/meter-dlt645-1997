@@ -7,6 +7,7 @@
 #include   "includes.h"
 
 #include   "App_Cfg_PUCK.h"   //配置宏，需放在最前面
+#include   "LCD_CFG.h"
 #include   "Include_PUCK.h"
 #include   "InterrAbs.h"
 #include   "UartAbs.h"

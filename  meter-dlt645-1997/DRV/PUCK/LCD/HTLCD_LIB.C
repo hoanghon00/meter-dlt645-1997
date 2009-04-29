@@ -1,7 +1,18 @@
-
-#define HTLCD_C
 #include "Pub_PUCK.h"
-#include "HTLCD_lib.h"
+
+
+#if LCD_PROPERTY==LCD_NORMAL
+  #define HTLCD_C
+  #include "HTLCD_lib.h"
+#endif
+
+#if LCD_PROPERTY==LCD_NORMAL_JS
+  #define HTLCD_JS_C
+  #include "HTLCD_lib_JS.h"
+#endif
+
+
+
 
 
 /**********************************************************************************

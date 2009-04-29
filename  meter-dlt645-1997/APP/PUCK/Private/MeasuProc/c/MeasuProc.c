@@ -1502,7 +1502,7 @@ INT8U  GetMeasuData_PerSec(void)
 **********************************************************************************/						
 INT8U ChkPowerLimitAndConvertData(void)      //test if power value is in the correct range
 {
-  INT8U Flag,ParseSpec,temp;
+  INT32U Flag,ParseSpec,temp;
   INT8U i;
   INT32U volatile *PtrSrc,*PtrDst;
   
