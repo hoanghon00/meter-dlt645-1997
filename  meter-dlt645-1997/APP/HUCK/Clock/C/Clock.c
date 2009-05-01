@@ -359,7 +359,7 @@ INT8U Get_Time_From_Ram_Rom(S_BCD_Time *pBCD_Time)
   {
     Re = 1;
   }
-  else if(Read_Storage_Data(TIME_BAK_PD,pBCD_Time,pBCD_Time,sizeof(pBCD_Time),&Err))//读取存储备份时间
+  else if(Read_Storage_Data(TIME_BAK_PD,pBCD_Time,pBCD_Time,sizeof(S_BCD_Time),&Err))//读取存储备份时间
   {
     Re = 1; 
   }
@@ -373,7 +373,7 @@ INT8U Get_Time_From_Ram_Rom(S_BCD_Time *pBCD_Time)
         break;
       }
       OS_TimeDly_Ms(100);//延时100ms
-      if(Read_Storage_Data(TIME_BAK_PD,pBCD_Time,pBCD_Time,sizeof(pBCD_Time),&Err))//读取存储备份时间
+      if(Read_Storage_Data(TIME_BAK_PD,pBCD_Time,pBCD_Time,sizeof(S_BCD_Time),&Err))//读取存储备份时间
       {
         Re = 1;
         break;
