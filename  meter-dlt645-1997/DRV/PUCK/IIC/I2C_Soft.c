@@ -12,7 +12,7 @@ typedef struct
   INT8U (* const Get_Sda_Pin)(void);
 }CONST_SOFT_IIC;
 
-CONST_SOFT_IIC  CONST_I2C_PORT[IIC_SOFT_MAX_ID+1]=
+CONST CONST_SOFT_IIC  CONST_I2C_PORT[IIC_SOFT_MAX_ID+1]=
 {
 #ifdef IIC_SOFT_ID0
   {&Set_3231_Sclk_Dir,&Set_3231_Sda_Dir,&Set_3231_Sclk_Pin,&Set_3231_Sda_Pin,&Get_3231_Sda_Pin},    //----------------0

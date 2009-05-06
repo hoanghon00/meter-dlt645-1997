@@ -87,7 +87,8 @@ void Clr_Energ_Accu(void)
             (void *)(&Pri_TempMeasuVar),
             sizeof(Pri_TempMeasuVar));
     SET_STRUCT_SUM(Pri_TempMeasuVar);
-  
+    
+#ifdef MEASURE_VAR_BAK_EN
     mem_set((void *)(&Pri_TempMeasuVarBak1),
             0x00,
             sizeof(Pri_TempMeasuVarBak1),
@@ -101,6 +102,7 @@ void Clr_Energ_Accu(void)
             (void *)(&Pri_TempMeasuVarBak2),
             sizeof(Pri_TempMeasuVarBak2));
     SET_STRUCT_SUM(Pri_TempMeasuVarBak2); 
+#endif
 
 }
 /**********************************************************************************

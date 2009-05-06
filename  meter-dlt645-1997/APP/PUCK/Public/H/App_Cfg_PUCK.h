@@ -76,7 +76,7 @@
 #define LCD_NORMAL           0         //通用液晶
 #define LCD_NORMAL_JS        1          //江苏液晶
 
-#define LCD_PROPERTY  LCD_NORMAL_JS
+#define LCD_PROPERTY  LCD_NORMAL
 
 
 //串口属性

@@ -2377,16 +2377,25 @@
           <name>$PROJ_DIR$\DRV\PUCK\LCD\APP_LCD_Pub.h</name>
         </file>
         <file>
+          <name>$PROJ_DIR$\DRV\PUCK\LCD\APP_LCD_Pub_JS.h</name>
+        </file>
+        <file>
           <name>$PROJ_DIR$\DRV\PUCK\LCD\HTLCD_LIB.C</name>
         </file>
         <file>
           <name>$PROJ_DIR$\DRV\PUCK\LCD\HTLCD_LIB.h</name>
         </file>
         <file>
+          <name>$PROJ_DIR$\DRV\PUCK\LCD\HTLCD_LIB_JS.h</name>
+        </file>
+        <file>
           <name>$PROJ_DIR$\DRV\PUCK\LCD\HTLCD_SPI.C</name>
         </file>
         <file>
           <name>$PROJ_DIR$\DRV\PUCK\LCD\HTLCD_SPI.h</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\DRV\PUCK\LCD\LCD_CFG.h</name>
         </file>
       </group>
       <group>

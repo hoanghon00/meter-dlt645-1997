@@ -53,7 +53,7 @@ typedef struct
 }CONST_PORT_STATUS;
 
 //以下对所有输出口的抽象定义
-CONST_PORT_STATUS  Const_Port_Status[MAX_PORT_NUM]={
+CONST CONST_PORT_STATUS  Const_Port_Status[MAX_PORT_NUM]={
   {0},
   {1,0,0,0,0,LEVEL_MODE,0,&PORT_ChangeP81Output,&Get_GridAlarm_Out_En},    //电网信息报警输出(如超功率)------------------------------1
   {1,0,0,0,0,LEVEL_MODE,0,&PORT_ChangeP81Output,&Get_FeeAlarm_Out_En},    //预付费欠费报警------------------------------------------2
