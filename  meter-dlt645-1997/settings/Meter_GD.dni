@@ -91,8 +91,8 @@ Category=_ 0
 Enabled=0
 ShowSource=1
 [Breakpoints]
-Bp0=_ "STD_CODE" "{$PROJ_DIR$\APP\PUCK\Private\MeasuProc\c\MeasuProc.c}.2177.3@1" 0 0 0 0 "" 0 ""
-Bp1=_ "STD_CODE" "{$PROJ_DIR$\DRV\PUCK\UART\Serial.c}.770.7@1" 1 0 0 0 "" 0 ""
+Bp0=_ "STD_CODE" "{$PROJ_DIR$\APP\PUCK\Private\MeasuProc\c\MeasuProc.c}.2179.3@1" 0 0 0 0 "" 0 ""
+Bp1=_ "STD_CODE" "{$PROJ_DIR$\DRV\PUCK\UART\Serial.c}.769.7@1" 1 0 0 0 "" 0 ""
 Bp2=_ "STD_CODE" "{$PROJ_DIR$\ABS\PUCK\UartAbs.c}.202.9@1" 1 0 0 0 "" 0 ""
 Bp3=_ "STD_CODE" "{$PROJ_DIR$\DRV\PUCK\UART\Serial.c}.273.2@1" 1 0 0 0 "" 0 ""
 Count=4
