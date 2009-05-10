@@ -1439,13 +1439,7 @@ INT8U  GetMeasuData_PerSec(void)
   
   Flag=CheckBothCs();           //检查计量芯片CS和EPPROM cs是否相等
   if(Flag!=MEASU_NO_ERR)
-    return Flag;
-   
-  Flag=GetParseEnergChangeValue_PUCK();  //获取校表请求标志，分相有功，无功增量.24ms
-  if(Flag!=MEASU_NO_ERR)
-    return Flag;
-  
-  //OS_TimeDly_Ms(20);  
+    return Flag;   
   
   Flag=GetVoltCurrValue_PUCK();          //获取A/B/C的电压/电流有效值。25ms
   if(Flag!=MEASU_NO_ERR)
@@ -1484,6 +1478,13 @@ INT8U  GetMeasuData_PerSec(void)
   //OS_TimeDly_Ms(20);   
    RefreshQuadrant();                 //更新象限   
    GetAllAngel_PUCK();                //获取总,A,B,C的电压电流相角
+  
+   Flag=GetParseEnergChangeValue_PUCK();  //获取校表请求标志，分相有功，无功增量.24ms
+   if(Flag!=MEASU_NO_ERR)
+    return Flag;
+  
+  //OS_TimeDly_Ms(20); 
+   
  
 #ifdef Measu_VOLTANGLE_EN
    GetVoltAngle_PUCK();               //获取相邻2相的电压夹角
@@ -2190,7 +2191,8 @@ void Print_Measure_Err_Info(void)
   
   for(i=MEASU_NO_ERR+1;i<=MAX_MEASU_ERR;i++)
   {
-  DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"|                 %3d                   %3d                          |",i,Measure_Err_Info.Num[i]);
+    OS_TimeDly_Ms(10);
+    DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"|                 %3d                   %3d                          |",i,Measure_Err_Info.Num[i]);
   } 
   OS_TimeDly_Ms(10);
   DEBUG_PRINT(PUCK,PRINT_PUCK_MEA_EN,"|--------------------------------------------------------------------|"); 
