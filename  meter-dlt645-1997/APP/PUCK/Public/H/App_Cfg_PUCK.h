@@ -51,8 +51,8 @@
 #else
   #define DEFAULT_PARSE_SPEC  PARSE_331
 #endif
-#define DEFAULT_AC_PULSE        2000
-#define DEFAULT_REAC_PULSE      2000
+#define DEFAULT_AC_PULSE        5000
+#define DEFAULT_REAC_PULSE      5000
 
 //硬件版本配置
 #define HARD_TYPE_20081005     1   //第一版驱动：
