@@ -60,11 +60,11 @@ SeqData24=0,0,0,0,0,0
 TraceSettings=64,0,0,0,0,0,8192
 TimerSettings=0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 CoverSettings=1048192,1048207,0
-Version=1,78k0rtrace.txt
+Version=1,xxx.txt
 LastDevFile=DF1166A0.78K
 EmulType=320
 EventLimits=0, 1, 1, 2
-LastSetupFailed=0
+LastSetupFailed=1
 [DisAssemblyWindow]
 NumStates=_ 1
 State 1=_ 1
@@ -83,16 +83,12 @@ ByteLimit=50
 [TermIOLog]
 LoggingEnabled=_ 0
 LogFile=_ ""
+[TraceHelper]
+Enabled=0
+ShowSource=1
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""
 Category=_ 0
-[TraceHelper]
-Enabled=0
-ShowSource=1
 [Breakpoints]
-Bp0=_ "STD_CODE" "{$PROJ_DIR$\APP\PUCK\Private\MeasuProc\c\MeasuProc.c}.2179.3@1" 0 0 0 0 "" 0 ""
-Bp1=_ "STD_CODE" "{$PROJ_DIR$\DRV\PUCK\UART\Serial.c}.769.7@1" 1 0 0 0 "" 0 ""
-Bp2=_ "STD_CODE" "{$PROJ_DIR$\ABS\PUCK\UartAbs.c}.202.9@1" 1 0 0 0 "" 0 ""
-Bp3=_ "STD_CODE" "{$PROJ_DIR$\DRV\PUCK\UART\Serial.c}.273.2@1" 1 0 0 0 "" 0 ""
-Count=4
+Count=0

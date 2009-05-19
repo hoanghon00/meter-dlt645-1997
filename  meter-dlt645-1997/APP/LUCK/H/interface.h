@@ -34,12 +34,10 @@ typedef  u8 bool;
 
 typedef u32  code_t; ///< display code type.
 
-#if PROC_645_TYPE==PROC_645_1997
-  typedef u16  item_t; ///< dataitem type.
-#endif
-#if PROC_645_TYPE==PROC_645_2007
-  typedef u32  item_t; ///< dataitem type.
-#endif
+
+typedef u16  item_t; ///< dataitem type.
+
+
 typedef u16  offs_t; ///< dataitem numbers.
 typedef s8   curs_t; ///< cursor position.
 

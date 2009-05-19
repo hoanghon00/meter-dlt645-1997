@@ -60,11 +60,6 @@
 
 #define METER_HARD_TYPE   HARD_TYPE_20090224   //-------PUCK
 
-//硬件协议版本配置
-#define PROC_645_1997     0
-#define PROC_645_2007     1
-
-#define PROC_645_TYPE   PROC_645_1997
 
 //表计属性配置宏
 #define PARSE_METER_3   0               //通用三相多功能

@@ -12,19 +12,14 @@
 //#include "pub.h"
 //#include "Pub_PUCK.h"
 
-#if PROC_645_TYPE==PROC_645_1997
-  #define  NUMBMODEA  0xC114
-  #define  ITEMMODEA  0xC610
-  #define  NUMBMODEB  0xC128
-  #define  ITEMMODEB  0xC650
-#endif
 
-#if PROC_645_TYPE==PROC_645_2007
-  #define  NUMBMODEA  0x04000301   //自动循环显示屏数
-  #define  ITEMMODEA  0x04040101   //自动循环第1屏显示项目
-  #define  NUMBMODEB  0x04000305   //按钮循环显示屏数
-  #define  ITEMMODEB  0x04040121   //按钮循环第1屏显示项目
-#endif
+#define  NUMBMODEA  0xC114
+#define  ITEMMODEA  0xC610
+#define  NUMBMODEB  0xC128
+#define  ITEMMODEB  0xC650
+
+
+
 
 #define  VARHMODE1  0xC04C    //模式字6(无功组合1) 
 #define  VARHMODE2  0xC04D    //模式字7(无功组合2) 

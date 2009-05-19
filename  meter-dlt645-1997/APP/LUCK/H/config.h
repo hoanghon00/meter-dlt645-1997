@@ -54,7 +54,7 @@ typedef struct {
 } elem_t;
 
 
-#if PROC_645_TYPE==PROC_645_1997
+
 typedef struct {      /// screen element.
     code_t      code;      //C模式下的显示全集代码-----PUCK
     item_t      item;      //C模式下的命令代码------PUCK
@@ -5224,6 +5224,4 @@ static const scrn_t table[] = {
     {0x193314, 0xCB6E, "##:## ## |",        {.periods   = 1,    // 第2套费率第4日时段表第14时段起始时分及其费率号
     	                                       .feerate   = 1,}},
 };
-#endif
-
 #endif

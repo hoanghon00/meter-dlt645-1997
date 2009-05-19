@@ -26,73 +26,6 @@ typedef struct {
 #define BYTE2(x)      (INT8U)((x&0x00ff0000)>>16)
 #define BYTE3(x)      (INT8U)((x&0xff000000)>>24)
 
-#if PROC_645_TYPE==PROC_645_2007
-INT8U Get_Code (scrn_t *temp,INT32U DI)
-{
-  INT8U Modi;
-  
-  if(DI==temp->item)
-  {
-    Modi=0;
-  }
-  else
-  {
-    if(BYTE3(DI)==BYTE3(temp->item) && BYTE2(DI)==BYTE2(temp->item) && BYTE1(DI)==BYTE1(temp->item))
-    {
-      if(0!=temp->BytePos)
-        return 0;
-      Modi=BYTE0(DI);
-    }
-    
-    if(BYTE3(DI)==BYTE3(temp->item) && BYTE2(DI)==BYTE2(temp->item) && BYTE0(DI)==BYTE0(temp->item))
-    {
-      if(1!=temp->BytePos)
-        return 0;
-      Modi=BYTE1(DI);
-    }
-    
-    if(BYTE3(DI)==BYTE3(temp->item) && BYTE1(DI)==BYTE1(temp->item) && BYTE0(DI)==BYTE0(temp->item))
-    {
-      if(2!=temp->BytePos)
-        return 0;
-      Modi=BYTE2(DI);
-    }
-    
-    if(BYTE2(DI)==BYTE2(temp->item) && BYTE1(DI)==BYTE1(temp->item) && BYTE0(DI)==BYTE0(temp->item))
-     {
-      if(3!=temp->BytePos)
-        return 0;
-      Modi=BYTE3(DI);
-     }
-  }
-  temp->item=DI;
-  switch(temp->GroupFlag)
-  {
-    case GROUP_TARIFF:      
-      if(Modi)
-      {
-        temp->elem.feerate=1;           //显示 "费率"
-        temp->elem.tariff=Modi;         //显示 "Txx"
-      }
-      else
-        temp->elem.total=1;      
-    break;
-    case GROUP_SETTLE:      
-      if(Modi)
-      {
-        temp->elem.lastmonth=Modi;         //显示 "上xx日"
-      }
-      else
-        temp->elem.thismonth=1;          //当前  
-    break;
-    
-    
-    
-  }
-  
-  return 1;
-}
-#endif
 
 
 // 显示屏缓冲
@@ -121,25 +54,17 @@ list_t getlist (item_t item, offs_t offs)
   INT16U Len;
   list_t list = {0, 0, 0};
 
-#if PROC_645_TYPE==PROC_645_1997
+
   if(item&0xFF00!=0xC600)
     ASSERT(A_WARNING,0); 
-#endif
- 
-#if PROC_645_TYPE==PROC_645_2007
-    ;  //别忘了添加代码
-#endif
+
   
   Len=Read_Storage_Data(item+(offs/10)*16+(offs%10),&list,&list,sizeof(list),&Err);
   if(0==Len || Err!=NO_ERR)
     ASSERT(A_WARNING,0);
   
-#if PROC_645_TYPE==PROC_645_2007
-  list.code=list.user;  //显示代码用协议代码DI替代
-#endif
   return list;
 
-  //getdata(item + (offs / 10) * 16 + (offs % 10), &list, &list, sizeof(list));
 
 }
 /********************************************************************************
@@ -270,33 +195,17 @@ void screen (u8 type, curs_t curs)
 {
    const scrn_t* p;
   //在此前，vlist的信息已经更新-----PUCK
-#if PROC_645_TYPE==PROC_645_1997 
+
     static scrn_t scrn={0xff,0xff,"",{0}};   //不为0，保证第一次就能更新，因为0x000000有可能第一次就是0---PUCK
     if(scrn.code != vlist.code)              //按照全显代码检索：编码已经更新，需要根据vlist的编码获取新的显示元素-----------PUCK
-#endif
-      
-#if PROC_645_TYPE==PROC_645_2007
-    static scrn_t scrn={0xff,0xff,GROUP_NO,0,"",{0}};   //不为0，保证第一次就能更新，因为0x000000有可能第一次就是0---PUCK
-    if (scrn.item != vlist.code)     //按照命令代码检索：A/B模式下为协议DI代码，C模式下还是显示代码
-#endif
     {
         for (p=&table[0];p!=&table[MAXCOUNT];++p) 
         {
-#if PROC_645_TYPE==PROC_645_1997
             if ( p->code==vlist.code)  //按照显示代码检索
             {
                 scrn = *p;
                 break;
-            }  
-#endif
-            
-#if PROC_645_TYPE==PROC_645_2007
-            scrn=*p;        
-            {
-              if(Get_Code(&scrn,vlist.code))  //按照命令代码检索：
-                break;
-            }
-#endif                  
+            }                
         }
     }
     if(p==&table[MAXCOUNT]) //找不到显示的代码,只显示代码，事件，其他不显示-------PUCK

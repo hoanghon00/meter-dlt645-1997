@@ -271,6 +271,9 @@ void Fast_Timer(void)
 void IR_Decode_Proc(void)
 {
   EI();
+  if(Irda_Decode_Ctrl.Done)
+   return ;
+  
   if(Irda_Decode_Ctrl.Start==0 && Irda_Decode_Ctrl.TrigTimer==0)  //Æô¶¯¿ìËÙTimer
   {
     START_TIMER_10uS;
