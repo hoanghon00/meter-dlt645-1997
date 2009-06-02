@@ -12,10 +12,14 @@
   #include "APP_LCD_Pub.h"
 #endif
 
-#if LCD_PROPERTY==LCD_NORMAL_JS
-  #define HTLCD_JS_C
-  #include "APP_LCD_Pub_JS.h"
+#if LCD_PROPERTY==LCD_JS_ZXW
+  #define HTLCD_JS_ZXW_C
+  #include "APP_LCD_Pub_JS_ZXW.h"
 #endif
 
+#if LCD_PROPERTY==LCD_JS_JX
+  #define HTLCD_JS_JX_C
+  #include "APP_LCD_Pub_JS_JX.h"
+#endif
 
 #endif

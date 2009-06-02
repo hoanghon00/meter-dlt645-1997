@@ -649,7 +649,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state>meter.hex</state>
+          <state>meter_JS_LCD_ZXW.hex</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -2105,6 +2105,9 @@
         <name>$PROJ_DIR$\APP\LUCK\H\interface.h</name>
       </file>
       <file>
+        <name>$PROJ_DIR$\APP\LUCK\C\interface_JS_ZXW.c</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\APP\LUCK\C\Lcd_main_LUCK.c</name>
       </file>
       <file>
@@ -2377,7 +2380,7 @@
           <name>$PROJ_DIR$\DRV\PUCK\LCD\APP_LCD_Pub.h</name>
         </file>
         <file>
-          <name>$PROJ_DIR$\DRV\PUCK\LCD\APP_LCD_Pub_JS.h</name>
+          <name>$PROJ_DIR$\DRV\PUCK\LCD\APP_LCD_Pub_JS_ZXW.h</name>
         </file>
         <file>
           <name>$PROJ_DIR$\DRV\PUCK\LCD\HTLCD_LIB.C</name>
@@ -2386,7 +2389,7 @@
           <name>$PROJ_DIR$\DRV\PUCK\LCD\HTLCD_LIB.h</name>
         </file>
         <file>
-          <name>$PROJ_DIR$\DRV\PUCK\LCD\HTLCD_LIB_JS.h</name>
+          <name>$PROJ_DIR$\DRV\PUCK\LCD\HTLCD_LIB_JS_ZXW.h</name>
         </file>
         <file>
           <name>$PROJ_DIR$\DRV\PUCK\LCD\HTLCD_SPI.C</name>

@@ -6,12 +6,15 @@
   #include "HTLCD_lib.h"
 #endif
 
-#if LCD_PROPERTY==LCD_NORMAL_JS
-  #define HTLCD_JS_C
-  #include "HTLCD_lib_JS.h"
+#if LCD_PROPERTY==LCD_JS_ZXW
+  #define HTLCD_C_JS_ZXW
+  #include "HTLCD_lib_JS_ZXW.h"
 #endif
 
-
+#if LCD_PROPERTY==LCD_JS_JX
+  #define HTLCD_C_JS_JX
+  #include "HTLCD_lib_JS.h"
+#endif
 
 
 

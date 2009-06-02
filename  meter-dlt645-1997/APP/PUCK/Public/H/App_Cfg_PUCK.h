@@ -69,9 +69,10 @@
 
 //LCD属性
 #define LCD_NORMAL           0         //通用液晶
-#define LCD_NORMAL_JS        1          //江苏液晶
+#define LCD_JS_ZXW           1          //江苏液晶---中显威
+#define LCD_JS_JX            2           //江苏液晶---晶像
 
-#define LCD_PROPERTY  LCD_NORMAL
+#define LCD_PROPERTY  LCD_JS_ZXW
 
 
 //串口属性

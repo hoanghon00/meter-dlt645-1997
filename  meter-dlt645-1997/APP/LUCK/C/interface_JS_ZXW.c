@@ -16,8 +16,7 @@
 
 #include "Pub_PUCK.h"
 
-#if LCD_PROPERTY==LCD_NORMAL
-
+#if LCD_PROPERTY==LCD_JS_ZXW
 void Check_LCDVar_Cs(void)
 {
   if(CHECK_STRUCT_VAR(Pub_Bit8_Len5_PUCK)==0)//头尾不对
@@ -354,12 +353,16 @@ void lcd_positive (u8 flg) { ///< 显示"正向",
     if (flg == 0) {
         return;
     }
+    /*
     if (getmode().bit4) {
         SetOnDevice_PUCK(S_SHURU);
     } else {
         SetOnDevice_PUCK(S_ZHENG);
         SetOnDevice_PUCK(S_XIANG);
     }
+    */
+     SetOnDevice_PUCK(S_ZHENG);
+     SetOnDevice_PUCK(S_XIANG);
 
 }
 
@@ -367,12 +370,16 @@ void lcd_negative (u8 flg) { ///< 显示"反向",
     if (flg == 0) {
         return;
     }
+    /*
     if (getmode().bit4) {
         SetOnDevice_PUCK(S_SHUCHU);
     } else {
         SetOnDevice_PUCK(S_FAN);
         SetOnDevice_PUCK(S_XIANG);
     }
+    */
+    SetOnDevice_PUCK(S_FAN);
+    SetOnDevice_PUCK(S_XIANG);
 
 }
 
@@ -381,7 +388,7 @@ void lcd_reactive (u8 flg) { ///< 显示"无功",
         return;
     }
     SetOnDevice_PUCK(S_WU);
-    SetOnDevice_PUCK(S_GONG0);
+    SetOnDevice_PUCK(S_GONG);
 
 }
 
@@ -390,7 +397,7 @@ void lcd_active (u8 flg) { ///< 显示"有功",
         return;
     }
     SetOnDevice_PUCK(S_YOU);
-    SetOnDevice_PUCK(S_GONG0);
+    SetOnDevice_PUCK(S_GONG);
 
 }
 
@@ -398,9 +405,11 @@ void lcd_power (u8 flg) { ///< 显示"功率",
     if (flg == 0) {
         return;
     }
+    /*
     SetOnDevice_PUCK(S_GONG);
     SetOnDevice_PUCK(S_LV);
-
+    */
+    SetOnDevice_PUCK(S_GONGLV);
 }
 
 void lcd_factor (u8 flg) { ///< 显示"因数",
@@ -441,18 +450,22 @@ void lcd_time (u8 flg) { ///< 显示"时间",
     if (flg == 0) {
         return;
     }
+    /*
     SetOnDevice_PUCK(S_SHI);
     SetOnDevice_PUCK(S_JIAN);
-
+    */
+    SetOnDevice_PUCK(S_SHIJIAN);
+    
 }
 
 void lcd_charge (u8 flg) { ///< 显示"电费",
     if (flg == 0) {
         return;
     }
+    /*
     SetOnDevice_PUCK(S_DIAN);
     SetOnDevice_PUCK(S_FEI);
-
+    */
 }
 
 void lcd_lostvolt  (u8 flg) { ///< "失压",
@@ -475,24 +488,32 @@ void lcd_periods   (u8 flg) { ///< "时段"
     if (flg == 0) {
         return;
     }
+    /*
     SetOnDevice_PUCK(S_SHI);
     SetOnDevice_PUCK(S_DUAN);
+    */
 }
 
 void lcd_feerate   (u8 flg) { ///< "费率", 
     if (flg == 0) {
         return;
     }
+    /*
     SetOnDevice_PUCK(S_FEI);
     SetOnDevice_PUCK(S_LV);
+    */
+    SetOnDevice_PUCK(S_FEIlLV);
 }
 
 void lcd_thismonth (u8 flg) { ///< 显示"本月",
     if (flg == 0) {
         return;
     }
+    /*
     SetOnDevice_PUCK(S_BEN);
     SetOnDevice_PUCK(S_YUE);
+    */
+    SetOnDevice_PUCK(S_DANGQIAN);
 
 }
 
@@ -500,7 +521,7 @@ void lcd_lastmonth (u8 flg) { ///< mode4.bit5 ? "上月", "上上月" : "上1月", "上2
     if (flg == 0) {
         return;
     }
-    SetOnDevice_PUCK(S_SHANG1);
+    SetOnDevice_PUCK(S_SHANG);
     if (getmode().bit5) {
         if (flg == 1) {
             SetOnDevice_PUCK(S_YUE);
@@ -636,7 +657,7 @@ void lcd_tariff (u8 flg) { ///< 显示"费率Tx",
     if (flg == 0) {
         return;
     }
-    SetOnDevice_PUCK(S_T);
+    SetOnDevice_PUCK(S_FEIlLV);
     SetOnLED8Device_PUCK(N_LED(2), '0' + (flg % 10));
 }
 
@@ -644,7 +665,7 @@ void lcd_times (u8 flg) { ///< 显示"上XX次",
     if (flg == 0) {
         return;
     }
-    SetOnDevice_PUCK(S_SHANG1);
+    SetOnDevice_PUCK(S_SHANG);
     if (flg > 9) {
         SetOnDevice_PUCK(S_SHIYUE);
     }
@@ -745,7 +766,7 @@ void lcd_value (const char* s) {
     static const addr_t addr[] = {
         {N_LED(12), D_( 0), D_( 0)}, {N_LED(11), D_( 0), D_( 0)}, {N_LED(10), D_(10), D_(11)},
         {N_LED( 9), D_( 9), D_( 0)}, {N_LED( 8), D_( 8), D_( 7)}, {N_LED( 7), D_( 0), D_( 0)},
-        {N_LED( 6), D_( 6), D_( 6)}, {N_LED( 5), D_( 0), D_( 0)}, {N_LED( 4), D_( 4), D_( 4)},
+        {N_LED( 6), D_( 4), D_( 4)}, {N_LED( 5), D_( 0), D_( 0)}, {N_LED( 4), D_( 4), D_( 4)},
         {N_LED( 3), D_( 0), D_( 0)}
     };
     s16 n = 0;
@@ -968,15 +989,15 @@ void lcd_code (code_t code, curs_t curs)
 void lcd_mode (u8 type) {
     switch (type) {
         case modeA: {
-            SetOnDevice_PUCK(S_1A1);
+            SetOnDevice_PUCK(S_K1);
             break;
         }
         case modeB: {
-            SetOnDevice_PUCK(S_1B1);
+            SetOnDevice_PUCK(S_K2);
             break;
         }
         default : {
-            SetOnDevice_PUCK(S_1C1);
+            SetOnDevice_PUCK(S_K3);
             break;
         }
     }
@@ -1012,17 +1033,26 @@ void lcd_events (void)
   if(!GET_BIT(stat.loss_voltage,0)&& !GET_BIT(stat.over_voltage,0))  //即没失压也没过压，电压正常,常亮
     SetOnDevice_PUCK(S_Ua);
   if(!GET_BIT(stat.loss_voltage,0)&&GET_BIT(stat.over_voltage,0)&& !GET_BIT(flag.over_voltage,0))  //没失压,但过压，闪烁
-    SetOnDevice_PUCK(S_Ua);
+  {
+      SetOnDevice_PUCK(S_Ua_UP);
+      SetOnDevice_PUCK(S_Ua);
+  }
   
   if(!GET_BIT(stat.loss_voltage,1)&& !GET_BIT(stat.over_voltage,1))  //即没失压也没过压，电压正常,常亮
     SetOnDevice_PUCK(S_Ub);
   if(!GET_BIT(stat.loss_voltage,1)&& GET_BIT(stat.over_voltage,1)&& !GET_BIT(flag.over_voltage,1))  //没失压,但过压，闪烁
-    SetOnDevice_PUCK(S_Ub);
+  {
+      SetOnDevice_PUCK(S_Ub_UP);
+      SetOnDevice_PUCK(S_Ub);
+  }
       
   if(!GET_BIT(stat.loss_voltage,2)&& !GET_BIT(stat.over_voltage,2))  //即没失压也没过压，电压正常,常亮
     SetOnDevice_PUCK(S_Uc);
   if(!GET_BIT(stat.loss_voltage,2)&& GET_BIT(stat.over_voltage,2)&& !GET_BIT(flag.over_voltage,2))  //没失压,但过压，闪烁
-    SetOnDevice_PUCK(S_Uc);
+  {
+      SetOnDevice_PUCK(S_Uc_UP);
+      SetOnDevice_PUCK(S_Uc);
+  }
 
   //电流反相：显示或者熄灭--------------PUCK
   if (stat.Cur_reverse&0x01 && !GET_BIT(stat.loss_current,0))  //A相反极性,且没有失流
@@ -1056,61 +1086,81 @@ void lcd_events (void)
   if (flag.cell_lowvolt & 0x02) {  //低功耗电池----闪烁
       SetOnDevice_PUCK(S_BAT1);
   }
-  if (flag.cell_lowvolt & 0x04) {
-      SetOnDevice_PUCK(S_BAT3);
+  
+  if (flag.cell_lowvolt & 0x04)
+  {
+    /*    
+    SetOnDevice_PUCK(S_BAT3);
+   */
   }
   ///< 通信状态(RS1,RS2,红外)(常亮)
-  if (stat.stat_communi &(1<<CHANEL_IRDA)) {
+  if (stat.stat_communi &(1<<CHANEL_IRDA)) 
+  {
       SetOnDevice_PUCK(S_HONGWAI);
   }
   
-  if (stat.stat_communi &(1<<CHANEL_485_1)) {
+  if (stat.stat_communi &(1<<CHANEL_485_1)) 
+  {
       SetOnDevice_PUCK(S_RS1);
   }
   
-  if (stat.stat_communi &(1<<CHANEL_485_2)) {
+  if (stat.stat_communi &(1<<CHANEL_485_2)) 
+  {
       SetOnDevice_PUCK(S_RS2);
   }
   
 #ifdef CHANEL_MOUDEL
-  if (stat.stat_communi &(1<<CHANEL_MOUDEL)) {
+  if (stat.stat_communi &(1<<CHANEL_MOUDEL)) 
+  {
+    /*  
       SetOnDevice_PUCK(S_ARROW_LEFT);
       SetOnDevice_PUCK(S_ARROW_RIGHT);
+    */
+    SetOnDevice_PUCK(S_BASE_TOWER);    
   }
 #endif
   
   ///< 电压"逆相序"(闪烁)
-  if (flag.volt_reverse > 0x00) {
+  if (flag.volt_reverse > 0x00)
+  {
       SetOnDevice_PUCK(S_NIXIANGXU);
   }
   ///< 事件告警(闪烁)
-  if (flag.event_warning & 0x01) {
+  if (flag.event_warning & 0x01) 
+  {
       SetOnDevice_PUCK(S_LIGHT);
   }
   ///< 编程键打开(常亮)
-  if (stat.switch_opened & 0x01) {
+  if (stat.switch_opened & 0x01) 
+  {
       SetOnDevice_PUCK(S_BUTTON);
   }    
   //工厂模式(常亮)
-  if (stat.fac_status & 0x01) {
+  if (stat.fac_status & 0x01) 
+  {
       SetOnDevice_PUCK(S_HOUSE);
   }
   ///< 需量复位(常亮)
-  if (stat.reset_demand & 0x01) {
+  if (stat.reset_demand & 0x01) 
+  {
       SetOnDevice_PUCK(S_KEY);
   }    
     
   //跳线短接(闪烁)
-  if (flag.jumper_short & 0x01) {
+  if (flag.jumper_short & 0x01) 
+  {
       SetOnDevice_PUCK(S_SHOT);
   }
   ///< 电表上锁(常亮)
-  if (stat.meter_locked & 0x01) {
+  if (stat.meter_locked & 0x01) 
+  {
       SetOnDevice_PUCK(S_LOCK);
   }
   ///< 通讯模块在线指示(常亮)
-  if (stat.status_online & 0x01) {
-      SetOnDevice_PUCK(S_CIRCLE);
+  if (stat.status_online & 0x01)
+  {
+      //SetOnDevice_PUCK(S_CIRCLE);
+    SetOnDevice_PUCK(S_BASE_TOWER);
   }
   ///< 通讯模块信号强度指示
   switch (stat.signal_scale) 
@@ -1175,6 +1225,13 @@ void lcd_events (void)
     SetOnDevice_PUCK(S_SHOT);
   
   if (flag.CalMeter & 0x01)   //发现未校表，闪烁小数点
-    SetOnDevice_PUCK(S_CIRCLE);
+    SetOnDevice_PUCK(S_BASE_TOWER);
+  
+  if(Read_Event_Status(ID_EVENT_UP_COVER_OPEN))  //上端盖
+    SetOnDevice_PUCK(S_UPCOVERP);
+
+  if(Read_Event_Status(ID_EVENT_DOWN_COVER_OPEN))  //上端盖
+    SetOnDevice_PUCK(S_DOWNCOVERP);
+  
 }
 #endif
