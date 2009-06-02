@@ -706,13 +706,24 @@ void Dis_Per_Item(INT8U Item)
 
    // GUMB_STATUS  UP_COVER_STATUS  DOWN_COVER_STATUS  B_PRG_KEY_STATUS
   if(GUMB_STATUS)
-    SetOnDevice_PUCK(S_BUTTON);
+    SetOnDevice_PUCK(S_KEY);
+  
+#if LCD_PROPERTY==LCD_NORMAL 
   if(UP_COVER_STATUS)
     SetOnDevice_PUCK(S_HOUSE);
   if(DOWN_COVER_STATUS)
     SetOnDevice_PUCK(S_SHOT);
+#endif
+ 
+#if LCD_PROPERTY==LCD_JS_ZXW 
+  if(UP_COVER_STATUS)
+    SetOnDevice_PUCK(S_UPCOVERP);
+  if(DOWN_COVER_STATUS)
+    SetOnDevice_PUCK(S_DOWNCOVERP);
+#endif
+
   if(B_PRG_KEY_STATUS)
-    SetOnDevice_PUCK(S_KEY);
+    SetOnDevice_PUCK(S_BUTTON);
   
   if(B_BATLOWRTC_TEST_STATUS==0)
     SetOnDevice_PUCK(S_BAT1);
