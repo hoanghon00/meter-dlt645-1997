@@ -33,8 +33,8 @@
 #define IIC_HARD_WP_EN  (WPPORT&=~(1<<WP))                  //WP开启
 #define IIC_HARD_WP_DIS (WPPORT|=(1<<WP))                   //WP关闭
 
-#define HARD_I2c_ENV //宏开启：使能setjmp绝对跳转
-#ifdef HARD_I2c_ENV
+#define HARD_I2C_ENV //宏开启：使能setjmp绝对跳转
+#ifdef HARD_I2C_ENV
 typedef struct
 {
   INT8U Head;

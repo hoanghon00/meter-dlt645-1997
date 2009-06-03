@@ -35,8 +35,8 @@
 #endif
 
 
-#define SOFT_I2c_ENV //宏开启：使能setjmp绝对跳转
-#ifdef SOFT_I2c_ENV
+#define SOFT_I2C_ENV //宏开启：使能setjmp绝对跳转
+#ifdef SOFT_I2C_ENV
 EXT_SOFT_I2C Enviornment Soft_I2c_Env;
 #endif
 

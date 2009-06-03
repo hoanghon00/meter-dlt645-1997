@@ -74,7 +74,7 @@ INT8U DS3231_Read_Buf(INT8U addr,INT8U Len,INT8U *Dst)
 {
   INT8U OkFlag;
 
-#ifdef SOFT_I2c_ENV
+#ifdef SOFT_I2C_ENV
    if(setjmp(Soft_I2c_Env.Env)==0)
    { 
 #endif  
@@ -86,7 +86,7 @@ INT8U DS3231_Read_Buf(INT8U addr,INT8U Len,INT8U *Dst)
    OkFlag&=I2cSoft_Send_Byte(IIC_SOFT_ID0,0xd1);   
    OkFlag&=I2cSoft_Read_nByteS(IIC_SOFT_ID0,Len,Dst);
    OkFlag&=I2cSoft_Stop(IIC_SOFT_ID0);
-#ifdef SOFT_I2c_ENV
+#ifdef SOFT_I2C_ENV
     return 1;
    }
    else
@@ -108,7 +108,7 @@ INT8U DS3231_Write_Buf(INT8U addr,INT8U Len,INT8U *Src)
 {
   INT8U i,OkFlag;
 
-#ifdef SOFT_I2c_ENV
+#ifdef SOFT_I2C_ENV
    if(setjmp(Soft_I2c_Env.Env)==0)
    { 
 #endif     
@@ -118,7 +118,7 @@ INT8U DS3231_Write_Buf(INT8U addr,INT8U Len,INT8U *Src)
     for(i=0;i<Len;i++)
       OkFlag&=I2cSoft_Send_Byte(IIC_SOFT_ID0,Src[i]);
     OkFlag&=I2cSoft_Stop(IIC_SOFT_ID0);
-#ifdef SOFT_I2c_ENV
+#ifdef SOFT_I2C_ENV
     return 1;
    }
    else

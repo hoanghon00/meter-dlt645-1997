@@ -8,7 +8,7 @@ INT8U I2cWait(void)
    IF_WAITFOR_DRV_CYCLE_CONDITION(IICIF0,100)
    {
       ASSERT(A_WARNING,0);   //直接断言，可能影响速度！----------PUCK
-#ifdef HARD_I2c_ENV
+#ifdef HARD_I2C_ENV
       longjmp(Hard_I2c_Env.Env,1);
 #else
       return 0;
@@ -39,7 +39,7 @@ INT8U I2cGetDataNackSet( INT8U *src )
        return 1;
     }
     ASSERT(A_WARNING,0);   
-#ifdef HARD_I2c_ENV
+#ifdef HARD_I2C_ENV
     longjmp(Hard_I2c_Env.Env,1);
 #endif 
     return 0;
@@ -58,7 +58,7 @@ INT8U I2cGetDataAckSet( INT8U *src )
      return 1;
     }
     ASSERT(A_WARNING,0);
-#ifdef HARD_I2c_ENV
+#ifdef HARD_I2C_ENV
       longjmp(Hard_I2c_Env.Env,1);
 #endif 
     return 0;
@@ -72,7 +72,7 @@ INT8U I2cPutData( INT8U data )    //发送数据后等待ACK回应---------PUCK
     return 1;
   
   ASSERT(A_WARNING,0);
-#ifdef HARD_I2c_ENV
+#ifdef HARD_I2C_ENV
       longjmp(Hard_I2c_Env.Env,1);
 #endif 
   return 0;
@@ -87,7 +87,7 @@ INT8U I2cPutAddress( INT8U data )   //检测启动信号，发送总线数据，并检测ACK信号-
       return 1;
   }
   ASSERT(A_WARNING,0);
-#ifdef HARD_I2c_ENV
+#ifdef HARD_I2C_ENV
       longjmp(Hard_I2c_Env.Env,1);
 #endif
   return 0;    
@@ -103,7 +103,7 @@ INT8U I2cStartCondition( void )    //检测总线状态，并产生启动信号---------PUCK
    IF_WAITFOR_DRV_CYCLE_CONDITION((!IICBSY),100)
    {
     ASSERT(A_WARNING,0);
-#ifdef HARD_I2c_ENV
+#ifdef HARD_I2C_ENV
       longjmp(Hard_I2c_Env.Env,1);
 #else
       return 0;

@@ -69,7 +69,7 @@ INT8U I2cSoft_Start(INT8U Id)
   if(Id>IIC_SOFT_MAX_ID)  //Ö±½Ó¶ÏÑÔ£¬¿ÉÄÜÓ°ÏìËÙ¶È£¡----------PUCK
   {
     ASSERT(A_WARNING,0);
-#ifdef Soft_I2c_Env
+#ifdef SOFT_I2C_ENV
     longjmp(Soft_I2c_Env.Env,1);
 #else
     return 0;
@@ -91,7 +91,7 @@ INT8U I2cSoft_Stop(INT8U Id)    //ÔÚSCLKÎª¸ßµÄÇé¿öÏÂ£¬SDA²úÉúÒ»¸öÉÏÉıÑØ£¬×÷ÎªÍ£Ö
 {
   if(Id>IIC_SOFT_MAX_ID)  //Ö±½Ó¶ÏÑÔ£¬¿ÉÄÜÓ°ÏìËÙ¶È£¡----------PUCK
   {
-#ifdef Soft_I2c_Env
+#ifdef SOFT_I2C_ENV
     longjmp(Soft_I2c_Env.Env,1);
 #else
     return 0;
@@ -114,7 +114,7 @@ INT8U I2cSoft_Send_N_Ack(INT8U Id,INT8U Ack_Nack)
 {
   if(Id>IIC_SOFT_MAX_ID)  //Ö±½Ó¶ÏÑÔ£¬¿ÉÄÜÓ°ÏìËÙ¶È£¡----------PUCK
   {
-#ifdef Soft_I2c_Env
+#ifdef SOFT_I2C_ENV
     longjmp(Soft_I2c_Env.Env,1);
 #else
     return 0;
@@ -140,7 +140,7 @@ INT8U I2cSoft_Check_Ack(INT8U Id)
     
   if(Id>IIC_SOFT_MAX_ID)  //Ö±½Ó¶ÏÑÔ£¬¿ÉÄÜÓ°ÏìËÙ¶È£¡----------PUCK
   {
-#ifdef Soft_I2c_Env
+#ifdef SOFT_I2C_ENV
     longjmp(Soft_I2c_Env.Env,1);
 #else
     return 0;
@@ -166,7 +166,7 @@ INT8U I2cSoft_Check_Ack(INT8U Id)
     
    ASSERT(A_WARNING,0);   //Ö±½Ó¶ÏÑÔ£¬¿ÉÄÜÓ°ÏìËÙ¶È£¡----------PUCK
   
-#ifdef HARD_I2c_ENV    
+#ifdef SOFT_I2C_ENV    
     longjmp(Soft_I2c_Env.Env,1);
 #endif 
     return 0;
@@ -183,7 +183,7 @@ INT8U I2cSoft_Send_Byte(INT8U Id,INT8U sbyte)
 
   if(Id>IIC_SOFT_MAX_ID)  //Ö±½Ó¶ÏÑÔ£¬¿ÉÄÜÓ°ÏìËÙ¶È£¡----------PUCK
   {
-#ifdef Soft_I2c_Env
+#ifdef SOFT_I2C_ENV
     longjmp(Soft_I2c_Env.Env,1);
 #else
     return 0;
@@ -236,7 +236,7 @@ INT8U I2cSoft_Read_Byte(INT8U Id,INT8U *Dst)
 
   if(Id>IIC_SOFT_MAX_ID)  //Ö±½Ó¶ÏÑÔ£¬¿ÉÄÜÓ°ÏìËÙ¶È£¡----------PUCK
   {
-#ifdef Soft_I2c_Env
+#ifdef SOFT_I2C_ENV
     longjmp(Soft_I2c_Env.Env,1);
 #else
     return 0;

@@ -61,18 +61,19 @@ typedef struct
   INT8U   PageDelay:7;            //跨页内延时时间：ms
 }CONST_EPPROM_SOFT;
 
-#define MAX_EPPROM_TYPE  (M24256+1)
+#define MAX_EPPROM_TYPE  (M24512+1)
 
 CONST CONST_EPPROM_SOFT  Const_Epprom_Soft[MAX_EPPROM_TYPE]={
   {M2401,1,0,8,EPP_2401_SIZE,0,0},
   {M2402,1,0,8,EPP_2402_SIZE,0,0},
   {M2404,1,1,16,EPP_2404_SIZE,1,8},
   {M2408,1,2,16,EPP_2408_SIZE,0,0},
-  {M2416,1,3,16,EPP_24016_SIZE,0,0},
+  {M2416,1,3,16,EPP_24016_SIZE,0,0},   //铁电
   {M2432,0,0,32,EPP_24032_SIZE,0,0},
-  {M2464,0,0,32,EPP_24064_SIZE,0,1},
+  {M2464,0,0,32,EPP_24064_SIZE,0,1},   //铁电
   {M24128,0,0,64,EPP_240128_SIZE,0,0},
-  {M24256,0,0,64,EPP_240256_SIZE,1,8}
+  {M24256,0,0,64,EPP_240256_SIZE,1,8},
+  {M24512,0,0,128,EPP_240512_SIZE,1,8}
 };
 #pragma pack()
 
@@ -104,7 +105,7 @@ INT8U Write_Soft_EEPROM(INT8U VirtualID,INT8U SlvAdr,INT16U SubAddr,INT16U size,
     if(SubAddr>Const_Epprom_Soft[Type].MaxSize)        return 0;        
     if((size+SubAddr)>Const_Epprom_Soft[Type].MaxSize) return 0;  
     
-#ifdef SOFT_I2c_ENV
+#ifdef SOFT_I2C_ENV
     if(setjmp(Soft_I2c_Env.Env)==0)
     {
 #endif     
@@ -146,7 +147,7 @@ INT8U Write_Soft_EEPROM(INT8U VirtualID,INT8U SlvAdr,INT16U SubAddr,INT16U size,
           WAITFOR_DRV_CYCLE_TIMEOUT(100)  //没有延时标志，延时100个nop
         }while(WrNum<size);
         //-------------------------------------------------IIC_HARD_WP_DIS;     //置WP口线为高，禁止写--------PUCK
-#ifdef SOFT_I2c_ENV
+#ifdef SOFT_I2C_ENV
     return 1;
     }
    else
@@ -191,7 +192,7 @@ INT8U Read_Soft_2Addrs_EEPROM(INT8U VirtualID,INT8U SlvAdr,INT16U SubAddr,INT8U 
    INT8U AddrL,OkFlag;
   
    AddrL=(INT8U)(SubAddr%256);
-#ifdef SOFT_I2c_ENV
+#ifdef SOFT_I2C_ENV
    if(setjmp(Soft_I2c_Env.Env)==0)
    { 
 #endif   
@@ -204,7 +205,7 @@ INT8U Read_Soft_2Addrs_EEPROM(INT8U VirtualID,INT8U SlvAdr,INT16U SubAddr,INT8U 
    OkFlag&=I2cSoft_Send_Byte(VirtualID,SlvAdr|0x1);  //读操作-----------PUCK
    OkFlag&=I2cSoft_Read_nByteS(VirtualID,size,Dst);
    OkFlag&=I2cSoft_Stop(VirtualID);
-#ifdef SOFT_I2c_ENV
+#ifdef SOFT_I2C_ENV
     return 1;
    }
    else
@@ -230,7 +231,7 @@ INT8U Read_Soft_3Addrs_EEPROM(INT8U VirtualID,INT8U SlvAdr,INT16U SubAddr,INT8U 
     AddrH=(INT8U)(SubAddr/256);
     AddrL=(INT8U)(SubAddr%256);
   
-#ifdef SOFT_I2c_ENV
+#ifdef SOFT_I2C_ENV
    if(setjmp(Soft_I2c_Env.Env)==0)
    { 
 #endif    
@@ -247,7 +248,7 @@ INT8U Read_Soft_3Addrs_EEPROM(INT8U VirtualID,INT8U SlvAdr,INT16U SubAddr,INT8U 
     OkFlag&=I2cSoft_Send_Byte(VirtualID,SlvAdr+1);  //读操作-----------PUCK
     OkFlag&=I2cSoft_Read_nByteS(VirtualID,size,Dst);
     OkFlag&=I2cSoft_Stop(VirtualID);
-#ifdef SOFT_I2c_ENV
+#ifdef SOFT_I2C_ENV
     return 1;
    }
    else
