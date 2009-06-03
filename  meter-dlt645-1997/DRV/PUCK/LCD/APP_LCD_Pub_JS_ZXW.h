@@ -44,10 +44,12 @@
 #define S_XU                   18        //需
 #define S_DIAN                 19        //电
 #define S_LIANG                20        //量
-#define S_XIANGXIAN1           21        //第1象限符号
-#define S_XIANGXIAN2           22        //第2象限符号
-#define S_XIANGXIAN3           23        //第3象限符号
-#define S_XIANGXIAN4           24        //第4象限符号
+#define S_XIANGXIAN2           21        //第2象限符号
+#define S_XIANGXIAN1           22        //第1象限符号
+#define S_XIANGXIAN4           23        //第4象限符号
+#define S_XIANGXIAN3           24        //第3象限符号
+
+
 #define S_COS                  25        //
 #define S_FAI                  26        //
 #define S_A                    27         //A
