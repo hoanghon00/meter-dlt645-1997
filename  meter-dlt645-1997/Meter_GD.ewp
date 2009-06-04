@@ -649,7 +649,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state>meter_normal.hex</state>
+          <state>meter_JS_LCD_ZXW.hex</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -2331,6 +2331,12 @@
             <name>$PROJ_DIR$\DRV\PUCK\IIC\App_Epp_All.h</name>
           </file>
           <file>
+            <name>$PROJ_DIR$\DRV\PUCK\IIC\DS3231_Hard.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\DRV\PUCK\IIC\DS3231_Hard.h</name>
+          </file>
+          <file>
             <name>$PROJ_DIR$\DRV\PUCK\IIC\DS3231_Soft.c</name>
           </file>
           <file>
@@ -2354,12 +2360,6 @@
         </group>
         <group>
           <name>DRV</name>
-          <file>
-            <name>$PROJ_DIR$\DRV\PUCK\IIC\DS3231_Hard.c</name>
-          </file>
-          <file>
-            <name>$PROJ_DIR$\DRV\PUCK\IIC\DS3231_Hard.h</name>
-          </file>
           <file>
             <name>$PROJ_DIR$\DRV\PUCK\IIC\Epp_Hard.c</name>
           </file>

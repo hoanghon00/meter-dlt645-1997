@@ -11,7 +11,7 @@ INT8U DS3231_Read_Buf(INT8U addr,INT8U Len,INT8U *Dst)
 {
  INT8U i,Flag;
  
-#ifdef HARD_I2c_ENV
+#ifdef HARD_I2C_ENV
    if(setjmp(Hard_I2c_Env.Env)==0)
    {
 #endif 
@@ -26,7 +26,7 @@ INT8U DS3231_Read_Buf(INT8U addr,INT8U Len,INT8U *Dst)
         Flag&=I2cGetDataAckSet(Dst+i);
     Flag&=I2cGetDataNackSet(Dst+Len-1);
     I2cStopCondition();
-#ifdef HARD_I2c_ENV
+#ifdef HARD_I2C_ENV
     return 1;
    }
    else

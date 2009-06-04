@@ -47,7 +47,7 @@ INT8U Write_Hard_EEPROM(INT8U SlvAdr,INT16U SubAddr,INT16U size,INT8U Type,INT8U
     
     
     IICE0=1;               //打开II2C操作时钟，因有可能会关闭-----------PUCK
-#ifdef HARD_I2c_ENV
+#ifdef HARD_I2C_ENV
     if(setjmp(Hard_I2c_Env.Env)==0)
     {
 #endif     
@@ -105,7 +105,7 @@ INT8U Write_Hard_EEPROM(INT8U SlvAdr,INT16U SubAddr,INT16U size,INT8U Type,INT8U
           WAITFOR_DRV_CYCLE_TIMEOUT(100)  //没有延时标志，延时100个nop
         }while(WrNum<size);
         IIC_HARD_WP_DIS;     //置WP口线为高，禁止写--------PUCK
-#ifdef HARD_I2c_ENV
+#ifdef HARD_I2C_ENV
     return 1;
     }
    else
@@ -131,7 +131,7 @@ INT8U Read_ChangeAddr_EEPROM( INT8U SlvAdr,INT16U SubAddr,INT8U Type,INT16U size
    INT8U AddrL,OkFlag;
   
    AddrL=(INT8U)(SubAddr%256);
-#ifdef HARD_I2c_ENV
+#ifdef HARD_I2C_ENV
    if(setjmp(Hard_I2c_Env.Env)==0)
    { 
 #endif   
@@ -149,7 +149,7 @@ INT8U Read_ChangeAddr_EEPROM( INT8U SlvAdr,INT16U SubAddr,INT8U Type,INT16U size
    }	  
    OkFlag&=I2cGetDataNackSet(&NackData); 
    I2cStopCondition();
-#ifdef HARD_I2c_ENV
+#ifdef HARD_I2C_ENV
     return 1;
    }
    else
@@ -177,7 +177,7 @@ INT8U Read_FixAddr_EEPROM( INT8U SlvAdr,INT16U SubAddr,INT8U Type,INT16U size,IN
     AddrH=(INT8U)(SubAddr/256);
     AddrL=(INT8U)(SubAddr%256);
   
-#ifdef HARD_I2c_ENV
+#ifdef HARD_I2C_ENV
    if(setjmp(Hard_I2c_Env.Env)==0)
    { 
 #endif    
@@ -199,7 +199,7 @@ INT8U Read_FixAddr_EEPROM( INT8U SlvAdr,INT16U SubAddr,INT8U Type,INT16U size,IN
     }	  
     OkFlag&=I2cGetDataNackSet(&NackData); 
     I2cStopCondition();
-#ifdef HARD_I2c_ENV
+#ifdef HARD_I2C_ENV
     return 1;
    }
    else
