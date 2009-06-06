@@ -83,7 +83,7 @@ s16 getdata (item_t item, void* dst, void* dststart, s16 maxlen)
         sign=-1;        
       if(item==DI_REACTIVE_C&& Measu_Status_Mode_ToPub_PUCK.C_RPwrDir)
         sign=-1;
-  }      
+  }
   else 
   {
       nlen = Get_DLT645_Data_For_Disp(item,(u8*)buff,(u8*)start, DIS_BUF_LEN);
@@ -844,6 +844,7 @@ void lcd_data (item_t item, const char* s,u8 singpos)
           strcpy(frmt,"##:##:##:##:##|tm");
         }
     }
+  
     if (poweroff() && getmode().bit0 && (item == 0xC010)) //低功耗显示时间
     {
         item = DI_POWER_DOWN_TIME;

@@ -43,6 +43,7 @@ s16 getdata (item_t item, void* dst, void* dststart, s16 maxlen)
   s16 nlen = 0,sign=0;
   void *buff=Dis_GetData_Buf; 
   void *start=Dis_GetData_Buf;
+  u8 temp;
   
   if(maxlen>DIS_BUF_LEN)  //越界保护
     return 0;
@@ -82,7 +83,18 @@ s16 getdata (item_t item, void* dst, void* dststart, s16 maxlen)
         sign=-1;        
       if(item==DI_REACTIVE_C&& Measu_Status_Mode_ToPub_PUCK.C_RPwrDir)
         sign=-1;
-  }      
+  } 
+  else if(((item>=0xC331)&&(item<=0xC36E))|| ((item>=0xCB21)&&(item<=0xCB6E)))  // 第1/2套费率第n日时段表第n时段起始时分及其费率号
+  {
+      nlen = Get_DLT645_Data_For_Disp(item,(u8*)buff,(u8*)start, maxlen);
+      temp=Dis_GetData_Buf[0];
+      Dis_GetData_Buf[0]=Dis_GetData_Buf[2];
+      Dis_GetData_Buf[2]=temp;
+      
+      temp=Dis_GetData_Buf[0];
+      Dis_GetData_Buf[0]=Dis_GetData_Buf[1];
+      Dis_GetData_Buf[1]=temp;
+  } 
   else 
   {
       nlen = Get_DLT645_Data_For_Disp(item,(u8*)buff,(u8*)start, DIS_BUF_LEN);
@@ -559,30 +571,30 @@ void lcd_assemble (u8 flg)
         
         stat = (flg == 1) ? varhmode1 : varhmode2;
         stat&=0x0f;
-        if(getmode().bit7)             // 逆时针
+        
+         // 此液晶只支持逆时针
+        switch(stat&0x0f)
         {
-          switch(stat&0x0f)
-          {
-            case 3:
-              stat=9;
-              break;
-            case 5:
-              stat=5;
-              break;
-            case 9:
-              stat=3;
-              break;
-            case 6:
-              stat=6;
-              break;
-            case 10:
-              stat=10;
-              break;
-            case 12:
-              stat=6;
-              break;  
+          case 3:
+            stat=9;
+            break;
+          case 5:
+            stat=5;
+            break;
+          case 9:
+            stat=3;
+            break;
+          case 6:
+            stat=6;
+            break;
+          case 10:
+            stat=10;
+            break;
+          case 12:
+            stat=6;
+            break;  
          }
-        }
+
         flag=(flag&stat)^stat;  //闪烁
         stat = flag; 
         num=0;
@@ -593,10 +605,7 @@ void lcd_assemble (u8 flg)
       getdata(DI_CURRENT_QUADRANT, &stat, &stat, sizeof(stat));
       if(stat&0x0f)   //1/2/4/8
       {
-        if(getmode().bit7==0)             //顺时针
-          stat^=0x0f;
-        else                              // 逆时针
-        {
+          // 此液晶只支持逆时针
           switch(stat&0x0f)   //长亮或者常灭
           {
             case 1:
@@ -614,7 +623,6 @@ void lcd_assemble (u8 flg)
           default:
             return;
          }
-        }
       }
       else
         return ;
@@ -865,6 +873,12 @@ void lcd_data (item_t item, const char* s,u8 singpos)
           strcpy(frmt,"##:##:##:##:##|tm");
         }
     }
+
+    if(((item>=0xC331)&&(item<=0xC36E))|| ((item>=0xCB21)&&(item<=0xCB6E)))  // 第1/2套费率第n日时段表第n时段起始时分及其费率号
+    {
+       strcpy(frmt,"##-##:##|");
+    }
+
     if (poweroff() && getmode().bit0 && (item == 0xC010)) //低功耗显示时间
     {
         item = DI_POWER_DOWN_TIME;
