@@ -109,7 +109,7 @@ void Demand_Calc()
   if(1==Re)
   {
     //对每个滑动窗口(功率累加单元)进行累加
-    for(i=0;i<MAX_PERIOD_SLIDE_RATIO;i++)
+    for(i=0;i<MAX_PERIOD_SLIDE_RATIO && i < (Demand_Para.Period/Demand_Para.Slide_Time);i++)
     {
       //累加功率,原数据是6位小数，实际使用4为小数，因此要除以POWER_DATA_RATIO
       if(Mode_Word.Mode[0].Bit.Bit6==1)//单向表,如果是单向表，正反功率全部计入正向
