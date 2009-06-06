@@ -4565,6 +4565,7 @@ static const scrn_t table[] = {
                                            .phase     = 4,
                                            .time      = 1,
                                            .lostvolt  = 1,}},
+/*                                         
     {0x070481, 0x0000, "XXXXX#|",         {.total     = 1,    // 失压累计时间AB相
                                            .phase     = 3,
                                            .time      = 1,
@@ -4581,6 +4582,7 @@ static const scrn_t table[] = {
                                            .phase     = 7,
                                            .time      = 1,
                                            .lostvolt  = 1,}},
+ */                                          
     {0x070191, 0xB311, "XXX#|",           {.total     = 1,    // 失压累计次数A相
                                            .phase     = 1,
                                            .lostvolt  = 1,}},
@@ -4606,6 +4608,7 @@ static const scrn_t table[] = {
                                            .phase     = 3,
                                            .time      = 1,
                                            .lostcurt  = 1,}},
+/*                                          
     {0x070582, 0x0000, "XXXXX#|",         {.total     = 1,    // 失流累计时间AC相
                                            .phase     = 5,
                                            .time      = 1,
@@ -4639,7 +4642,8 @@ static const scrn_t table[] = {
     {0x070792, 0x0000, "XXX#|",           {.total     = 1,    // 失流累计次数ABC相
                                            .phase     = 7,
                                            .lostcurt  = 1,}},
-    
+ 
+ */
     {0x071085, 0xB324, "XXXXX#|",         {.total     = 1,    // 总全失压累计时间
                                            .phase     = 15,
                                            .time      = 1,
@@ -4647,7 +4651,8 @@ static const scrn_t table[] = {
     {0x071095, 0xB310, "XXX#|",           {.total     = 1,    // 总失压次数
                                            .phase     = 15,
                                            .lostvolt  = 1,}},
-                                           
+ 
+ /*
     {0x071101, 0x0000, "XXXXXXX#.##|kWh",   {.times     = 1,    // 上1次失压期间的累计正向有功电量A相
                                            .phase     = 1,
                                            .positive  = 1,
@@ -4900,7 +4905,7 @@ static const scrn_t table[] = {
                                            .phase     = 6,
                                            .lostcurt  = 1,
                                            .time      = 1,}},
-
+*/
 //------------------------------------------------------------------------
 
     {0x080000, 0xC010, "20###### ?#|",    {.time      = 1,}}, // 当前日期周次(年:月:日 周)
