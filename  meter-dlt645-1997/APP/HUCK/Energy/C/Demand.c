@@ -185,8 +185,11 @@ void Demand_Calc()
       //if(DEMAND_OUTPUT_MODE EQ SLIDE_PERIOD_OUTPUT)
       {      
         Port_Out_Pub(EXT_ID_SLIPE,85);
-        DEBUG_PRINT(HUCK,DEBUG_0,"Demand Slide Period Arrived!!!"); 
+        DEBUG_PRINT(HUCK,DEBUG_0,"Demand Slide Period Arrived!!!, unit %d, Mins=%d, counts=%ld", i, Demand_Accu.Mins[i],Counts); 
       }
+      
+      if(Counts == 0)
+        return;
       //计算平均值，也就是需量
       //if(Counts>=(INT32U)Demand_Para.Period*(60-10))//防止内部秒计数器的偏差故减去10S
       if(Demand_Accu.Mins[i]>=((INT32U)Demand_Para.Period))
@@ -213,10 +216,12 @@ void Demand_Calc()
       else
         Clr_Demand_Unit(i);//此时应该是刚上电阶段
     }
+    /*
     else//清除掉最大功率单元，防止连续计数超过一个需量周期
     {
         Clr_Demand_Unit(i);
     }
+    */
   }
 }
 
