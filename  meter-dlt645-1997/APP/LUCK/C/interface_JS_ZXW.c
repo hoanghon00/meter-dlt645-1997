@@ -338,9 +338,12 @@ void lcd_phase (u8 flg) { ///< 显示"A/B/C/N相",
     if (flg & 0x04) {
         SetOnDevice_PUCK(S_C);
     }
+    //无N相显示，ABCB
+    /*
     if (flg & 0x08) {
         SetOnDevice_PUCK(S_N);
     }
+    */
 }
 
 void lcd_voltage (u8 flg) { ///< 显示"电压",

@@ -4644,13 +4644,19 @@ static const scrn_t table[] = {
                                            .lostcurt  = 1,}},
  
  */
-    {0x071085, 0xB324, "XXXXX#|",         {.total     = 1,    // 总全失压累计时间
+ 
+    {0x071085, 0xB310, "XXX#|",            {.total     = 1,    // 总失压次数
                                            .phase     = 15,
                                            .time      = 1,
                                            .lostvolt  = 1,}},
-    {0x071095, 0xB310, "XXX#|",           {.total     = 1,    // 总失压次数
+                                           
+    {0x071095, 0xB320, "XXXXX#|",          {.total     = 1,    // 总失压累计时间
                                            .phase     = 15,
                                            .lostvolt  = 1,}},
+                                           
+
+
+                                           
  
  /*
     {0x071101, 0x0000, "XXXXXXX#.##|kWh",   {.times     = 1,    // 上1次失压期间的累计正向有功电量A相
