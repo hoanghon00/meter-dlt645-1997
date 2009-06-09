@@ -72,7 +72,7 @@
 #define LCD_JS_ZXW           1          //江苏液晶---中显威
 #define LCD_JS_JX            2           //江苏液晶---晶像
 
-#define LCD_PROPERTY  LCD_JS_ZXW
+#define LCD_PROPERTY  LCD_NORMAL
 
 
 //串口属性

@@ -645,11 +645,11 @@
         </option>
         <option>
           <name>XOutOverride</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>OutputFile</name>
-          <state>Meter_GD.d26</state>
+          <state>meter_normal.hex</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -803,7 +803,7 @@
         </option>
         <option>
           <name>DebugInformation</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>RuntimeControl</name>
