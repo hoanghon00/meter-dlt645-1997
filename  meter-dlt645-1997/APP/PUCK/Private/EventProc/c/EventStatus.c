@@ -1217,20 +1217,20 @@ void Emerg_Event_Proc(void)
 *********************************************************************************/
 void Init_Event_DIS_PUCK(void)
 {  
-  if((FP32S)Measu_InstantData_ToPub_PUCK.Volt.A/UNIT_V<60.0)
+  if((FP32S)Measu_InstantData_ToPub_PUCK.Volt.A/UNIT_V<=Get_Un()*0.6)
       Meter_Run_Status.Volt_LossMiss.Bit.Bit0=1;  //A相断相：0--没发生；1----发生；
   else
       Meter_Run_Status.Volt_LossMiss.Bit.Bit0=0; 
   
   if(Get_SysParse_Mode()==PARSE_341)
   {  
-    if((FP32S)Measu_InstantData_ToPub_PUCK.Volt.B/UNIT_V<60.0)
+    if((FP32S)Measu_InstantData_ToPub_PUCK.Volt.B/UNIT_V<=Get_Un()*0.6)
       Meter_Run_Status.Volt_LossMiss.Bit.Bit1=1;  //B相断相：0--没发生；1----发生；
     else
       Meter_Run_Status.Volt_LossMiss.Bit.Bit1=0;
   }
   
-  if((FP32S)Measu_InstantData_ToPub_PUCK.Volt.C/UNIT_V<60.0)
+  if((FP32S)Measu_InstantData_ToPub_PUCK.Volt.C/UNIT_V<=Get_Un()*0.6)
       Meter_Run_Status.Volt_LossMiss.Bit.Bit2=1;  //C相断相：0--没发生；1----发生；
   else
      Meter_Run_Status.Volt_LossMiss.Bit.Bit2=0;

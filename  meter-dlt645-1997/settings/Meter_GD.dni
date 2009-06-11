@@ -60,11 +60,11 @@ SeqData24=0,0,0,0,0,0
 TraceSettings=64,0,0,0,0,0,8192
 TimerSettings=0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 CoverSettings=1048192,1048207,0
-Version=1,78k0rtrace.txt
+Version=1,xxx.txt
 LastDevFile=DF1166A0.78K
 EmulType=320
 EventLimits=0, 1, 1, 2
-LastSetupFailed=0
+LastSetupFailed=1
 [DisAssemblyWindow]
 NumStates=_ 1
 State 1=_ 1
@@ -80,13 +80,13 @@ UseTrigger=1
 TriggerName=main
 LimitSize=0
 ByteLimit=50
+[TermIOLog]
+LoggingEnabled=_ 0
+LogFile=_ ""
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""
 Category=_ 0
-[TermIOLog]
-LoggingEnabled=_ 0
-LogFile=_ ""
 [TraceHelper]
 Enabled=0
 ShowSource=1
