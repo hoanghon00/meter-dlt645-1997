@@ -179,6 +179,9 @@ void Channel_DataReceive_PUCK(INT8U Type,INT32U Status)
     Len=Rcv_PROTOCOL_Frame_Proc(Type,RecBufPtr+offset,Len,(void *)Temp_Buf_PUCK, (void *)Temp_Buf_PUCK, TEMP_BUF_LEN);
     if(Len)   //需要应答
       Send_HostData_Public_Puck(Type,(INT8U *)Temp_Buf_PUCK,Len);  //1200bps,160字节发送不喂狗，估计有问题
+    
+    Const_Uart_Attib[Type].Ready_Uart();    //尽快重置接收区
+    
 #ifdef CHANNEL_FAST_EN
     if(CHECK_STRUCT_VAR(Rec_Frame_Status)==0 || REC_FRAME_CONDITION)
     {
@@ -190,7 +193,7 @@ void Channel_DataReceive_PUCK(INT8U Type,INT32U Status)
     DEBUG_BUF_PRINT((INT8U *)Temp_Buf_PUCK,Len,PRINT_HEX,30);
     Chanel_Para[Type].ExitFlag=1;
     SET_STRUCT_SUM(Chanel_Para[Type]);
-    Const_Uart_Attib[Type].Ready_Uart();    //重置接收区
+
     if(CHECK_STRUCT_VAR(S_Buf_PUCK)==0)
       ASSERT(A_WARNING,0);    
     Clr_LCDSleep_Timer();   //清除唤醒后计数器
