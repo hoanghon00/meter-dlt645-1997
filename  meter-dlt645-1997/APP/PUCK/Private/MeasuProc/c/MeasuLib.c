@@ -780,12 +780,14 @@ INT8U Load_Spec_Adj_Para_To_IC(void)
     if(InitMeasuPara[i].ParaFlag==ADJU_TYPE)
     {
       Rdflag=Read_Storage_Data_PUCK(InitMeasuPara[i].Di,temp,3);
-      ASSERT(A_WARNING,1==Rdflag); 
+      if(0==Rdflag)
+      ASSERT(A_WARNING,0); 
       para=(INT32U)(temp[2]*65536L+temp[1]*256L+temp[0]);
       Flag&=Rdflag;
     }
      Wrflag=Measu_WrAndCompData_3Times(i|0x80,para);
-     ASSERT(A_WARNING,1==Rdflag); 
+     if(0==Wrflag)
+      ASSERT(A_WARNING,0); 
      Flag&=Wrflag;
      CS+=para;
   }
