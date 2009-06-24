@@ -211,7 +211,7 @@ void Para_Modi_Monitor_PUCK(void)
       break; 
       default:   //以下参数做优化
       if(((temp>=VARHMODE1)&&(temp<=VARHMODE2))||((temp>=ROLLCYCLE)&&(temp<=POWERBITS))||(temp==NUMBMODEB))
-        Lcd_Para_Modi(temp);                              //液晶参数发生修改  
+        lcdinit();                              //液晶参数发生修改  
         break;
     }    
   }   

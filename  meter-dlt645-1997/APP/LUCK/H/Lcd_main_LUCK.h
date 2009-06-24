@@ -50,8 +50,7 @@ DECLARE_BUF_TYPE(INT16U,4,S_Buf_BIT16_LEN4);
 LCD_MAIN_EXT S_Buf_BIT16_LEN4 Pub_Bit16_Len4_PUCK;
 #define  MODE_A_NUM  Pub_Bit16_Len4_PUCK.Buf[0]
 #define  MODE_B_NUM  Pub_Bit16_Len4_PUCK.Buf[1]
-#define  LCDLoopCount  Pub_Bit16_Len4_PUCK.Buf[2]
-#define  LCDLightCount Pub_Bit16_Len4_PUCK.Buf[3]
+#define  LCDLightCount Pub_Bit16_Len4_PUCK.Buf[2]
 
 #ifdef LCD_MAIN_C
 LCD_MAIN_EXT S_Int32U Sleep_Sec_Timer={CHK_BYTE,0x00,CHK_BYTE};
@@ -62,10 +61,12 @@ LCD_MAIN_EXT S_Int32U Sleep_Sec_Timer;
 LCD_MAIN_EXT S_Int8U LCD_Loop_Num;
 LCD_MAIN_EXT S_Int32U LCD_Loop_Ms10Timr;
 
+LCD_MAIN_EXT volatile INT32U  LCDLoopSecTimer;
 
 #define TURN_ON_LIGHT   {LCDLightCount=0;}
 #define TURN_OFF_LIGHT   {LCDLightCount=(0xFFFF-0X10);}
-#define START_LOOP_DIS  {LCDLoopCount=0;}
+#define START_LOOP_DIS       {LCDLoopSecTimer=Sec_Timer_Pub;}
+#define LOOP_SEC_TIMER_DIFF  (Sec_Timer_Pub-LCDLoopSecTimer)
 
 #define MAX_MODI_NUM 5
 typedef struct

@@ -126,54 +126,6 @@ bool rtvalue (item_t item)
   return (S_RAM == Get_DLT645_Data_Storage_Type(item));
 }
 
-bool Lcd_Para_Modi(item_t item)
-{  
-  INT8U Err;
-    switch (item) 
-    {
-        case VARHMODE1: 
-        {
-            u8 stat = 0;
-            Read_Storage_Data(VARHMODE1,&stat, &stat, sizeof(stat),&Err);
-            varhmode1 = stat;
-            DEBUG_PRINT(LUCK,PRINT_PUCK_LCD_EN,"LCD Para Changed,Reac_Group Mode1,Data=%d",varhmode1);
-            return TRUE;
-        }
-        case VARHMODE2: 
-        {
-            u8 stat = 0;
-            Read_Storage_Data(VARHMODE2,&stat, &stat, sizeof(stat),&Err);
-            varhmode2 = stat;
-            DEBUG_PRINT(LUCK,PRINT_PUCK_LCD_EN,"LCD Para Changed,Reac_Group Mode2 Data=%d",varhmode2);
-            return TRUE;
-        }
-        case ROLLCYCLE: 
-          {
-            u8 cycle = 0;
-            Read_Storage_Data(ROLLCYCLE,&cycle, &cycle, sizeof(cycle),&Err);
-            rollcycle=((cycle<5)||(cycle>180))?5:cycle;
-            DEBUG_PRINT(LUCK,PRINT_PUCK_LCD_EN,"LCD Para Changed,RollCycle Data=%d",rollcycle);
-            return TRUE;
-        }
-        case NUMBMODEA: 
-         {
-            offs_t numb = 0;
-            Read_Storage_Data(NUMBMODEA,&numb, &numb, sizeof(numb),&Err);
-            MODE_A_NUM = (s16)Bcd2Hex((u8*)&numb, 2);
-            DEBUG_PRINT(LUCK,PRINT_PUCK_LCD_EN,"LCD Para Changed,Number_A Data=%d",MODE_A_NUM);
-            return TRUE;
-        }
-        case NUMBMODEB: 
-        {
-            offs_t numb = 0;
-            Read_Storage_Data(NUMBMODEB,&numb, &numb, sizeof(numb),&Err);
-            MODE_B_NUM = (s16)Bcd2Hex((u8*)&numb, 2);
-            DEBUG_PRINT(LUCK,PRINT_PUCK_LCD_EN,"LCD Para Changed,Number_B Data=%d",MODE_B_NUM);
-            return 1;
-        }
-    } 
-    return FALSE;
-}
 /********************************************************************************
 PUCK:
 函数功能：内卡参数读出置sram，参数初始化
@@ -200,19 +152,19 @@ void lcdinit (void) {
     temp=Read_Storage_Data(ROLLCYCLE,&cycle, &cycle, sizeof(cycle),&Err); 
     if((!temp)||(cycle<5)||(cycle>180))  //最小为5秒，最大180秒，循显时间------PUCK_LCD
       cycle=5;
-    rollcycle = cycle;       
+    rollcycle = (u8)Bcd2Hex((u8*)&cycle, 1);     
     
     numb=0;
     temp=Read_Storage_Data(NUMBMODEA,&numb, &numb, sizeof(numb),&Err); 
     if((!temp) ||(!numb))
       numb=0x13;   //BCD码,1字节------PUCK_LCD
-    MODE_A_NUM = (s16)Bcd2Hex((u8*)&numb, 1);
+    MODE_A_NUM = (u16)Bcd2Hex((u8*)&numb, 1);
     
     numb=0;
     temp=Read_Storage_Data(NUMBMODEB,&numb, &numb, sizeof(numb),&Err); 
      if((!temp)||(!numb))
       numb=0x14;   //BCD码，2字节------PUCK_LCD
-    MODE_B_NUM = (s16)Bcd2Hex((u8*)&numb, 2);
+    MODE_B_NUM = (u16)Bcd2Hex((u8*)&numb, 2);
 }
 
 // A屏轮显时间

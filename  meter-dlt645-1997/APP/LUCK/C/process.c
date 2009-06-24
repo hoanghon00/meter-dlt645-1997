@@ -412,7 +412,7 @@ PUCK:更新显示内容,周期是 UPDATETIME ms
 入口：
 返回：
 ********************************************************************************/
-void Key_Fast_LCD_Proc(void) 
+void Key_Fast_LCD_Proc(void)
 {
   INT8U KeyValue;
   KeyValue=Get_MeterKey_PUCK(LUCK);
@@ -494,11 +494,11 @@ void Loop_Dis_LCD_Proc(void)
     LCD_Loop_Num.Var=TASK_RUN_TIME/10;
   }
   
-   if((++LCDLoopCount>SECOND_3(CYCLE))&&disproll()) // A模式下，在1个周期后，没有按键按下，获取A模式下的显示信息--------PUCK
+   if((LOOP_SEC_TIMER_DIFF>CYCLE)&&disproll()) // A模式下，在1个周期后，没有按键按下，获取A模式下的显示信息--------PUCK
       START_LOOP_DIS;
-   if((LCDLoopCount>2*SECOND_3(CYCLE))&&modeBtoA())// B模式下，在2个循显周期后，没有按键按下，进入A模式，获取A模式下的信息--------PUCK
+   if((LOOP_SEC_TIMER_DIFF>2*CYCLE)&&modeBtoA())// B模式下，在2个循显周期后，没有按键按下，进入A模式，获取A模式下的信息--------PUCK
       START_LOOP_DIS;
-   if((LCDLoopCount>SECOND_3(120))&&modeCtoA())   // C模式下，在2分钟后无按键按下，进入A模式，获取A模式下的信息--------PUCK
+   if((LOOP_SEC_TIMER_DIFF>120)&&modeCtoA())   // C模式下，在2分钟后无按键按下，进入A模式，获取A模式下的信息--------PUCK
       START_LOOP_DIS;
    if (LCDLightCount== 0) 
    {

@@ -174,5 +174,4 @@ void lcd_update (void);
 // 输出显示事件状态
 void lcd_events (void);
 
-bool Lcd_Para_Modi(item_t item);
 #endif
