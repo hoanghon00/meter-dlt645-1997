@@ -909,7 +909,7 @@ PUCK: 输出显示代码的内容
      type-----模式参数;offs-----该模式下显示的项目顺序
 返回：
 ********************************************************************************/
-void lcd_code (code_t code, curs_t curs) 
+void lcd_code (code_t code, curs_t curs,u8 dlen) 
 {
     typedef struct {
         u16 id;
@@ -929,10 +929,12 @@ void lcd_code (code_t code, curs_t curs)
     {
       if(curs==-1)  //不闪烁
       {
-        if(n>=2)
+        if(n>=dlen)
           break;
         ch = hex2cha[code % 16];
         code /= 16;
+        if((n>=2)&&(n%2==0))  //显示格式00.01
+          SetOnDevice_D_PUCK(addr[n].dp);
       }
       else  //闪烁
       {

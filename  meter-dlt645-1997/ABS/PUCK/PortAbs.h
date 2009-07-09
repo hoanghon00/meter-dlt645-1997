@@ -11,6 +11,18 @@
 #endif
 
 
+//多合一端子排配置：秒脉冲、时段、需量、滑差
+//1:配置以下宏，与Const_Port_Status[]中的MultiFlag为0还是1含义不一样；
+//2：配置 Const_Port_Status[]中的 MultiFlag为0还是1
+//3:对于秒脉冲与其他3合一端子共用，秒脉冲使能配置：MultiFlag＝0(为1，Port_Out_Pub函数中，则不能 END！)；SEC_MULTI_PORT＝1；
+#if METER_HARD_TYPE == HARD_TYPE_20090620_SD
+  #define SEC_MULTI_PORT 1        //0：秒脉冲不是复合端子；1：秒脉冲是复合端子(共用）
+  #define MULTI_3_PORT   2        //0：不是复合端子；1：是复合端子，但与秒脉冲不共用；2是复合端子，且与秒脉冲共用；
+#else
+  #define SEC_MULTI_PORT 0        //秒脉冲不是复合端子
+  #define MULTI_3_PORT   1        //0：不是复合端子；1：是复合端子，但与秒脉冲不共用；2是复合端子，且与秒脉冲共用；
+#endif
+
 
 //LED报警指示灯
 #define LED_ALARM_CLR        ALARM_0   

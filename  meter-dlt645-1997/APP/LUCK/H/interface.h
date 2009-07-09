@@ -163,7 +163,7 @@ void lcd_times     (u8 flg); ///< 显示"上XX次",
 void lcd_data (item_t item, const char* frmt,u8 signpos);
 
 // 输出显示代码的内容
-void lcd_code (code_t code, curs_t curs);
+void lcd_code (code_t code, curs_t curs, u8 dlen);
 
 // 输出显示方案的内容
 void lcd_mode (u8 type);

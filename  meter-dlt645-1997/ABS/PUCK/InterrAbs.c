@@ -85,29 +85,6 @@ void Inter_Prg_Key(void)
 }
 
 
-//left key：实际是功能键,中断等级--------INTER_GRADE_LOWERST
-void Inter_Left_Key(void)
-{
-  EI();
-  Key_Value_Pub.Key.Bit.LeftKey=1;  
-}
-
-
-//Down Key,中断等级--------INTER_GRADE_LOWERST
-void Inter_Down_Key(void)
-{
-  EI();
-  Key_Value_Pub.Key.Bit.DownKey=1;
-}
-
-//Right key,中断等级--------INTER_GRADE_LOWERST
-void Inter_Right_Key(void)
-{
-  EI();
-  Key_Value_Pub.Key.Bit.RightKey=1;
-}
-
-
 //UP Key,中断等级--------INTER_GRADE_LOWERST
 void Inter_Up_Key(void)
 {
@@ -117,7 +94,35 @@ void Inter_Up_Key(void)
   Key_Value_Pub.Key.Bit.UpKey=1;
 }
 
+//Down Key,中断等级--------INTER_GRADE_LOWERST
+void Inter_Down_Key(void)
+{ 
+  EI();
+  Key_Value_Pub.Key.Bit.DownKey=1;
+}
 
+//left key：实际是功能键,中断等级--------INTER_GRADE_LOWERST
+void Inter_Left_Key(void)
+{
+#ifdef LEFT_KEY_EN 
+  EI();
+  Key_Value_Pub.Key.Bit.LeftKey=1;
+#else     //左按钮不开放！
+  Key_Value_Pub.Key.Bit.LeftKey=0;
+#endif
+}
+
+
+//Right key,中断等级--------INTER_GRADE_LOWERST
+void Inter_Right_Key(void)
+{
+#ifdef RIGHT_KEY_EN 
+  EI();
+  Key_Value_Pub.Key.Bit.RightKey=1;
+#else     //右按钮不开放！
+  Key_Value_Pub.Key.Bit.RightKey=0;
+#endif  
+}
 /********************************************************************************
 函数功能：获取当前表的键值；
 入口：Id -----只能填写LUCK，其他无效！；

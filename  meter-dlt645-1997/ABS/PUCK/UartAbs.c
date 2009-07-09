@@ -41,7 +41,8 @@ Enable---0:禁止相应的红外接收功能
 注意：在低功耗情况下，干簧管的状态判定状态前提，必须是红外的电源开启下调用此函数，否则误判！
 *********************************************************************************/
 void IRDA_Rec_Enable(void)
-{
+{  
+#ifdef NEAR_IRDA_EN
   if(GUMB_STATUS)  //目前是远红外
   {
      IRDA_FAR_REC_EN;
@@ -49,7 +50,10 @@ void IRDA_Rec_Enable(void)
   else             //目前是吸附红外
   {
      IRDA_NEAR_REC_EN;
-  }  
+  }
+#else
+  EN_UART0_REC;
+#endif 
 }
 /********************************************************************************
 函数原型：void IRDA_Rec_Disable(void)
@@ -58,6 +62,7 @@ Enable---0:禁止相应的红外接收功能
 *********************************************************************************/
 void IRDA_Rec_Disable(void)
 {
+#ifdef NEAR_IRDA_EN
   if(GUMB_STATUS)  //目前是远红外
   {
      IRDA_NEAR_REC_EN;
@@ -65,7 +70,10 @@ void IRDA_Rec_Disable(void)
   else             //目前是吸附红外
   {
      IRDA_FAR_REC_EN;
-  }  
+  }
+#else
+  DIS_UART0_REC;
+#endif 
 }
 /**********************************************************************************
 函数功能：打开表计所有通道

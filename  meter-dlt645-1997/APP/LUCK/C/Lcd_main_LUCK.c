@@ -10,7 +10,8 @@ PUCK:
 返回：
 ********************************************************************************/
 void Set_Para_Modi_DI(INT16U Di)
-{  
+{ 
+#ifdef DIS_PARA_JUMP_EN  
   INT8U i;
   for(i=0;i<MAX_MODI_NUM;i++)
   {
@@ -24,7 +25,7 @@ void Set_Para_Modi_DI(INT16U Di)
       return ;
     }     
   }
- 
+#endif
 }
 /********************************************************************************
 PUCK:
@@ -32,10 +33,12 @@ PUCK:
 入口：
 返回：
 ********************************************************************************/
-INT16U Get_Para_Modi_DI(void)
+PROTO_DI Get_Para_Modi_DI(void)
 {
-  INT8U i;
-  INT16U  temp=0;
+  PROTO_DI  temp=0;
+  
+#ifdef DIS_PARA_JUMP_EN
+  INT8U i; 
   
   if(Para_Dis_Var.Flag==0)
     return 0;
@@ -45,13 +48,14 @@ INT16U Get_Para_Modi_DI(void)
     if(Para_Dis_Var.Para_Modi[i]!=0)
     {
       if(CHECK_STRUCT_SUM(Para_Dis_Var)==0)
-        ASSERT(A_WARNING,0);
+        ASSERT(A_WARNING,0); 
       temp=Para_Dis_Var.Para_Modi[i];
       Para_Dis_Var.Para_Modi[i]=0;
       SET_STRUCT_SUM(Para_Dis_Var);      
       break;
     }  
   }  
+#endif  
   return temp;
 }
 /********************************************************************************
@@ -62,14 +66,16 @@ PUCK:
 ********************************************************************************/
 INT8U Get_Para_Modi_Flag(void)
 {
+#ifdef DIS_PARA_JUMP_EN
   if(Para_Dis_Var.Flag)
   {
     if(CHECK_STRUCT_SUM(Para_Dis_Var)==0)
-      ASSERT(A_WARNING,0);
+      ASSERT(A_WARNING,0); 
     Para_Dis_Var.Flag=0;
     SET_STRUCT_SUM(Para_Dis_Var);
     return 1;
   }
+#endif
     return 0; 
 }
 

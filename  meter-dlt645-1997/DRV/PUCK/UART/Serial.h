@@ -458,7 +458,11 @@ enum TransferMode { SEND, RECEIVE };
 
 
 //关闭UART0口的接收，及其中断
-#define DIS_UART0_REC   {ST0|=SAU_CH1_STOP_TRG_ON;SRMK0 = 1;SREMK0 = 1;}	/* UART0 receive disable */
+#define DIS_UART0_REC  PM1_bit.no1=0 //{ST0|=SAU_CH1_STOP_TRG_ON;   SRMK0 = 1; SREMK0 = 1;}	/* UART0 receive disable */
+
+//使能UART0口的接收，及其中断
+#define EN_UART0_REC   PM1_bit.no1=1  //{SS0|= SAU_CH1_START_TRG_ON; SRMK0 = 0; SREMK0 = 0;}	/* UART0 receive disable */
+
         
 /*
 *******************************************************************************

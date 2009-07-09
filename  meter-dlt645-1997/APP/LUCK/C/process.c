@@ -385,8 +385,12 @@ void Initial (void)
     dispcursor = -1;
     dispmode = modeA;
     dispcode.code = 0;
+    
+#ifdef DIS_PARA_JUMP_EN
     mem_set((void *)(&Para_Dis_Var),0x00,sizeof(Para_Dis_Var),(void *)(&Para_Dis_Var),sizeof(Para_Dis_Var));
     SET_STRUCT_SUM(Para_Dis_Var);
+#endif    
+    
     lcdshow(modeA, 0);
     screen(modeA, -1);
 }
@@ -523,6 +527,7 @@ PUCK:更新显示内容,周期是 UPDATETIME ms
 ********************************************************************************/
 void Dis_Jump_Para(void) 
 {
+#ifdef DIS_PARA_JUMP_EN
    u16 modipara;
    if(modipara=Get_Para_Modi_DI())   //显示参数修改，更新参数，并点亮液晶------PUCK
     {
@@ -539,4 +544,5 @@ void Dis_Jump_Para(void)
         display(modeC, dispcode.code);
       }
     }
+#endif
 }

@@ -23,7 +23,7 @@ typedef struct
   INT8U CodeBuf[CODE_NUM];    //ÊÇ·ñÔø¾­»½ÐÑ
   INT8U Tail;
 }IRDA_DECODE;
-INTER_ABS_PUCK_EXT volatile IRDA_DECODE Irda_Decode_Ctrl;
+REMOTE_PUCK_EXT volatile IRDA_DECODE Irda_Decode_Ctrl;
 #pragma pack()
 
 void Remote_Key_Proc(void);

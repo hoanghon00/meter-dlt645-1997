@@ -45,7 +45,7 @@ typedef struct
   INT8U InitLevel:1;                //正常工作下，闲置时的电平值；
   INT8U SleepLevel:1;               //低功耗情况下，需要初始的电平值；
   INT8U ValidLevel:1;               //电平模式下，输出有效的电平值；
-  INT8U MultiFlag:2;                //是否是复合端子标志：如3合1，0-------不是复合端子；1------是复合端子；2------特殊端子
+  INT8U MultiFlag:2;                //是否是复合端子标志：如3合1，0-------不是复合端子；1------是复合端子；
   INT8U LevelProprty:1;             //该端子是电平端子
   INT8U LoopFlag:1;                 //仅对脉冲方式有效 
   void  (* const FuncPtr)(INT8U);
@@ -64,10 +64,15 @@ CONST CONST_PORT_STATUS  Const_Port_Status[MAX_PORT_NUM]={
   {0,1,0,0,0,LEVEL_MODE,0,&PORT_ChangeP65Output,0},    //无功方向输出------------------------------------------------------------7
   {1,1,0,0,0,LEVEL_MODE,0,&PORT_ChangeP82Output,&Get_Sec_Out_En},    //秒脉冲使能------------------------------------------------8
   
-  {1,1,0,0,2,PULSE_MODE,0,&PORT_ChangeP83Output,&Get_Demand_Out_En},    //需量周期到输出-----------------------------------------9
-  {1,1,0,0,2,PULSE_MODE,0,&PORT_ChangeP83Output,&Get_Slipe_Out_En},     //滑差周期到输出-----------------------------------------10 
+  {1,1,0,0,1,PULSE_MODE,0,&PORT_ChangeP83Output,&Get_Demand_Out_En},    //需量周期到输出-----------------------------------------9
+  {1,1,0,0,1,PULSE_MODE,0,&PORT_ChangeP83Output,&Get_Slipe_Out_En},     //滑差周期到输出-----------------------------------------10 
   
+#if METER_HARD_TYPE == HARD_TYPE_20090620_SD       //需量周期和时段切换合并为一个IO(P83)
+  {1,1,0,0,1,PULSE_MODE,0,&PORT_ChangeP83Output,&Get_Parse_Out_En},    //时段输出-----------------------------------------------11
+#else
   {1,1,0,0,0,PULSE_MODE,0,&PORT_ChangeP84Output,&Get_Parse_Out_En},    //时段输出-----------------------------------------------11
+#endif
+
   {0,1,0,0,0,PULSE_MODE,0,&PORT_ChangeP150Output,0},   //总有功脉冲灯----------------------------------------------12
   {0,1,0,0,0,PULSE_MODE,0,&PORT_ChangeP151Output,0},   //总无功脉冲灯----------------------------------------------13
 #if METER_HARD_TYPE==HARD_TYPE_20081005
@@ -96,10 +101,36 @@ INT8U Get_Sec_Out_En(void)
   Len=Get_DLT645_Data(0xCA12,&Temp,&Temp,1,&Err);
   if(NO_ERR==Err && 1==Len)
   {
-    if(Temp&0x03==0x00)
+    if((Temp&0x03)==0x00)
      return 1;  
   }
   return 0;  
+}
+/********************************************************************************
+INT8U  Change_Sec_Out(void)
+函数功能：根据模式字，在运行过程中，使能秒脉冲
+入口：  
+返回：
+    无
+********************************************************************************/
+void Init_Sec_Pulse(void)
+{
+#if SEC_MULTI_PORT>0  //秒脉冲是复合端子 
+  if(Get_Sec_Out_En())   //复合端子：当前是秒脉冲端子
+  {
+    Port_Out_Pub(EXT_ID_SEC_EN,PORT_START);
+
+#if MULTI_3_PORT>=2   //其他复合端子，与秒脉冲共用；
+    Port_Out_Pub(EXT_ID_DEMAND,PORT_END);
+    Port_Out_Pub(EXT_ID_SLIPE,PORT_END);
+    Port_Out_Pub(EXT_ID_PARSE,PORT_END);
+#endif  
+  }
+  else                   //复合端子：当前不是秒脉冲端子
+  {
+    Port_Out_Pub(EXT_ID_SEC_EN,PORT_END);
+  }
+#endif
 }
 /********************************************************************************
 INT8U  Get_Parse_Out_En(void)
@@ -116,7 +147,7 @@ INT8U Get_Parse_Out_En(void)
   Len=Get_DLT645_Data(0xCA12,&Temp,&Temp,1,&Err);
   if(NO_ERR==Err && 1==Len)
   {
-    if(Temp&0x03==0x01)
+    if((Temp&0x03)==0x01)
      return 1;  
   }  
   return 0;
@@ -130,6 +161,10 @@ INT8U  Get_Demand_Out_En(void)
 ********************************************************************************/
 INT8U Get_Demand_Out_En(void)
 {
+#if MULTI_3_PORT==0  //单独的端子
+  return 1;
+#else
+  
   INT8U Err,Len;
   INT8U Temp;
   
@@ -145,10 +180,12 @@ INT8U Get_Demand_Out_En(void)
   Len=Get_DLT645_Data(0xCA12,&Temp,&Temp,1,&Err);
   if(NO_ERR==Err && 1==Len)
   {
-    if(Temp&0x03==0x02)
+    if((Temp&0x03)==0x02)
      return 1;  
   }  
   return 0;
+  
+#endif
 }
 /********************************************************************************
 INT8U  Get_Slipe_Out_En(void)
@@ -159,6 +196,10 @@ INT8U  Get_Slipe_Out_En(void)
 ********************************************************************************/
 INT8U Get_Slipe_Out_En(void)
 {
+#if MULTI_3_PORT==0  //单独的端子
+  return 1;
+#else
+  
   INT8U Err,Len;
   INT8U Temp;
   
@@ -174,10 +215,11 @@ INT8U Get_Slipe_Out_En(void)
   Len=Get_DLT645_Data(0xCA12,&Temp,&Temp,1,&Err);  //复合端子
   if(NO_ERR==Err && 1==Len)
   {
-    if(Temp&0x03==0x02)
+    if((Temp&0x03)==0x02)
      return 1;  
   }  
   return 0;
+#endif
 }
 /********************************************************************************
 INT8U  Get_FeeAlarm_Out_En(void)
@@ -188,15 +230,17 @@ INT8U  Get_FeeAlarm_Out_En(void)
 ********************************************************************************/
 INT8U Get_FeeAlarm_Out_En(void)
 {
-  INT8U Err,Len;
+/*
+  INT8U Len;
   INT8U Temp;
   
-  Len=Get_DLT645_Data(0xCA12,&Temp,&Temp,1,&Err);
-  if(NO_ERR==Err && 1==Len)
+  Len=Read_Storage_Data(SDI_OUTPUT_MODE,&Temp,&Temp,1);  //三合一输出状态:0-秒脉冲；1-时段切换；2-需量周期。3-输出报警信号重新上电后恢复到秒脉冲输出。
+  if(1==Len)
   {
     if(Temp&0x03==0x03 && Mode_Word.Mode[1].Bit.Bit5==1)   //模式字2 bit5＝1，预付费功能
      return 1;  
   }  
+ */
   return 0;
 }
 /********************************************************************************
@@ -214,7 +258,7 @@ INT8U Get_GridAlarm_Out_En(void)
   Len=Get_DLT645_Data(0xCA12,&Temp,&Temp,1,&Err);
   if(NO_ERR==Err && 1==Len)
   {
-    if(Temp&0x03==0x03 && Mode_Word.Mode[1].Bit.Bit4==1)  //模式字2 bit4＝1，负控功能功能
+    if((Temp&0x03)==0x03 && Mode_Word.Mode[1].Bit.Bit4==1)  //模式字2 bit4＝1，负控功能功能
      return 1;  
   }  
   return 0;
@@ -326,10 +370,13 @@ void Port_Out_Pub(INT8U Id,INT16U Para)
   if(Id<MIN_PORT_DI || Id>MAX_PORT_DI)
     return ;
   
-  if(Const_Port_Status[Id].MultiFlag) //不是复合端子
+  if(Const_Port_Status[Id].MultiFlag) //是复合端子
   {
-    if(Const_Port_Status[Id].MultiPortEn==0 || Const_Port_Status[Id].MultiPortEn()==0) //是复合端子，但不允许该端子输出
+    if(Const_Port_Status[Id].MultiPortEn==0)
       return ;
+    
+    if(Const_Port_Status[Id].MultiPortEn()==0)  //是复合端子，但不允许该端子输出，仅对于电平方式
+      return ;     
   }
     
   if(Const_Port_Status[Id].LevelProprty==LEVEL_MODE)      //电平方式

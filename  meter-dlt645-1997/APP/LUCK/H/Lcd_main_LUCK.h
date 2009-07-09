@@ -68,15 +68,17 @@ LCD_MAIN_EXT volatile INT32U  LCDLoopSecTimer;
 #define START_LOOP_DIS       {LCDLoopSecTimer=Sec_Timer_Pub;}
 #define LOOP_SEC_TIMER_DIFF  (Sec_Timer_Pub-LCDLoopSecTimer)
 
-#define MAX_MODI_NUM 5
-typedef struct
-{
- INT8U Flag;
- INT16U Para_Modi[MAX_MODI_NUM];
- INT8U CS[CS_BYTES];
-}PARA_MODI_DIS;
-
-LCD_MAIN_EXT PARA_MODI_DIS Para_Dis_Var;
+#ifdef DIS_PARA_JUMP_EN
+  #define MAX_MODI_NUM 5
+  typedef struct
+  {
+   INT8U Flag;
+   INT16U Para_Modi[MAX_MODI_NUM];
+   INT8U CS[CS_BYTES];
+  }PARA_MODI_DIS;
+  
+  LCD_MAIN_EXT PARA_MODI_DIS Para_Dis_Var;
+#endif
 
 #define DIS_BUF_LEN  268
 DECLARE_BUF_TYPE(INT8U,DIS_BUF_LEN,S_Buf_Dis);

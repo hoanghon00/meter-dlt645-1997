@@ -55,28 +55,58 @@
 #define DEFAULT_REAC_PULSE      5000
 
 //硬件版本配置
-#define HARD_TYPE_20081005     1   //第一版驱动：
-#define HARD_TYPE_20090224     2   //第二版驱动：最终版，中间的乱七八糟版本废除！！！
+#define HARD_TYPE_20081005        1   //第一版驱动：
+#define HARD_TYPE_20090224        2   //第二版驱动：晨泰/环宇
+#define HARD_TYPE_20090601_NC     3   //第三版驱动：NC
+#define HARD_TYPE_20090620_SD     4   //第四版驱动：山东：
 
 #define METER_HARD_TYPE   HARD_TYPE_20090224   //-------PUCK
+
+
+//按钮配置
+#if METER_HARD_TYPE<=HARD_TYPE_20090224
+  #define LEFT_KEY_EN               //宏打开，使能左按钮
+  #define RIGHT_KEY_EN              //宏打开，使能右按钮
+  #define DIS_PARA_JUMP_EN          //宏打开，使能参数修改跳屏
+  #define NEAR_IRDA_EN             //宏打开，使能吸附红外
+  #undef MAN_CLR_DEMAND_EN             //宏打开，手动清需量使能
+#else
+  #if METER_HARD_TYPE == HARD_TYPE_20090601_NC
+    #define  LEFT_KEY_EN               //宏打开，使能左按钮
+    #undef RIGHT_KEY_EN               //宏打开，使能右按钮
+    #define DIS_PARA_JUMP_EN          //宏打开，使能参数修改跳屏
+    #define NEAR_IRDA_EN             //宏打开，使能吸附红外
+    #undef MAN_CLR_DEMAND_EN             //宏打开，手动清需量使能
+  #endif
+  #if METER_HARD_TYPE == HARD_TYPE_20090620_SD
+    #undef  LEFT_KEY_EN               //宏打开，使能左按钮
+    #undef RIGHT_KEY_EN               //宏打开，使能右按钮
+    #undef NEAR_IRDA_EN             //宏打开，使能吸附红外
+    #define MAN_CLR_DEMAND_EN             //宏打开，手动清需量使能
+  #endif
+#endif
+
+
+//LCD属性
+#define LCD_NORMAL           0         //通用液晶
+#define LCD_JS_ZXW           1         //江苏液晶---中显威
+#define LCD_JS_JX            2         //江苏液晶---晶像
+#define LCD_SD_ZXW           3         //山东液晶---中显威
+
+#define LCD_PROPERTY  LCD_NORMAL
+
 
 
 //表计属性配置宏
 #define PARSE_METER_3   0               //通用三相多功能
 #define IC_METER        1               //IC卡预付费表
 #define NETMETER_METER  2               //网络表基表
-#define MWRWE_HARD_TYPE NETMETER_METER
+#define METER_PROPERTY NETMETER_METER
 
-//LCD属性
-#define LCD_NORMAL           0         //通用液晶
-#define LCD_JS_ZXW           1          //江苏液晶---中显威
-#define LCD_JS_JX            2           //江苏液晶---晶像
-
-#define LCD_PROPERTY  LCD_JS_ZXW
 
 
 //串口属性
-#if MWRWE_HARD_TYPE>=NETMETER_METER
+#if METER_PROPERTY>=NETMETER_METER
   #define UART1_EN                         //串口1使能
 #else
   #undef UART1_EN                          //串口1禁止

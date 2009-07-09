@@ -793,6 +793,7 @@ void Check_Prg_Key(void)
     Clr_Event_Instant(ID_EVENT_PRGKEY_ON);
     return ;
   }
+  /*
   if(B_PRG_KEY_STATUS)  //曾经高电平
    KeyInitStatus.Prg=KEY_INIT_STATUS;
   
@@ -806,7 +807,12 @@ void Check_Prg_Key(void)
   else
   {
     Clr_Event_Instant(ID_EVENT_PRGKEY_ON);
-  }
+  }*/
+  
+  if(Key_Value_Pub.Key.Bit.PrgKey)
+      Set_Event_Instant(ID_EVENT_PRGKEY_ON);
+   else
+      Clr_Event_Instant(ID_EVENT_PRGKEY_ON);
 }
 #endif
 
@@ -849,7 +855,11 @@ void Check_ClrDemand_Key(void)
 #ifdef ID_METER_ADDR_EN
 void Check_MeterAddr_Key(void)
 {
+#if METER_HARD_TYPE == HARD_TYPE_20090601_NC
+  if(Inter_Left_Key_STATUS)                  //设置表地址按钮
+#else
   if(Inter_Right_Key_STATUS)                  //设置表地址按钮
+#endif
     Clr_Event_Instant(ID_METER_ADDR_EN);
   else
     Set_Event_Instant(ID_METER_ADDR_EN);  

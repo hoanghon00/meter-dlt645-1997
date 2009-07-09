@@ -102,13 +102,13 @@ void lcdshow (u8 type, offs_t offs)
         case modeA: //A模式下，根据645标识及其偏移获取显示元素-----------PUCK
         {
             vlist = getlist(ITEMMODEA, offs % MODE_A_NUM);
-            vlist.dlen = 2;
+            //vlist.dlen = 2;
             break;
         }
         case modeB: //B模式下，根据645标识及其偏移获取显示元素-----------PUCK
         {
             vlist = getlist(ITEMMODEB, offs % MODE_B_NUM);
-            vlist.dlen = 2;
+            //vlist.dlen = 2;
             break;
         }
         default :   //C模式下，根据表的偏移获取显示元素-----------PUCK
@@ -128,6 +128,7 @@ PUCK:
 ********************************************************************************/
 unsigned char Ser_Support_Code(item_t code)
 {
+#ifdef DIS_PARA_JUMP_EN
   const scrn_t* p;
   for(p=&table[0];p!=&table[MAXCOUNT];++p) 
   {
@@ -136,6 +137,7 @@ unsigned char Ser_Support_Code(item_t code)
       return 1;
     }
  }
+#endif
  return 0;
 }
 /********************************************************************************
@@ -210,7 +212,7 @@ void screen (u8 type, curs_t curs)
     }
     if(p==&table[MAXCOUNT]) //找不到显示的代码,只显示代码，事件，其他不显示-------PUCK
     {
-      lcd_code     (vlist.user, curs);
+      lcd_code     (vlist.user, curs, vlist.dlen);
       lcd_events();
       lcd_update();  
       return ;
@@ -218,7 +220,7 @@ void screen (u8 type, curs_t curs)
     
     curs %= vlist.dlen;
     lcd_data     (scrn.item, scrn.frmt,scrn.elem.signpos);   //18ms
-    lcd_code     (vlist.user, curs);       //26ms
+    lcd_code     (vlist.user, curs, vlist.dlen);       //26ms
     lcd_mode     (type);                ///A/B/C 3种模式
     lcd_total    (scrn.elem.total    ); ///< "总",
     lcd_phase    (scrn.elem.phase    ); ///< "A/B/C相",

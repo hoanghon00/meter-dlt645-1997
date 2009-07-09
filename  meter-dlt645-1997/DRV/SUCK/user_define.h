@@ -177,7 +177,13 @@
 
   #define B_REED_TEST_STATUS  (P5_bit.no5)   //新板子(2009-02-18):干皇管---K1
   #define B_TEST_HARD_STATUS  (P5_bit.no6)   //新板子(2009-02-18):自检---K2
+
+#if METER_HARD_TYPE==HARD_TYPE_20090601_NC
+  #define OPEN_PROG_KEY  (P7_bit.no1)         //编程开关
+#else
   #define OPEN_PROG_KEY  (P7_bit.no6)         //编程开关
+#endif
+
   #define OPEN1_STATUS   (P0_bit.no0)        //开端盖(后端盖)铅封
   #define OPEN2_STATUS   (P0_bit.no1)        //开大盖(上端盖)
   //--------------用于按键的状态指示

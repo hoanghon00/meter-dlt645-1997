@@ -67,8 +67,14 @@ void Init_ExtRTC_Pulse(INT8U Flag)
   
   if(DS3231_Write_Buf(0x0e,1,&temp)==0)
     ASSERT(A_WARNING,0);  
-  if(Flag)
+  
+#if SEC_MULTI_PORT>0  //秒脉冲是复合端子 
+  if(Flag && Get_Sec_Out_En())  //复合端子下，输出秒脉冲
+    Port_Out_Pub(EXT_ID_SEC_EN,PORT_START);
+#else   
+  if(Flag)            //不是复合端子
      Port_Out_Pub(EXT_ID_SEC_EN,PORT_START);
+#endif 
 }
 /**********************************************************************************
 函数功能：读外部实时时钟
