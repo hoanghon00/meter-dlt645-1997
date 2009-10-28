@@ -49,7 +49,7 @@ INT8U Get_Cal_Sda_Pin(void)
 
 
 #ifdef I2C_SOFT_EPP_EN
-#pragma pack(1)
+//#pragma pack(1)
 typedef struct
 { 
   INT8U   EppType:5;
@@ -75,7 +75,7 @@ CONST CONST_EPPROM_SOFT  Const_Epprom_Soft[MAX_EPPROM_TYPE]={
   {M24256,0,0,64,EPP_240256_SIZE,1,8},
   {M24512,0,0,128,EPP_240512_SIZE,1,8}
 };
-#pragma pack()
+//#pragma pack()
 
 
 /**********************************************************************************

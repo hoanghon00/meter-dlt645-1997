@@ -3,6 +3,31 @@
 #define APP_CFG_PUCK
 
 
+#define TH_MODE     0   //双方向
+#define TF_MODE     1   //单方向
+
+#define PARSE_331    0
+#define PARSE_341    1
+
+#define PULSE_TYPE1  0
+#define PULSE_TYPE2  1
+
+#define VOLT_3100    0
+#define VOLT_3220    1
+#define VOLT_3577    2
+#define VOLT_3380    3
+
+#define CURR_1x5_6   0
+#define CURR_1_2     1
+#define CURR_5_10    2
+#define CURR_10_40   3
+#define CURR_0x3_1x2 4
+#define CURR_5_6     5
+#define CURR_15_60   6
+#define CURR_20_80   7
+#define CURR_5_20   8
+#define CURR_30_100   9
+
 
 
 #define SHOW_ENERG_BIT     3   //显示的电能小数位
@@ -29,9 +54,8 @@
 
 
 
-#if METER_PLACE == METER_GD   //HUCK ver
-  #define GD_VERSION
-#endif
+#define GD_VERSION
+
 
 #ifdef  GD_VERSION                      
   #define LOSS_VOLT_ONLY           //判定依据：失压只判定电压，与电流无关
@@ -60,7 +84,7 @@
 #define HARD_TYPE_20090601_NC     3   //第三版驱动：NC
 #define HARD_TYPE_20090620_SD     4   //第四版驱动：山东：
 
-#define METER_HARD_TYPE   HARD_TYPE_20090224   //-------PUCK
+#define METER_HARD_TYPE   HARD_TYPE_20090601_NC   //-------PUCK
 
 
 //按钮配置
@@ -73,10 +97,10 @@
 #else
   #if METER_HARD_TYPE == HARD_TYPE_20090601_NC
     #define  LEFT_KEY_EN               //宏打开，使能左按钮
-    #undef RIGHT_KEY_EN               //宏打开，使能右按钮
+    #define RIGHT_KEY_EN               //宏打开，使能右按钮
     #define DIS_PARA_JUMP_EN          //宏打开，使能参数修改跳屏
     #define NEAR_IRDA_EN             //宏打开，使能吸附红外
-    #undef MAN_CLR_DEMAND_EN             //宏打开，手动清需量使能
+    #define MAN_CLR_DEMAND_EN             //宏打开，手动清需量使能
   #endif
   #if METER_HARD_TYPE == HARD_TYPE_20090620_SD
     #undef  LEFT_KEY_EN               //宏打开，使能左按钮
@@ -93,7 +117,7 @@
 #define LCD_JS_JX            2         //江苏液晶---晶像
 #define LCD_SD_ZXW           3         //山东液晶---中显威
 
-#define LCD_PROPERTY  LCD_NORMAL
+#define LCD_PROPERTY  LCD_JS_ZXW
 
 
 

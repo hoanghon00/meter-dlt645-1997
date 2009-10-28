@@ -1,7 +1,7 @@
 #define SEIRAL_C
 #include "Pub_PUCK.h"
 
-#pragma pack(1)
+//#pragma pack(1)
 typedef struct
 { 
   INT16U  FclkDiv;
@@ -22,7 +22,7 @@ const CONST_UART_SET Const_Uart_PUCK[]={
   {SAU_CK00_FCLK_3,11,57600},
   {SAU_CK00_FCLK_2,11,115200}  
 };
-#pragma pack()
+//#pragma pack()
 
 #define MAX_BUAD_NUM (sizeof(Const_Uart_PUCK)/sizeof(CONST_UART_SET))
 

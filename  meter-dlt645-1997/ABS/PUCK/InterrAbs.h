@@ -70,7 +70,7 @@ INTER_ABS_PUCK_EXT volatile KeyProperty  Key_Value_Pub;
 
 #define ALL_LOSS_NUM 10   //记录全失压最大次数
 
-#pragma pack(1)
+//#pragma pack(1)
 typedef struct
 {
   INT8U start:1;  //全失压发生
@@ -118,7 +118,7 @@ typedef struct
   INT8U Tail;
 }IRDA_WAKE_UP;
 INTER_ABS_PUCK_EXT volatile IRDA_WAKE_UP Irda_Wake_Ctrl;
-#pragma pack()
+//#pragma pack()
 
 #define IRDA_READ_METER_EN Mode_Word.Mode[1].Bit.Bit1
 

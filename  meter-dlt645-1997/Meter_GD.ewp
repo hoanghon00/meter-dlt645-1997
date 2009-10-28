@@ -10,9 +10,9 @@
     <debug>1</debug>
     <settings>
       <name>General</name>
-      <archiveVersion>5</archiveVersion>
+      <archiveVersion>6</archiveVersion>
       <data>
-        <version>7</version>
+        <version>8</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -124,7 +124,7 @@
         </option>
         <option>
           <name>GeneralNearConstStart</name>
-          <state>0xF1000</state>
+          <state>0xf1000</state>
         </option>
         <option>
           <name>GeneralNearConstSize</name>
@@ -152,13 +152,17 @@
           <version>0</version>
           <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
         </option>
+        <option>
+          <name>UseHWMulDivUnit</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
       <name>ICC78000</name>
-      <archiveVersion>3</archiveVersion>
+      <archiveVersion>6</archiveVersion>
       <data>
-        <version>15</version>
+        <version>16</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -414,11 +418,19 @@
           <name>CCOptLevelSlave</name>
           <state>2</state>
         </option>
+        <option>
+          <name>CompilerUseCodeSegment</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CompilerCodeSegment</name>
+          <state></state>
+        </option>
       </data>
     </settings>
     <settings>
       <name>A78000</name>
-      <archiveVersion>3</archiveVersion>
+      <archiveVersion>6</archiveVersion>
       <data>
         <version>9</version>
         <wantNonLocal>1</wantNonLocal>
@@ -630,7 +642,7 @@
     </settings>
     <settings>
       <name>XLINK</name>
-      <archiveVersion>3</archiveVersion>
+      <archiveVersion>6</archiveVersion>
       <data>
         <version>15</version>
         <wantNonLocal>1</wantNonLocal>
@@ -649,7 +661,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state>Meter_GD.hex</state>
+          <state>Meter_GD.d26</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -803,7 +815,7 @@
         </option>
         <option>
           <name>DebugInformation</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>RuntimeControl</name>
@@ -911,7 +923,7 @@
     </settings>
     <settings>
       <name>XAR</name>
-      <archiveVersion>3</archiveVersion>
+      <archiveVersion>6</archiveVersion>
       <data>
         <version>0</version>
         <wantNonLocal>1</wantNonLocal>
@@ -931,6 +943,11 @@
       </data>
     </settings>
     <settings>
+      <name>INTERNAL_HWMUL</name>
+      <archiveVersion>6</archiveVersion>
+      <data/>
+    </settings>
+    <settings>
       <name>BILINK</name>
       <archiveVersion>0</archiveVersion>
       <data/>
@@ -944,9 +961,9 @@
     <debug>0</debug>
     <settings>
       <name>General</name>
-      <archiveVersion>5</archiveVersion>
+      <archiveVersion>6</archiveVersion>
       <data>
-        <version>7</version>
+        <version>8</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -1086,13 +1103,17 @@
           <version>0</version>
           <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
         </option>
+        <option>
+          <name>UseHWMulDivUnit</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
       <name>ICC78000</name>
-      <archiveVersion>3</archiveVersion>
+      <archiveVersion>6</archiveVersion>
       <data>
-        <version>15</version>
+        <version>16</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -1345,11 +1366,19 @@
           <name>CCOptLevelSlave</name>
           <state>3</state>
         </option>
+        <option>
+          <name>CompilerUseCodeSegment</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CompilerCodeSegment</name>
+          <state></state>
+        </option>
       </data>
     </settings>
     <settings>
       <name>A78000</name>
-      <archiveVersion>3</archiveVersion>
+      <archiveVersion>6</archiveVersion>
       <data>
         <version>9</version>
         <wantNonLocal>1</wantNonLocal>
@@ -1560,7 +1589,7 @@
     </settings>
     <settings>
       <name>XLINK</name>
-      <archiveVersion>3</archiveVersion>
+      <archiveVersion>6</archiveVersion>
       <data>
         <version>15</version>
         <wantNonLocal>1</wantNonLocal>
@@ -1841,7 +1870,7 @@
     </settings>
     <settings>
       <name>XAR</name>
-      <archiveVersion>3</archiveVersion>
+      <archiveVersion>6</archiveVersion>
       <data>
         <version>0</version>
         <wantNonLocal>1</wantNonLocal>
@@ -1859,6 +1888,11 @@
           <state></state>
         </option>
       </data>
+    </settings>
+    <settings>
+      <name>INTERNAL_HWMUL</name>
+      <archiveVersion>6</archiveVersion>
+      <data/>
     </settings>
     <settings>
       <name>BILINK</name>

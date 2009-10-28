@@ -75,6 +75,9 @@ INT8U Get_Pulse_Para(void)
 void Send_Acpower_Pulse(void)
 {
     //总有功脉冲
+  A_OUT_0;
+  MEASU_A_DIR_0;
+  
   Port_Out_Pub(GERNAL_ID_ACPOWER,Sys_Pulse_Var.Pulse_Width);      
   Port_Out_Pub(EXT_ID_ACPOWER,Sys_Pulse_Var.Pulse_Width);
   if(MeasuSysMode.T_FH==TF_MODE)
@@ -101,6 +104,9 @@ void Send_Acpower_Pulse(void)
 void Send_Reacpower_Pulse(void)
 {
    //总无功脉冲
+  R_OUT_0;
+  MEASU_R_DIR_0;
+  
   Port_Out_Pub(GERNAL_ID_REACPOWER,Sys_Pulse_Var.Pulse_Width);      
   Port_Out_Pub(EXT_ID_REACPOWER,Sys_Pulse_Var.Pulse_Width);
   if(MeasuSysMode.T_FH==TF_MODE)

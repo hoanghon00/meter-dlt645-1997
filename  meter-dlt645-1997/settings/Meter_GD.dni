@@ -13,7 +13,7 @@ ActionState=1
 Map0=0,0,262143,262144
 Map1=1,1036032,1048319,12288
 MapEntries=2
-HWsettings=4,0,1,2,4,0,1,0
+HWsettings=4,0,1,2,4,0,1,0,16
 HWsettingsCube=2,11059,2,32765,0,1,0,0
 HWsettingsRsuid=FFFFFFFFFFFFFFFFFFFF
 EventEntries=0
@@ -60,11 +60,13 @@ SeqData24=0,0,0,0,0,0
 TraceSettings=64,0,0,0,0,0,8192
 TimerSettings=0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 CoverSettings=1048192,1048207,0
-Version=1,xxx.txt
+Version=1,78k0rtrace.txt
 LastDevFile=DF1166A0.78K
 EmulType=320
 EventLimits=0, 1, 1, 2
-LastSetupFailed=1
+LastSetupFailed=0
+AutoEventEntries=0
+BreakToggle=0
 [DisAssemblyWindow]
 NumStates=_ 1
 State 1=_ 1
@@ -80,15 +82,23 @@ UseTrigger=1
 TriggerName=main
 LimitSize=0
 ByteLimit=50
-[TermIOLog]
-LoggingEnabled=_ 0
-LogFile=_ ""
+[DebugChecksum]
+Checksum=1468357869
+[InstructionProfiling]
+Enabled=_ 0
+[Breakpoints]
+Bp0=_ "STD_CODE" "{$PROJ_DIR$\DRV\PUCK\UART\Serial_user.c}.225.3@1" 1 0 0 0 "" 0 ""
+Bp1=_ "STD_CODE" "{$PROJ_DIR$\APP\Main\C\Main_Proc.c}.75.3@1" 1 0 0 0 "" 0 ""
+Bp2=_ "STD_CODE" "{$PROJ_DIR$\APP\TASK\TaskProc.c}.106.3@1" 1 0 0 0 "" 0 ""
+Bp3=_ "STD_CODE" "{$PROJ_DIR$\ABS\PUCK\DeviceAbs.c}.643.3@1" 1 0 0 0 "" 0 ""
+Count=4
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""
 Category=_ 0
+[TermIOLog]
+LoggingEnabled=_ 0
+LogFile=_ ""
 [TraceHelper]
 Enabled=0
 ShowSource=1
-[Breakpoints]
-Count=0

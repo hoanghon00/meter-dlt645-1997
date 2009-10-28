@@ -1,7 +1,7 @@
 #include "DrvPub.h"
 #include "Epp_Hard.h"
 
-#pragma pack(1)
+//#pragma pack(1)
 typedef struct
 { 
   INT8U   EppType:5;
@@ -27,7 +27,7 @@ CONST CONST_EPPROM_PROPERTY  Const_Epprom_Property[MAX_EPPROM_TYPE]={
   {M24256,0,0,64,EPP_240256_SIZE,1,8},
   {M24512,0,0,128,EPP_240512_SIZE,1,8}
 };
-#pragma pack()
+//#pragma pack()
 
 /**********************************************************************************
 º¯Êý¹¦ÄÜ£º

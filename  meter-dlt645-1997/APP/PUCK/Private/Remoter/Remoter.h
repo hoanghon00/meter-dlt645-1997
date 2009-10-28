@@ -12,7 +12,7 @@
 
 
 #define CODE_NUM 4
-#pragma pack(1)
+//#pragma pack(1)
 typedef struct
 {
   INT8U Head;
@@ -24,7 +24,7 @@ typedef struct
   INT8U Tail;
 }IRDA_DECODE;
 REMOTE_PUCK_EXT volatile IRDA_DECODE Irda_Decode_Ctrl;
-#pragma pack()
+//#pragma pack()
 
 void Remote_Key_Proc(void);
 #endif

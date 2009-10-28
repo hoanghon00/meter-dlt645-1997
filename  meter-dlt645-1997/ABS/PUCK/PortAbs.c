@@ -38,7 +38,7 @@ void PORT_ChangeP142Output_PUCK(INT8U Flag)
   
 }
 
-#pragma pack(1)
+//#pragma pack(1)
 typedef struct
 {
   INT8U NeedInit:1;                 //需要初始化标志
@@ -84,7 +84,7 @@ CONST CONST_PORT_STATUS  Const_Port_Status[MAX_PORT_NUM]={
   {1,0,0,1,0,PULSE_MODE,0,&PORT_ChangeP142Output_PUCK,0}  //喇叭报警 ----------------------------------------------15
 };
 
-#pragma pack()
+//#pragma pack()
 
 /********************************************************************************
 INT8U  Get_Sec_Out_En(void)

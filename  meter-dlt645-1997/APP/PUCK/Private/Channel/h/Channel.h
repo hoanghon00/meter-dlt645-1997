@@ -32,7 +32,7 @@
 #define BAUD_IRDA    1200            //红外口波特率,
 #define CHANEL_DEBG  CHANEL_IRDA    //调试口通道号
 #define BAUD_DEBG    115200         //调试口波特率,
-#define BAUD_MOUDLE  115200         //模块口波特率,
+#define BAUD_MOUDLE  19200         //模块口波特率,
 
 
 

@@ -18,30 +18,6 @@
 
 
 
-#define TH_MODE     0   //双方向
-#define TF_MODE     1   //单方向
-
-#define PARSE_331    0
-#define PARSE_341    1
-
-#define PULSE_TYPE1  0
-#define PULSE_TYPE2  1
-
-#define VOLT_3100    0
-#define VOLT_3220    1
-#define VOLT_3577    2
-#define VOLT_3380    3
-
-#define CURR_1x5_6   0
-#define CURR_1_2     1
-#define CURR_5_10    2
-#define CURR_10_40   3
-#define CURR_0x3_1x2 4
-#define CURR_5_6     5
-#define CURR_15_60   6
-#define CURR_20_80   7
-#define CURR_5_20   8
-#define CURR_30_100   9
 
 #define CAL_MEASU_OVER   0x55 //MeasuIC校表完成标志
 

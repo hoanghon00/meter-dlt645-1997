@@ -1195,8 +1195,8 @@ void lcd_events (void)
   if(Read_Event_Status(ID_METER_ADDR_EN))
     SetOnDevice_PUCK(S_SHOT);
   
-  if (flag.CalMeter & 0x01)   //发现未校表，闪烁小数点
-    SetOnDevice_PUCK(S_BASE_TOWER);
+  //if (flag.CalMeter & 0x01)   //发现未校表，闪烁小数点
+  //  SetOnDevice_PUCK(S_BASE_TOWER);
   
   if(Read_Event_Status(ID_EVENT_UP_COVER_OPEN))  //上端盖
     SetOnDevice_PUCK(S_UPCOVERP);

@@ -10,9 +10,9 @@
     <debug>1</debug>
     <settings>
       <name>C-SPY</name>
-      <archiveVersion>5</archiveVersion>
+      <archiveVersion>6</archiveVersion>
       <data>
-        <version>2</version>
+        <version>3</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -75,11 +75,35 @@
           <name>CSpyExtraOptions</name>
           <state></state>
         </option>
+        <option>
+          <name>OCImagesSuppressCheck1</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>OCImagesPath1</name>
+          <state></state>
+        </option>
+        <option>
+          <name>OCImagesSuppressCheck2</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>OCImagesPath2</name>
+          <state></state>
+        </option>
+        <option>
+          <name>OCImagesSuppressCheck3</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>OCImagesPath3</name>
+          <state></state>
+        </option>
       </data>
     </settings>
     <settings>
       <name>EMU78K</name>
-      <archiveVersion>5</archiveVersion>
+      <archiveVersion>6</archiveVersion>
       <data>
         <version>1</version>
         <wantNonLocal>1</wantNonLocal>
@@ -108,7 +132,7 @@
     </settings>
     <settings>
       <name>IEC78K</name>
-      <archiveVersion>5</archiveVersion>
+      <archiveVersion>6</archiveVersion>
       <data>
         <version>1</version>
         <wantNonLocal>1</wantNonLocal>
@@ -141,7 +165,7 @@
     </settings>
     <settings>
       <name>MIC78K</name>
-      <archiveVersion>5</archiveVersion>
+      <archiveVersion>6</archiveVersion>
       <data>
         <version>0</version>
         <wantNonLocal>1</wantNonLocal>
@@ -170,7 +194,7 @@
     </settings>
     <settings>
       <name>SIM78K</name>
-      <archiveVersion>5</archiveVersion>
+      <archiveVersion>6</archiveVersion>
       <data>
         <version>0</version>
         <wantNonLocal>1</wantNonLocal>
@@ -183,7 +207,7 @@
     </settings>
     <settings>
       <name>TKS78K</name>
-      <archiveVersion>5</archiveVersion>
+      <archiveVersion>6</archiveVersion>
       <data>
         <version>1</version>
         <wantNonLocal>1</wantNonLocal>
@@ -221,19 +245,27 @@
         <loadFlag>0</loadFlag>
       </plugin>
       <plugin>
-        <file>$EW_DIR$\common\plugins\CodeCoverage\codecoverage.ENU.ewplugin</file>
+        <file>$TOOLKIT_DIR$\plugins\rtos\uCOS-II\uCOS-II-KA-CSpy.ewplugin</file>
         <loadFlag>0</loadFlag>
       </plugin>
       <plugin>
-        <file>$EW_DIR$\common\plugins\Orti\orti.ENU.ewplugin</file>
+        <file>$EW_DIR$\common\plugins\CodeCoverage\CodeCoverage.ENU.ewplugin</file>
         <loadFlag>0</loadFlag>
       </plugin>
       <plugin>
-        <file>$EW_DIR$\common\plugins\Profiling\profiling.ENU.ewplugin</file>
+        <file>$EW_DIR$\common\plugins\Orti\Orti.ENU.ewplugin</file>
+        <loadFlag>0</loadFlag>
+      </plugin>
+      <plugin>
+        <file>$EW_DIR$\common\plugins\Profiling\Profiling.ENU.ewplugin</file>
         <loadFlag>1</loadFlag>
       </plugin>
       <plugin>
-        <file>$EW_DIR$\common\plugins\Stack\stack.ENU.ewplugin</file>
+        <file>$EW_DIR$\common\plugins\Stack\Stack.ENU.ewplugin</file>
+        <loadFlag>1</loadFlag>
+      </plugin>
+      <plugin>
+        <file>$EW_DIR$\common\plugins\SymList\SymList.ENU.ewplugin</file>
         <loadFlag>1</loadFlag>
       </plugin>
     </debuggerPlugins>
@@ -246,9 +278,9 @@
     <debug>0</debug>
     <settings>
       <name>C-SPY</name>
-      <archiveVersion>5</archiveVersion>
+      <archiveVersion>6</archiveVersion>
       <data>
-        <version>2</version>
+        <version>3</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -311,11 +343,35 @@
           <name>CSpyExtraOptions</name>
           <state></state>
         </option>
+        <option>
+          <name>OCImagesSuppressCheck1</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>OCImagesPath1</name>
+          <state></state>
+        </option>
+        <option>
+          <name>OCImagesSuppressCheck2</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>OCImagesPath2</name>
+          <state></state>
+        </option>
+        <option>
+          <name>OCImagesSuppressCheck3</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>OCImagesPath3</name>
+          <state></state>
+        </option>
       </data>
     </settings>
     <settings>
       <name>EMU78K</name>
-      <archiveVersion>5</archiveVersion>
+      <archiveVersion>6</archiveVersion>
       <data>
         <version>1</version>
         <wantNonLocal>1</wantNonLocal>
@@ -344,7 +400,7 @@
     </settings>
     <settings>
       <name>IEC78K</name>
-      <archiveVersion>5</archiveVersion>
+      <archiveVersion>6</archiveVersion>
       <data>
         <version>1</version>
         <wantNonLocal>1</wantNonLocal>
@@ -377,7 +433,7 @@
     </settings>
     <settings>
       <name>MIC78K</name>
-      <archiveVersion>5</archiveVersion>
+      <archiveVersion>6</archiveVersion>
       <data>
         <version>0</version>
         <wantNonLocal>1</wantNonLocal>
@@ -406,7 +462,7 @@
     </settings>
     <settings>
       <name>SIM78K</name>
-      <archiveVersion>5</archiveVersion>
+      <archiveVersion>6</archiveVersion>
       <data>
         <version>0</version>
         <wantNonLocal>1</wantNonLocal>
@@ -419,7 +475,7 @@
     </settings>
     <settings>
       <name>TKS78K</name>
-      <archiveVersion>5</archiveVersion>
+      <archiveVersion>6</archiveVersion>
       <data>
         <version>1</version>
         <wantNonLocal>1</wantNonLocal>
@@ -457,19 +513,27 @@
         <loadFlag>0</loadFlag>
       </plugin>
       <plugin>
-        <file>$EW_DIR$\common\plugins\CodeCoverage\codecoverage.ENU.ewplugin</file>
-        <loadFlag>1</loadFlag>
-      </plugin>
-      <plugin>
-        <file>$EW_DIR$\common\plugins\Orti\orti.ENU.ewplugin</file>
+        <file>$TOOLKIT_DIR$\plugins\rtos\uCOS-II\uCOS-II-KA-CSpy.ewplugin</file>
         <loadFlag>0</loadFlag>
       </plugin>
       <plugin>
-        <file>$EW_DIR$\common\plugins\Profiling\profiling.ENU.ewplugin</file>
+        <file>$EW_DIR$\common\plugins\CodeCoverage\CodeCoverage.ENU.ewplugin</file>
         <loadFlag>1</loadFlag>
       </plugin>
       <plugin>
-        <file>$EW_DIR$\common\plugins\Stack\stack.ENU.ewplugin</file>
+        <file>$EW_DIR$\common\plugins\Orti\Orti.ENU.ewplugin</file>
+        <loadFlag>0</loadFlag>
+      </plugin>
+      <plugin>
+        <file>$EW_DIR$\common\plugins\Profiling\Profiling.ENU.ewplugin</file>
+        <loadFlag>1</loadFlag>
+      </plugin>
+      <plugin>
+        <file>$EW_DIR$\common\plugins\Stack\Stack.ENU.ewplugin</file>
+        <loadFlag>1</loadFlag>
+      </plugin>
+      <plugin>
+        <file>$EW_DIR$\common\plugins\SymList\SymList.ENU.ewplugin</file>
         <loadFlag>1</loadFlag>
       </plugin>
     </debuggerPlugins>
